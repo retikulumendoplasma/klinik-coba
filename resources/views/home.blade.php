@@ -10,7 +10,7 @@
             <img src="img/Gambar Kantor Desa Jatirejo.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item" data-bs-interval="5000">
-            <img src="img/strukturorganisasi.png" class="d-block w-100" alt="...">
+            <img src="img/Gambar Struktur Organisasi.png" class="d-block w-100" alt="...">
         </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">

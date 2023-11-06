@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BeritaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,98 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $news = [
-        [
-            "title" => "Pembuatan web desa",
-            "author" => "Febry Aji",
-            "slug" => "judul berita 1",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan aplikasi mobile desa",
-            "author" => "Bani Ilyasa",
-            "slug" => "judul berita 2",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan web admin",
-            "author" => "Pranata",
-            "slug" => "judul berita 3",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-    ];
+Route::get('/', [BeritaController::class, 'home']);
 
-    return view('home', [
-        "title" => "Home",
-        "berita" => $news
-    ]);
-});
+Route::get('/berita', [BeritaController::class, 'index']);
 
-Route::get('/berita', function () {
-    $news = [
-        [
-            "title" => "Pembuatan web desa",
-            "author" => "Febry Aji",
-            "slug" => "judul berita 1",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan aplikasi mobile desa",
-            "author" => "Bani Ilyasa",
-            "slug" => "judul berita 2",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan web admin",
-            "author" => "Pranata",
-            "slug" => "judul berita 3",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-    ];
-
-    return view('berita', [
-        //pengisian berita
-        "title" => "Berita",
-        "berita" => $news
-    ]);
-});
-
-Route::get('berita/{slug}', function ($slug) {
-    // isi berita yang nanti di masukkan kedalam data base
-    $news = [
-        [
-            "title" => "Pembuatan web desa",
-            "author" => "Febry Aji",
-            "slug" => "judul berita 1",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan aplikasi mobile desa",
-            "author" => "Bani Ilyasa",
-            "slug" => "judul berita 2",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-        [
-            "title" => "Pembuatan web admin",
-            "author" => "Pranata",
-            "slug" => "judul berita 3",
-            "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
-        ],
-    ];
-
-    $detailberita = [];
-    foreach ($news as $detail) {
-        if($detail["slug"] === $slug) {
-            $detailberita = $detail;
-        }
-    }
-
-    return view('detailberita', [
-        "title" => "Detail Berita",
-        "detailberita" => $detailberita
-    ]);
-});
+Route::get('berita/{slug}', [BeritaController::class, 'tampil']);
 
 Route::get('/laporankeuangan', function () {
     return view('laporankeuangan',[
