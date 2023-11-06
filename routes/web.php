@@ -2,6 +2,7 @@
 
 use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
 
 
@@ -17,6 +18,8 @@ use App\Http\Controllers\BeritaController;
 */
 
 Route::get('/', [BeritaController::class, 'home']);
+
+Route::get('/login', [LoginController::class, 'login']);
 
 Route::get('/berita', [BeritaController::class, 'index']);
 

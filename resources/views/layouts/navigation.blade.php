@@ -45,6 +45,11 @@
             <a class="nav-link {{ ($title === "Berita") ? 'active' : '' }}" href="#">Profil Desa</a>
           </li>
         </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a href="/login" class="nav-link {{ ($title === "Login") ? 'active' : '' }}"><i class="bi bi-box-arrow-in-right"></i>Login</a>
+          </li>
+        </ul>
       </div>
     </div>
 </nav>
