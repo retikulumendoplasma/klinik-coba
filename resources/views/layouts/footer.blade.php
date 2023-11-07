@@ -1,21 +1,3 @@
-{{-- <footer class="mt-5">
-    <div class="row">
-      <div class="col-md-6">
-        <p>&copy; 2023 Nama Perusahaan Anda. Semua Hak Dilindungi.</p>
-      </div>
-      <div class="col-md-6 text-right">
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="beranda.html">Beranda</a></li>
-          <li class="list-inline-item"><a href="tentang.html">Tentang Kami</a></li>
-          <li class="list-inline-item"><a href="kontak.html">Kontak</a></li>
-          <li class="list-inline-item"><a href="#"><i class="fab fa-facebook"></i>Desa Jatirejo</a></li>
-          <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i>Desa_Jatirejo</a></li>
-          <li class="list-inline-item"><a href="#"><i class="fab fa-whatsapp"></i>+625264166324</a></li>
-        </ul>
-      </div>
-    </div>
-</footer> --}}
-
 <footer class="bg-dark text-white pt-3 pb-4">
 
     <div class="container text-md-left">
