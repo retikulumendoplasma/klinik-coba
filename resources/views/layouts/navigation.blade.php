@@ -42,7 +42,7 @@
             <a class="nav-link {{ ($title === "Saran dan Masukan") ? 'active' : '' }}" href="/saranmasukan">Saran dan Masukan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ ($title === "Berita") ? 'active' : '' }}" href="#">Profil Desa</a>
+            <a class="nav-link {{ ($title === "Profil Desa") ? 'active' : '' }}" href="/profildesa">Profil Desa</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">

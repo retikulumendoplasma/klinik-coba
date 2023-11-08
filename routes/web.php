@@ -28,6 +28,12 @@ Route::get('/berita', [BeritaController::class, 'index']);
 
 Route::get('berita/{slug}', [BeritaController::class, 'tampil']);
 
+Route::get('/profildesa', function () {
+    return view('profildesa',[
+        "title" => "Profil Desa"
+    ]);
+});
+
 Route::get('/laporankeuangan', function () {
     return view('laporankeuangan',[
         "title" => "Laporan keuangan"

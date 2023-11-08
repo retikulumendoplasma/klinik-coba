@@ -25,7 +25,7 @@
         </div>
         <hr class="mb-4">
         <div class="row text-center align-items-center">
-          <p>Copyright Isekai2023</p>
+          <p>© Copyright Isekai2023</p>
         </div>
 
     </div>
