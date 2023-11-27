@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('container')
+@section('main')
+<div class="container">
+    <h1 class="text-center pb-2">Surat Keterangan Domisili</h1>
     <div class="row">
         <div class="col-6">
             <div class="mb-3">
@@ -54,4 +56,6 @@
     </div>
     
     <button type="button" class="position end-0 m-2 btn btn-dark">Ajukan</button>
+</div>
+
 @endsection

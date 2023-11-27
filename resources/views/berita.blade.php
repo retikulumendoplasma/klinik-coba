@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('container')
+@section('main')
+
+<div class="container">
     @foreach ($berita as $Berita)
         {{-- menampilkan berita dalam bentuk card --}}
         <div class="card mb-3">
@@ -13,4 +15,6 @@
             </div>
         </div>   
     @endforeach
+</div>
+    
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('container')
+@section('main')
 
 <div class="container mt-5 pb-5">
     <div class="row justify-content-center mt-5">
@@ -20,7 +20,7 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required placeholder="Masukkan Password">
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Buat akun</button>
+                <a href="/login" class="btn btn-dark text-white btn-block mb-3">Buat akun</a>
             </form>
             <small class="d-blok text-right mt-3"><a href="/login">Sudah punya akun</a></small>
         </div>

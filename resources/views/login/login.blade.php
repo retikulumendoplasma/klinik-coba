@@ -1,11 +1,11 @@
 @extends('layouts.main')
-@section('container')
+@section('main')
 
 <div class="container mt-5 pb-5">
     <div class="row d-flex justify-content-between align-items-center">
         <div class="col-md-5">
             <div class="text-center">
-                <img src="img/Logo Nagan Raya.jpg" alt="Logo Situs Anda" width="250" height="250">
+                <img src="img/Palestina.jpg" alt="Logo Situs Anda" width="250" height="250">
                 <h1>Desa Jatirejo</h1>
             </div>
         </div>
@@ -22,7 +22,7 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required placeholder="Masukkan Password">
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Masuk</button>
+                <a href="/berita" class="btn btn-dark text-white btn-block mb-3">Masuk</a>
             </form>
             <small class="d-blok text-right mt-3"><a href="/register">Buat akun</a></small>
         </div>

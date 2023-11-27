@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
-@section('container')
+@section('main')
+<div class="container">
     <div class="row">
         <div class="col-6">
             
@@ -13,4 +14,6 @@
             <button type="button" class="m-2 btn btn-dark">Kirim Masukan</button>
         </div>
     </div>
+</div>
+
 @endsection
