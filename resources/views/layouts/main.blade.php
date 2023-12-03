@@ -60,5 +60,37 @@
         slider_carouselInit();
 
     </script>
+
+    <!-- all js saran masukan here -->
+    <script>
+      // Dummy chat data
+      var chatData = [
+          { type: 'user', message: 'Hello, how can I help you?' },
+          { type: 'admin', message: 'Hi there! How can I assist you today?' }
+      ];
+  
+      // Function to display chat messages
+      function displayChatMessages() {
+          var chatBox = document.getElementById('chat-box');
+          chatBox.innerHTML = '';
+  
+          chatData.forEach(function (chat) {
+              var messageClass = chat.type === 'admin' ? 'text-success' : 'text-primary';
+              chatBox.innerHTML += '<p class="' + messageClass + '">' + chat.message + '</p>';
+          });
+      }
+  
+      // Function to send a user message
+      function sendMessage() {
+          var userInput = document.getElementById('message-input').value;
+          chatData.push({ type: 'user', message: userInput });
+          displayChatMessages();
+          // Additional logic to send user message to the backend (AJAX, WebSockets, etc.) can be added here.
+      }
+  
+      // Display initial chat messages
+      displayChatMessages();
+    </script>
+    
   </body>
 </html>
