@@ -45,11 +45,32 @@
             <a class="nav-link {{ ($title === "Profil Desa") ? 'active' : '' }}" href="/profildesa">Profil Desa</a>
           </li>
         </ul>
+
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a href="/login" class="nav-link {{ ($title === "Login") ? 'active' : '' }}"><i class="bi bi-box-arrow-in-right"></i>Login</a>
-          </li>
+          @auth
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{-- selamat datang, {{ auth()->user()->{'email/nomor_hp'} }} --}}
+                Selamat Datang, {{ auth()->user()->username }}
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/">home</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form action="/logout" method="post">
+                    @csrf
+                    <button type="submit" class="dropdown-item bi bi-box-arrow-out-right"> Logout </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+            @else
+            <li class="nav-item">
+                  <a href="/login" class="nav-link {{ ($title === "Login") ? 'active' : '' }}"><i class="bi bi-box-arrow-in-right"></i>Login</a>
+            </li>
+            @endauth
         </ul>
+        
       </div>
     </div>
 </nav>

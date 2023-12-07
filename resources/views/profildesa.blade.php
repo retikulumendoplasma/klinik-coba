@@ -31,21 +31,28 @@
     </div>
   </header>
   <div class="row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
-        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">1034</p>
+        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">1023</p>
         <p class="des_card">Total Penduduk</p>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
+      <div class="card-body text-center">
+        <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
+        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">321</p>
+        <p class="des_card">Jumlah KK</p>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
         <p id="totalPendudukPria" name="totalPendudukPria" class="jum-total">434</p>
         <p class="des_card">Penduduk Laki-laki</p>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
         <p id="totalPendudukWanita" name="totalPendudukWanita" class="jum-total">600</p>
@@ -65,16 +72,16 @@
   </div>
   <div class="row mt-4 mb-4">
     <div class="col-6 text-center">
-      <h4>Visi</h4>
+      <h3>Visi</h3>
     </div>
     <div class="col-6 text-center">
-      <h4>Misi</h4>
+      <h3>Misi</h3>
     </div>
   </div>
   <div class="row mb-5">
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Kesejahteraan Bersama</h5>
+        <h5 class="pb-2">Kesejahteraan Bersama</h5>
         <p>Menjadi desa di mana kesejahteraan bersama menjadi kenyataan, dengan setiap warga menikmati tingkat hidup yang lebih baik.</p>
       </div>
     </div>
@@ -84,7 +91,7 @@
     </div>
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Pembangunan Infrastruktur yang Berkesinambungan</h5>
+        <h5 class="pb-2">Pembangunan Infrastruktur yang Berkesinambungan</h5>
         <p>Merencanakan dan melaksanakan pembangunan infrastruktur yang berkelanjutan, termasuk jaringan jalan, air bersih, sanitasi, dan listrik, untuk meningkatkan kualitas hidup warga desa.</p>
       </div>
     </div>
@@ -92,7 +99,7 @@
   <div class="row mb-5">
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Keberlanjutan Lingkungan</h5>
+        <h5 class="pb-2">Keberlanjutan Lingkungan</h5>
         <p>Mengembangkan desa yang berkelanjutan, menjaga keindahan alam, dan meminimalkan dampak negatif terhadap lingkungan.</p>
       </div>
     </div>
@@ -102,7 +109,7 @@
     </div>
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Pemberdayaan Ekonomi Lokal</h5>
+        <h5 class="pb-2">Pemberdayaan Ekonomi Lokal</h5>
         <p>Menggalakkan pertumbuhan ekonomi dengan mendukung usaha mikro dan kecil, menciptakan lapangan kerja lokal, dan mendorong inovasi ekonomi untuk meningkatkan taraf hidup warga desa.</p>
       </div>
     </div>
@@ -110,7 +117,7 @@
   <div class="row mb-5">
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Keterlibatan Warga</h5>
+        <h5 class="pb-2">Keterlibatan Warga</h5>
         <p>Menciptakan desa inklusif dengan melibatkan aktif seluruh warga dalam proses pengambilan keputusan dan pembangunan.</p>
       </div>
     </div>
@@ -120,7 +127,7 @@
     </div>
     <div class="col-6 col-lg-5 col-xl-5">
       <div class="card_content">
-        <h5>Konservasi Lingkungan dan Warisan Budaya</h5>
+        <h5 class="pb-2">Konservasi Lingkungan dan Warisan Budaya</h5>
         <p>Melindungi dan mempertahankan keanekaragaman alam serta warisan budaya desa, sambil mempromosikan praktik berkelanjutan dan kesadaran lingkungan dikalangan warga.</p>
       </div>
     </div>
