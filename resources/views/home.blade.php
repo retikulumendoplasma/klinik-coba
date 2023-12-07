@@ -24,10 +24,11 @@
     </div>
 
     <div class="row m-5">
+        <h2 class="head_text pb-3">Berita Terkini Desa Jatirejo</h2>
         @foreach ($berita as $Berita)
         <div class="col-md-4">
             <div class="card">
-                <img src="img/wilayahdesa.png" class="card-img-top img-fluid" alt="...">
+                <img src="{{ $Berita['img'] }}" class="card-img-top img-fluid" alt="...">
                   <div class="card-body">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight"><a href="/berita/{{ $Berita["slug"] }}">{{ $Berita["title"] }}</a></h2>
                     <h5 class="card-text font-semibold">{{ $Berita["author"] }}</h5>
