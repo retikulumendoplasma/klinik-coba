@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'akun_user',
+        'passwords' => 'akun_user',
     ],
 
     /*
@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'akun_user' => [
+            'driver' => 'session',
+            'provider' => 'akun_user',
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'akun_user' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\akun_user::class,
         ],
 
         // 'users' => [

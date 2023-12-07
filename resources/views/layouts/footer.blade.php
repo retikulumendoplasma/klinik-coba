@@ -1,11 +1,11 @@
-<footer class="bg-dark text-white pt-3 pb-4">
+<footer class="bg-success text-white pt-3 pb-4">
 
     <div class="container text-md-left">
 
       <div class="row text-left text-md-left">
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Desa Jatirejo</h5>
-                <img src="img/Logo Nagan Raya.jpg" alt="Bootstrap" width="250" height="250">
+                <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Free Palestine</h5>
+                <img src="img/Boy palestine.jpg" alt="Bootstrap" width="250" height="250">
             </div>
             <div class="col-md-2 col-lg-2 col-xl-3 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Kontak</h5>

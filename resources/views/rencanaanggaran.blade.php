@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('container')
+@section('main')
+
+<div class="container">
     <div class="row">
         <div class="col-2">
             <h5>Histori rencana anggaran</h5>
@@ -18,4 +20,6 @@
             <button type="button" class="m-2 btn btn-dark">Download PDF</button>
         </div>
     </div>
+</div>
+    
 @endsection
