@@ -44,7 +44,7 @@
                     <label for="password">Password</label>
                     <input type="password" name="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Masuk</button>
+                <a href="/berita" class="btn btn-dark text-white btn-block mb-3">Masuk</a>
             </form>
 
             <small class="d-blok text-right mt-3"><a href="/register">Buat akun</a></small>
