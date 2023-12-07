@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Berita;
+use App\Models\berita;
 
 class BeritaController extends Controller
 {
@@ -12,9 +12,9 @@ class BeritaController extends Controller
     {
         return view('berita', [
             //pengisian berita
-            "title" => "Berita",
+            "title" => "berita",
             //data berita sudah tersimpan dalam models berita
-            "berita" => Berita::all()
+            "berita" => berita::all()
         ]);
     }
 
@@ -23,17 +23,17 @@ class BeritaController extends Controller
         return view('home', [
             "title" => "Home",
             //data berita sudah tersimpan dalam models berita
-            "berita" => Berita::all()
+            "berita" => berita::all()
         ]);
     }
 
     //controller untuk mengontrol slug tampilan detailberita
-    public function tampil($slug)
+    public function tampil(berita $berita)
     {
         return view('detailberita', [
             "title" => "Detail Berita",
             //data berita sudah tersimpan dalam models berita
-            "detailberita" => Berita::find($slug)
+            "detailberita" => $berita
         ]);
     }
 }
