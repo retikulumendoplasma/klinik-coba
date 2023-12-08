@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PengurusanSuratController;
+use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\RegisterController;
 
 
@@ -32,11 +33,12 @@ Route::get('/berita', [BeritaController::class, 'index']);
 
 Route::get('/berita/{berita}', [BeritaController::class, 'tampil']);
 
-Route::get('/profildesa', function () {
-    return view('profildesa',[
-        "title" => "Profil Desa"
-    ]);
-});
+Route::get('/profildesa', [ProfildesaController::class, 'index']);
+// Route::get('/profildesa', function () {
+//     return view('profildesa',[
+//         "title" => "Profil Desa"
+//     ]);
+// });
 
 Route::get('/laporankeuangan', function () {
     return view('laporankeuangan',[

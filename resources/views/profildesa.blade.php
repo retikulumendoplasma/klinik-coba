@@ -34,28 +34,28 @@
     <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
-        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">1023</p>
+        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">{{ $totalpenduduk }}</p>
         <p class="des_card">Total Penduduk</p>
       </div>
     </div>
     <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
-        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">321</p>
+        <p id="totalPenduduk" name="totalPenduduk" class="jum-total">{{ $totalNomorKK }}</p>
         <p class="des_card">Jumlah KK</p>
       </div>
     </div>
     <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
-        <p id="totalPendudukPria" name="totalPendudukPria" class="jum-total">434</p>
+        <p id="totalPendudukPria" name="totalPendudukPria" class="jum-total">{{ $totallakilaki }}</p>
         <p class="des_card">Penduduk Laki-laki</p>
       </div>
     </div>
     <div class="col-md-3 mb-3">
       <div class="card-body text-center">
         <img src="https://digitaldesa.id/templates/homepage/media/misc/icon-users.svg" height="65">
-        <p id="totalPendudukWanita" name="totalPendudukWanita" class="jum-total">600</p>
+        <p id="totalPendudukWanita" name="totalPendudukWanita" class="jum-total">{{ $totalperempuan }}</p>
         <p class="des_card">Penduduk Wanita</p>
       </div>
     </div>
