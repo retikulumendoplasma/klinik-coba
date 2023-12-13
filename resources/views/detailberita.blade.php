@@ -8,7 +8,7 @@
         <h5 class="font-semibold">{{ $detailberita->author }}</h5>
         <p>{!! $detailberita->isi_berita !!}</p>
     </article>
-  
+    
     <button class="bg-dark"><a class="text-white text-decoration-none" href="/berita">Kembali</a></button>
 </div>
     

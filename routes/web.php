@@ -4,9 +4,9 @@ use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\PengurusanSuratController;
-use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\KelolaBeritaController;
+use App\Http\Controllers\PengurusanSuratController;
 
 
 /*
@@ -31,7 +31,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 
 Route::get('/berita', [BeritaController::class, 'index']);
 
-Route::get('/berita/{berita}', [BeritaController::class, 'tampil']);
+Route::get('/berita/{id}', [BeritaController::class, 'tampil']);
 
 Route::get('/profildesa', [ProfildesaController::class, 'index']);
 // Route::get('/profildesa', function () {
@@ -76,5 +76,64 @@ Route::get('/suratkematian', function () {
 Route::get('/saranmasukan', function () {
     return view('saranmasukan',[
         "title" => "Saran dan Masukan"
+    ]);
+})->middleware('auth:akun_user');
+
+// route admin
+Route::get('/dashboard', function () {
+    return view('dashBoard.beranda', [
+        "title" => "Beranda"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/kelolaBerita/{new:slug}', [KelolaBeritaController::class, 'show']);
+
+Route::get('/kelolaBerita', [KelolaBeritaController::class, 'kelolaBerita'])->middleware('auth:akun_user');
+
+Route::get('/dataPenduduk', function () {
+    return view('dashBoard.dataPenduduk', [
+        "title" => "Data Penduduk"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/kelolaTender', function () {
+    return view('dashBoard.kelolaTender', [
+        "title" => "Kelola Tender"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/buatTender', function () {
+    return view('dashBoard.buatTender', [
+        "title" => "Buat Tender"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/tambahPenduduk', function () {
+    return view('dashBoard.tambahPenduduk', [
+        "title" => "Tambah Penduduk"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/kelolaSurat', function () {
+    return view('dashBoard.kelolaSurat', [
+        "title" => "Kelola Surat"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/saranMasukanAdmin', function () {
+    return view('dashBoard.saranMasukanAdmin', [
+        "title" => "Saran Masukan"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/dataKeuangan', function () {
+    return view('dashBoard.dataKeuangan', [
+        "title" => "Data Keuangan"
+    ]);
+})->middleware('auth:akun_user');
+
+Route::get('/tambahB', function () {
+    return view('dashBoard.tambahB', [
+        "title" => "Tambah Berita"
     ]);
 })->middleware('auth:akun_user');

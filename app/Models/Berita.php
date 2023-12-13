@@ -17,6 +17,11 @@ class berita extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
 
 // class Berita
@@ -33,7 +38,6 @@ class berita extends Model
 //         [
 //             "title" => "Pembuatan aplikasi mobile desa",
 //             "img" => "https://drive.google.com/uc?id=1S_Ml7HLujOXTAGl8Fz1t74yOGZzzxzbu",
-//             "author" => "Febry Aji",
 //             "author" => "Bani Ilyasa",
 //             "slug" => "judul berita 2",
 //             "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"
@@ -41,7 +45,6 @@ class berita extends Model
 //         [
 //             "title" => "Pembuatan web admin",
 //             "img" => "https://drive.google.com/uc?id=1WMsnXhXgqxd8fp1qlxmXsRlbbCVKYqm5",
-//             "author" => "Febry Aji",
 //             "author" => "Pranata",
 //             "slug" => "judul berita 3",
 //             "body" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit corrupti excepturi quibusdam ab dicta temporibus saepe, beatae obcaecati eum explicabo deleniti? Quidem consequatur esse nulla aut consectetur debitis quibusdam voluptas voluptatibus accusantium vitae eum in, temporibus beatae qui fugiat ipsam ad similique natus. Quod consectetur eaque omnis dolor assumenda natus est corporis quibusdam harum quisquam iure, quis, quasi ut magni! Commodi blanditiis eius non perferendis odit. Voluptatem ullam quos beatae fugiat, quae dolorem sed, deserunt maiores sit iure cumque excepturi?"

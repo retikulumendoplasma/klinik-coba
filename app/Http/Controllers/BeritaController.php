@@ -28,12 +28,12 @@ class BeritaController extends Controller
     }
 
     //controller untuk mengontrol slug tampilan detailberita
-    public function tampil(berita $berita)
+    public function tampil($id)
     {
         return view('detailberita', [
             "title" => "Detail Berita",
             //data berita sudah tersimpan dalam models berita
-            "detailberita" => $berita
+            "detailberita" => Berita::find($id)
         ]);
     }
 }
