@@ -33,11 +33,12 @@ Route::get('/berita', [BeritaController::class, 'index']);
 
 Route::get('/berita/{id}', [BeritaController::class, 'tampil']);
 
-Route::get('/profildesa', function () {
-    return view('profildesa',[
-        "title" => "Profil Desa"
-    ]);
-});
+Route::get('/profildesa', [ProfildesaController::class, 'index']);
+// Route::get('/profildesa', function () {
+//     return view('profildesa',[
+//         "title" => "Profil Desa"
+//     ]);
+// });
 
 Route::get('/laporankeuangan', function () {
     return view('laporankeuangan',[
@@ -52,6 +53,7 @@ Route::get('/rencanaanggaran', function () {
 });
 
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
+Route::get('/getPendudukData/{nik}', [PengurusanSuratController::class, 'getPenduduk']);
 
 Route::get('/suratdomisili', function () {
     return view('suratdomisili',[

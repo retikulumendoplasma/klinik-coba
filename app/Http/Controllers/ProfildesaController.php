@@ -2,41 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\penduduk;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Request;
 
-class PengurusanSuratController extends Controller
+class ProfildesaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function suratkurangmampu()
+    public function index()
     {
-        return view('suratkurangmampu', [
-            //pengisian berita
-            "title" => "Surat Keterangan Tidak Mampu",
-            //data berita sudah tersimpan dalam models berita
-            "penduduk" => penduduk::all()
-        ]);
-    }
-
-    public function getPenduduk($nik)
-    {
-        $penduduk = Penduduk::find($nik);
-
-        return Response::json([
-            'nik' => $penduduk->nik,
-            'tempat_lahir' => $penduduk->tempat_lahir,
-            'tanggal_lahir' => $penduduk->tanggal_lahir,
-            'jenis_kelamin' => $penduduk->jenis_kelamin,
-            'status_perkawinan' => $penduduk->status_perkawinan,
-            'agama' => $penduduk->agama,
-            'pekerjaan' => $penduduk->pekerjaan,
-            'alamat' => $penduduk->alamat,
-        ]);
+        $totalpenduduk = penduduk::count(); // Ganti dengan model dan tabel yang sesuai
+        $totallakilaki = Penduduk::where('jenis_kelamin', 'laki-laki')->count();
+        $totalperempuan = Penduduk::where('jenis_kelamin', 'perempuan')->count();
+        $totalNomorKK = Penduduk::distinct('nomor_kk')->count('nomor_kk');
+        return view('profildesa', ['totalpenduduk' => $totalpenduduk,
+                                    'totallakilaki' => $totallakilaki,
+                                    'totalperempuan' => $totalperempuan,
+                                    'totalNomorKK' => $totalNomorKK,
+                                    'title' => "Profil Desa"
+                                    ]);
     }
 
     /**
