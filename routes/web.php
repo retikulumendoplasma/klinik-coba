@@ -53,6 +53,7 @@ Route::get('/rencanaanggaran', function () {
 });
 
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
+Route::get('/getPendudukData/{nik}', [PengurusanSuratController::class, 'getPenduduk']);
 
 Route::get('/suratdomisili', function () {
     return view('suratdomisili',[

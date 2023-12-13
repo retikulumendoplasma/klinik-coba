@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\penduduk;
+use Illuminate\Support\Facades\Response;
 
 class PengurusanSuratController extends Controller
 {
@@ -19,6 +20,22 @@ class PengurusanSuratController extends Controller
             "title" => "Surat Keterangan Tidak Mampu",
             //data berita sudah tersimpan dalam models berita
             "penduduk" => penduduk::all()
+        ]);
+    }
+
+    public function getPenduduk($nik)
+    {
+        $penduduk = Penduduk::find($nik);
+
+        return Response::json([
+            'nik' => $penduduk->nik,
+            'tempat_lahir' => $penduduk->tempat_lahir,
+            'tanggal_lahir' => $penduduk->tanggal_lahir,
+            'jenis_kelamin' => $penduduk->jenis_kelamin,
+            'status_perkawinan' => $penduduk->status_perkawinan,
+            'agama' => $penduduk->agama,
+            'pekerjaan' => $penduduk->pekerjaan,
+            'alamat' => $penduduk->alamat,
         ]);
     }
 

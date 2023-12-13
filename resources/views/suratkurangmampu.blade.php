@@ -7,24 +7,28 @@
         <div class="col-6">
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Nama</option>
+                <select id="namaSelector" name="nama" class="form-select" aria-label="Default select example">
+                    <option value="">Nama</option>
+                    @foreach ($penduduk as $nik)
+                        <option value="{{ $nik->nik }}">{{ $nik->nama }}</option>
+                    @endforeach
+                    {{-- <option selected>Nama</option>
                     <option value="1">Febry Aji Pradilla</option>
                     <option value="2">Muhammad Yoga Pranata</option>
-                    <option value="3">Bani Illyasa</option>
+                    <option value="3">Bani Illyasa</option> --}}
                 </select>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">NIK</label>
-                <input class="form-control" type="text" value="NIK" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="nikInput" name="nik" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Tempat, tgl lahir</label>
-                <input class="form-control" type="text" value="Tempat, tgl lahir" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="tempat_tanggal_lahirInput" name="tempat_tanggal_lahir" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Jenis kelamin</label>
-                <input class="form-control" type="text" value="Jenis kelamin" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="jenis_kelaminInput" name="jenis_kelamin" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="formFile" class="form-label">Upload foto KTP</label>
@@ -38,19 +42,19 @@
         <div class="col-6">
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Status perkawinan</label>
-                <input class="form-control" type="text" value="Status perkawinan" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="status_perkawinanInput" name="status_perkawinan" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Agama</label>
-                <input class="form-control" type="text" value="Agama" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="agamaInput" name="agama" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Pekerjaan</label>
-                <input class="form-control" type="text" value="Pekerjaan" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="pekerjaanInput" name="pekerjaan" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Alamat</label>
-                <input class="form-control" type="text" value="Alamat" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="alamatInput" name="alamat" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="mb-3">
                 <label for="formFile" class="form-label">Upload foto pendukung</label>
@@ -58,7 +62,35 @@
             </div>
         </div>
     </div>
-    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#namaSelector').on('change', function () {
+                var penduduk = $(this).val();
+
+                // Ajax request mendapatkan data penduduk
+                $.ajax({
+                    url: '/getPendudukData/' + penduduk,
+                    type: 'GET',
+                    success: function (response) {
+                        // untuk auto input kedalam teks input (input text)
+                        $('#nikInput').val(response.nik);
+                        var tempatTanggalLahir = response.tempat_lahir + ', ' + response.tanggal_lahir;
+                        $('#tempat_tanggal_lahirInput').val(tempatTanggalLahir);
+                        $('#jenis_kelaminInput').val(response.jenis_kelamin);
+                        $('#status_perkawinanInput').val(response.status_perkawinan);
+                        $('#agamaInput').val(response.agama);
+                        $('#pekerjaanInput').val(response.pekerjaan);
+                        $('#alamatInput').val(response.alamat);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
     <button type="button" class="position end-0 m-2 btn btn-dark">Ajukan</button>
 </div>
 
