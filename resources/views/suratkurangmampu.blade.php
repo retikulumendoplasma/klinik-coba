@@ -12,10 +12,6 @@
                     @foreach ($penduduk as $nik)
                         <option value="{{ $nik->nik }}">{{ $nik->nama }}</option>
                     @endforeach
-                    {{-- <option selected>Nama</option>
-                    <option value="1">Febry Aji Pradilla</option>
-                    <option value="2">Muhammad Yoga Pranata</option>
-                    <option value="3">Bani Illyasa</option> --}}
                 </select>
             </div>
             <div class="mb-3">
@@ -62,7 +58,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {

@@ -20,15 +20,18 @@
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Nama</td>
+      @foreach ($datapenduduk as $penduduk)
+          <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $penduduk->nama }}</td>
             <td class="text-center">
                 <a href="" class="badge bg-info"><span data-feather="eye"></span></a>
                 <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
                 <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a>
             </td>
           </tr>
+      @endforeach
+        
     </tbody>
   </table>
 </div>

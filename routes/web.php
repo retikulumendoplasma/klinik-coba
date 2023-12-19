@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\Berita;
+use App\Http\Controllers\adminDataPendudukController;
+use App\Http\Controllers\adminTambahPendudukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
+use App\Http\Controllers\ProfildesaController;
 
 
 /*
@@ -35,11 +37,6 @@ Route::get('/berita', [BeritaController::class, 'index']);
 Route::get('/berita/{id}', [BeritaController::class, 'tampil']);
 
 Route::get('/profildesa', [ProfildesaController::class, 'index']);
-// Route::get('/profildesa', function () {
-//     return view('profildesa',[
-//         "title" => "Profil Desa"
-//     ]);
-// });
 
 Route::get('/laporankeuangan', function () {
     return view('laporankeuangan',[
@@ -85,25 +82,10 @@ Route::get('/detailvote', function () {
 
 
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
+Route::get('/suratkematian',[PengurusanSuratController::class, 'suratkematian'])->middleware('auth:akun_user');
+Route::get('/suratdomisili',[PengurusanSuratController::class, 'suratdomisili'])->middleware('auth:akun_user');
+Route::get('/suratmenikah',[PengurusanSuratController::class, 'suratmenikah'])->middleware('auth:akun_user');
 Route::get('/getPendudukData/{nik}', [PengurusanSuratController::class, 'getPenduduk']);
-
-Route::get('/suratdomisili', function () {
-    return view('suratdomisili',[
-        "title" => "Surat Keterangan Domisili"
-    ]);
-})->middleware('auth:akun_user');
-
-Route::get('/suratmenikah', function () {
-    return view('suratmenikah',[
-        "title" => "Surat Keterangan Sudah/Belum Menikah"
-    ]);
-})->middleware('auth:akun_user');
-
-Route::get('/suratkematian', function () {
-    return view('suratkematian',[
-        "title" => "Surat Keterangan Meninggal Dunia"
-    ]);
-})->middleware('auth:akun_user');
 
 Route::get('/saranmasukan', function () {
     return view('saranmasukan',[
@@ -112,6 +94,8 @@ Route::get('/saranmasukan', function () {
 })->middleware('auth:akun_user');
 
 // route admin
+// Route::resource('/dashboard/kelolaBerita', KelolaBeritaController::class)->middleware('auth:akun_user');
+
 Route::get('/dashboard', function () {
     return view('dashBoard.beranda', [
         "title" => "Beranda"
@@ -122,11 +106,7 @@ Route::get('/kelolaBerita/{new:slug}', [KelolaBeritaController::class, 'show']);
 
 Route::get('/kelolaBerita', [KelolaBeritaController::class, 'kelolaBerita'])->middleware('auth:akun_user');
 
-Route::get('/dataPenduduk', function () {
-    return view('dashBoard.dataPenduduk', [
-        "title" => "Data Penduduk"
-    ]);
-})->middleware('auth:akun_user');
+Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
 
 Route::get('/kelolaTender', function () {
     return view('dashBoard.kelolaTender', [
@@ -140,11 +120,8 @@ Route::get('/buatTender', function () {
     ]);
 })->middleware('auth:akun_user');
 
-Route::get('/tambahPenduduk', function () {
-    return view('dashBoard.tambahPenduduk', [
-        "title" => "Tambah Penduduk"
-    ]);
-})->middleware('auth:akun_user');
+Route::get('/tambahPenduduk', [adminTambahPendudukController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/tambahPenduduk', [adminTambahPendudukController::class, 'store'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', function () {
     return view('dashBoard.kelolaSurat', [

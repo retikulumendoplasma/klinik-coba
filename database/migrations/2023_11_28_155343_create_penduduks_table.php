@@ -27,7 +27,7 @@ class CreatePenduduksTable extends Migration
             $table->string('pendidikan');
             $table->string('pekerjaan');
             $table->string('status_hubungan_kk');
-            $table->enum('status_akun',['terdaftar','belum_terdaftar']);
+            $table->enum('status_akun',['terdaftar','belum_terdaftar'])->default('belum terdaftar');
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\penduduk;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PengurusanSuratController extends Controller
 {
@@ -15,11 +16,59 @@ class PengurusanSuratController extends Controller
      */
     public function suratkurangmampu()
     {
+        // Mendapatkan user yang sedang login
+        $user = Auth::user();
+
+        // Mendapatkan nomor KK dari relasi dengan model Penduduk
+        $nomorKK = $user->penduduk->nomor_kk;
+
+        // Mendapatkan data Penduduk yang memiliki nomor KK yang sesuai dengan nomor KK user yang login
+        $penduduk = Penduduk::where('nomor_kk', $nomorKK)->get();
+        
         return view('suratkurangmampu', [
             //pengisian berita
             "title" => "Surat Keterangan Tidak Mampu",
+            "penduduk" => $penduduk,
+            // "nomorKK" => $nomorKK,
+        ]);
+    }
+
+    public function suratkematian()
+    {
+        $user = Auth::user();
+        $nomorKK = $user->penduduk->nomor_kk;
+        $penduduk = Penduduk::where('nomor_kk', $nomorKK)->get();
+        return view('suratkematian', [
+            //pengisian berita
+            "title" => "Surat Keterangan Meninggal Dunia",
             //data berita sudah tersimpan dalam models berita
-            "penduduk" => penduduk::all()
+            "penduduk" => $penduduk
+        ]);
+    }
+
+    public function suratdomisili()
+    {
+        $user = Auth::user();
+        $nomorKK = $user->penduduk->nomor_kk;
+        $penduduk = Penduduk::where('nomor_kk', $nomorKK)->get();
+        return view('suratdomisili', [
+            //pengisian berita
+            "title" => "Surat Keterangan Domisili",
+            //data berita sudah tersimpan dalam models berita
+            "penduduk" => $penduduk
+        ]);
+    }
+
+    public function suratmenikah()
+    {
+        $user = Auth::user();
+        $nomorKK = $user->penduduk->nomor_kk;
+        $penduduk = Penduduk::where('nomor_kk', $nomorKK)->get();
+        return view('suratmenikah', [
+            //pengisian berita
+            "title" => "Surat Keterangan Sudah/Belum Menikah",
+            //data berita sudah tersimpan dalam models berita
+            "penduduk" => $penduduk
         ]);
     }
 

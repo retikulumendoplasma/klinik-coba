@@ -23,7 +23,7 @@ class akun_user extends Model implements Authenticatable
 
     public function penduduk()
     {
-        return $this->belongsTo(penduduk::class);
+        return $this->belongsTo(penduduk::class, 'nik','nik');
     }
 
 }

@@ -17,6 +17,6 @@ class penduduk extends Model
 
     public function akun_user()
     {
-        return $this->hasOne(akun_user::class);
+        return $this->hasOne(akun_user::class, 'nik','nik');
     }
 }
