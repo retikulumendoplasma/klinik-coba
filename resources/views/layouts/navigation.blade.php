@@ -14,8 +14,8 @@
               Tender
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Pengajuan Tender</a></li>
-              <li><a class="dropdown-item" href="#">Voting Tender</a></li>
+              <li><a class="dropdown-item" href="/tender">Pengajuan Tender</a></li>
+              <li><a class="dropdown-item" href="/tenderVote">Voting Tender</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

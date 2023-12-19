@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
 
@@ -51,6 +52,37 @@ Route::get('/rencanaanggaran', function () {
         "title" => "Rencana anggaran"
     ]);
 });
+
+Route::get('/tender', function () {
+    return view('tender',[
+        "title" => "Pengajuan Tender"
+    ]);
+});
+
+Route::get('/tenderVote', function () {
+    return view('tenderVote',[
+        "title" => "Tender Voting"
+    ]);
+});
+
+Route::get('/pengajuanTender', function () {
+    return view('pengajuanTender',[
+        "title" => "Pengajuan Proposal"
+    ]);
+});
+
+Route::get('/voting', function () {
+    return view('voting',[
+        "title" => "Voting"
+    ]);
+});
+
+Route::get('/detailvote', function () {
+    return view('detailvote',[
+        "title" => "Detail"
+    ]);
+});
+
 
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
 Route::get('/getPendudukData/{nik}', [PengurusanSuratController::class, 'getPenduduk']);
