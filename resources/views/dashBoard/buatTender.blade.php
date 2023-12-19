@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Buat Tender </h1>
             </div>
-            <form action="/register" method="post">
+            <form action="/kelolaTender" method="post">
                 <div class="form-group pb-3">
                     <label for="judultender">Judul Tender</label>
                     <input type="text" class="form-control" id="judul" required placeholder="Silahkan Masukkan Judul" >
