@@ -1,4 +1,5 @@
 @extends('layouts.main')
+
 @section('main')
 
 <div class="container pb-5">

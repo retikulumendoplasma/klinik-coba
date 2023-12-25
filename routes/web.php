@@ -9,7 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
-use App\Http\Controllers\ProfildesaController;
+
 
 
 /*
@@ -94,17 +94,17 @@ Route::get('/saranmasukan', function () {
 })->middleware('auth:akun_user');
 
 // route admin
-// Route::resource('/dashboard/kelolaBerita', KelolaBeritaController::class)->middleware('auth:akun_user');
-
 Route::get('/dashboard', function () {
     return view('dashBoard.beranda', [
         "title" => "Beranda"
     ]);
 })->middleware('auth:akun_user');
 
-Route::get('/kelolaBerita/{new:slug}', [KelolaBeritaController::class, 'show']);
+Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth:akun_user');
 
-Route::get('/kelolaBerita', [KelolaBeritaController::class, 'kelolaBerita'])->middleware('auth:akun_user');
+Route::get('/kelolaBerita/{berita:id}', [BeritaController::class, 'lihat']);
+
+Route::delete('/kelolaBerita/{id}', [BeritaController::class, 'destroy']);
 
 Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
 
