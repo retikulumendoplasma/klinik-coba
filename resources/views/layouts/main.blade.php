@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- all css card slide here -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="css/owl.carousel.min.css" rel="stylesheet" type="text/css" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/owl.carousel.min.css" rel="stylesheet" type="text/css" />
+    <link href="../style.css" rel="stylesheet" type="text/css" />
 
-    <script src="jquery-3.4.1.min.js"></script>
+    <script src="../jquery-3.4.1.min.js"></script>
   </head>
   <body>
     @include('layouts.navigation')
@@ -31,8 +31,8 @@
     
     <!-- all js card  slide here -->
     {{-- <script src="jquery-3.4.1.min.js"></script> --}}
-    <script src="bootstrap.min.js"></script>
-    <script src="owl.carousel.min.js"></script>
+    <script src="../bootstrap.min.js"></script>
+    <script src="../owl.carousel.min.js"></script>
     <script>
         
         function slider_carouselInit() {

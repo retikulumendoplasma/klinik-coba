@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\penduduk;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class adminTambahPendudukController extends Controller
@@ -18,10 +19,10 @@ class adminTambahPendudukController extends Controller
     public function store(Request $request)
     {
         // dd('Metode Store diakses');
-        $request->validate([
-            'nama' => 'required|string',
+        $validatedData = $request->validate([
             'nomor_kk' => 'required|string',
             'nik' => 'required|string',
+            'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|string',
@@ -32,10 +33,10 @@ class adminTambahPendudukController extends Controller
             'pendidikan' => 'required|string',
             'pekerjaan' => 'required|string',
             'status_hubungan_kk' => 'required|string',
-            'status_akun' => 'belum terdaftar|string'
+            'status_akun' => ['string', Rule::in(['belum_terdaftar'])],
         ]);
 
-        dd($request->all());
+        // dd($request->all());
         penduduk::create($request->all());
 
         return redirect('/dataPenduduk')->with('success', 'Tambah Penduduk Berhasil');

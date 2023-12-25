@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
-            <img src="img/Logo Nagan Raya.jpg" alt="Bootstrap" width="30" height="24">
+            <img src="../img/Logo Nagan Raya.jpg" alt="Bootstrap" width="30" height="24">
             Desa Jatirejo
         </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">

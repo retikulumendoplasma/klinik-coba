@@ -10,16 +10,16 @@
             <form action="/tambahPenduduk" method="post">
                 @csrf
                 <div class="form-group pb-3">
-                    <label for="nama">Nama</label>
-                    <input type="text" class="form-control" id="nama" name='nama' required placeholder="Silahkan Masukkan Nama" >
-                </div>
-                <div class="form-group pb-3">
                     <label for="NIK">NIK</label>
                     <input type="text" class="form-control"  id="NIK" name='nik' required placeholder="Silahkan Masukkan NIK" >
                 </div>
                 <div class="form-group pb-3">
                     <label for="No_kk">No KK</label>
                     <input type="text" class="form-control"  id="KK" name='nomor_kk' required placeholder="Silahkan Masukkan No KK" >
+                </div>
+                <div class="form-group pb-3">
+                    <label for="nama">Nama</label>
+                    <input type="text" class="form-control" id="nama" name='nama' required placeholder="Silahkan Masukkan Nama" >
                 </div>
                 <div class="form-group pb-3">
                     <label for="Tempat">Tempat Lahir</label>
@@ -49,18 +49,25 @@
                     <input type="tel" class="form-control"  id="phoneInput" name='nomor_hp' maxlength="12" pattern="[0-9]+" placeholder="Silahkan Masukkan No HP" >
                 </div>
                 <div class="form-group pb-3">
-                    <label for="Status">Status Perkawinan</label>
-                    <input type="text" class="form-control"  id="status" name='status_perkawinan' required placeholder="Silahkan Masukkan Status" >
+                    <label for="exampleFormControlInput1" class="form-label">Status Perkawinan</label>
+                    <select class="form-select" name='status_perkawinan' aria-label="Default select example">
+                        <option value="1">Menikah</option>
+                        <option value="2">Belum Menikah</option>
+                    </select>
                 </div>
                 <div class="form-group pb-3">
                     <label for="Pendidikan">Pendidikan</label>
                     <input type="text" class="form-control"  id="pendidikan" name='pendidikan' required placeholder="Pendidikan" >
                 </div>
                 <div class="form-group pb-3">
+                    <label for="Pekerjaan">Pekerjaan</label>
+                    <input type="text" class="form-control"  id="pekerjaan" name='pekerjaan' required placeholder="Pekerjaan" >
+                </div>
+                <div class="form-group pb-3">
                     <label for="Status_KK">Status Hubungan Pada KK</label>
                     <input type="text" class="form-control"  id="status_KK" name='status_hubungan_kk' required placeholder="Status Hubungan Pada KK" >
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3" name="tambah_penduduk">Tambah Penduduk</button>
+                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Tambah Penduduk</button>
             </form>
         </div>
     </div>

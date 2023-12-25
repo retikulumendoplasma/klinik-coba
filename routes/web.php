@@ -9,7 +9,6 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
-use App\Http\Controllers\ProfildesaController;
 
 
 /*

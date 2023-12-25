@@ -19,15 +19,15 @@ class CreatePenduduksTable extends Migration
             $table->string('nama');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
-            $table->enum('jenis_kelamin',['laki-laki','perempuan']);
+            $table->enum('jenis_kelamin',['Laki-laki','Perempuan']);
             $table->string('agama');
             $table->string('alamat');
             $table->string('nomor_hp');
-            $table->enum('status_perkawinan',['menikah','belum_menikah']);
+            $table->enum('status_perkawinan',['Menikah','Belum Menikah']);
             $table->string('pendidikan');
             $table->string('pekerjaan');
             $table->string('status_hubungan_kk');
-            $table->enum('status_akun',['terdaftar','belum_terdaftar'])->default('belum terdaftar');
+            $table->enum('status_akun',['Belum terdaftar','Terdaftar']);
         });
     }
 
