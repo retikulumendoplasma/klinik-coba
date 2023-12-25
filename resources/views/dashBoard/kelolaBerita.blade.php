@@ -21,15 +21,21 @@
       </tr>
     </thead>
     <tbody>
-        @foreach ($news as $new)
+        @foreach ($kelolaberita as $berita)
         <tr>
             <td>{{ $loop->iteration }}</td>
-            <td>{{ $new->judul_berita }}</td>
-            <td>{{ $new->author }}</td>
+            <td>{{ $berita->judul_berita }}</td>
+            <td>{{ $berita->author }}</td>
             <td>
-                <a href="/berita{{ $new->slug }}" class="badge bg-info"><span data-feather="eye"></span></a>
+                <a href="/kelolaBerita/{{ $berita->id }}" class="badge bg-info"><span data-feather="eye"></span></a>
                 <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
-                <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a>
+
+                <!-- Form untuk delete -->
+                <form action="/kelolaBerita/{{ $berita->id }}" method="post" class="d-inline" >
+                    @csrf
+                    @method('DELETE')
+                    <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+                </form>
             </td>
           </tr>
         @endforeach
