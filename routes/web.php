@@ -102,10 +102,10 @@ Route::get('/dashboard', function () {
 Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth:akun_user');
 
 Route::get('/kelolaBerita/{berita:id}', [BeritaController::class, 'lihat']);
-
 Route::delete('/kelolaBerita/{id}', [BeritaController::class, 'destroy']);
 
 Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
+Route::delete('/dataPenduduk/{nik}', [adminDataPendudukController::class, 'destroy']);
 
 Route::get('/kelolaTender', function () {
     return view('dashBoard.kelolaTender', [

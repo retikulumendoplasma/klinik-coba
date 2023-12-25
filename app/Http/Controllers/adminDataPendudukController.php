@@ -16,4 +16,18 @@ class adminDataPendudukController extends Controller
             "datapenduduk" => penduduk::all()
         ]);
     }
+
+    public function destroy($nik)
+    {
+        // Cari berita berdasarkan nik$nik
+        $penduduk = penduduk::find($nik);
+
+        // Hapus penduduk jika ditemukan
+        if ($penduduk) {
+            $penduduk->delete();
+            return redirect('/dataPenduduk')->with('success', 'Berita berhasil dihapus.');
+        } else {
+            return redirect('/dataPenduduk')->with('error', 'Berita tidak ditemukan.');
+    }
+    }
 }

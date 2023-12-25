@@ -27,7 +27,11 @@
             <td class="text-center">
                 <a href="" class="badge bg-info"><span data-feather="eye"></span></a>
                 <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
-                <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a>
+                <form action="/dataPenduduk/{{ $penduduk->nik }}" method="post" class="d-inline" >
+                  @csrf
+                  @method('DELETE')
+                  <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+              </form>
             </td>
           </tr>
       @endforeach

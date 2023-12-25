@@ -11,7 +11,7 @@
                 @csrf
                 <div class="form-group pb-3">
                     <label for="NIK">NIK</label>
-                    <input type="text" class="form-control"  id="NIK" name='nik' required placeholder="Silahkan Masukkan NIK" >
+                    <input type="number" class="form-control"  id="NIK" name='nik' required placeholder="Silahkan Masukkan NIK" >
                 </div>
                 <div class="form-group pb-3">
                     <label for="No_kk">No KK</label>
