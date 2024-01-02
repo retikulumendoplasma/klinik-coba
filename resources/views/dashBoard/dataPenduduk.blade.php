@@ -26,7 +26,7 @@
             <td>{{ $penduduk->nama }}</td>
             <td class="text-center">
                 <a href="" class="badge bg-info"><span data-feather="eye"></span></a>
-                <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
+                <a href="/dataPenduduk/{{ $penduduk->nik }}/editPenduduk" class="badge bg-warning"><span data-feather="edit"></span></a>
                 <form action="/dataPenduduk/{{ $penduduk->nik }}" method="post" class="d-inline" >
                   @csrf
                   @method('DELETE')

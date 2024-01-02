@@ -9,7 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
-
+use App\Http\Controllers\TenderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,23 +49,11 @@ Route::get('/rencanaanggaran', function () {
     ]);
 });
 
-Route::get('/tender', function () {
-    return view('tender',[
-        "title" => "Pengajuan Tender"
-    ]);
-});
+Route::get('/tender', [TenderController::class, 'tampil']);
+Route::get('/tenderVote', [TenderController::class, 'tampilVote']);
+Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
+Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal');
 
-Route::get('/tenderVote', function () {
-    return view('tenderVote',[
-        "title" => "Tender Voting"
-    ]);
-});
-
-Route::get('/pengajuanTender', function () {
-    return view('pengajuanTender',[
-        "title" => "Pengajuan Proposal"
-    ]);
-});
 
 Route::get('/voting', function () {
     return view('voting',[
@@ -103,24 +91,24 @@ Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth
 
 Route::get('/kelolaBerita/{berita:id}', [BeritaController::class, 'lihat']);
 Route::delete('/kelolaBerita/{id}', [BeritaController::class, 'destroy']);
+Route::get('/tambahB', [BeritaController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/tambahB', [BeritaController::class, 'store'])->middleware('auth:akun_user');
+Route::get('/kelolaBerita/{berita:id}/editBerita', [BeritaController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/tambahB/{berita:id}', [BeritaController::class, 'update'])->middleware('auth:akun_user');
 
 Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
 Route::delete('/dataPenduduk/{nik}', [adminDataPendudukController::class, 'destroy']);
+Route::get('/tambahPenduduk', [adminDataPendudukController::class,'create'])->middleware('auth:akun_user');
+Route::post('/tambahPenduduk', [adminDataPendudukController::class,'store'])->middleware('auth:akun_user');
+Route::get('/dataPenduduk/{penduduk:nik}/editPenduduk', [adminDataPendudukController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/tambahPenduduk/{penduduk:nik}', [adminDataPendudukController::class, 'update'])->middleware('auth:akun_user');
 
-Route::get('/kelolaTender', function () {
-    return view('dashBoard.kelolaTender', [
-        "title" => "Kelola Tender"
-    ]);
-})->middleware('auth:akun_user');
-
-Route::get('/buatTender', function () {
-    return view('dashBoard.buatTender', [
-        "title" => "Buat Tender"
-    ]);
-})->middleware('auth:akun_user');
-
-Route::get('/tambahPenduduk', [adminTambahPendudukController::class, 'create'])->middleware('auth:akun_user');
-Route::post('/tambahPenduduk', [adminTambahPendudukController::class, 'store'])->middleware('auth:akun_user');
+Route::get('/kelolaTender', [TenderController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/buatTender', [TenderController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/buatTender', [TenderController::class, 'store'])->middleware('auth:akun_user');
+Route::delete('/kelolaTender/{tender}', [TenderController::class, 'destroy']);
+Route::get('/kelolaTender/{tender:id}/editTender', [TenderController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/buatTender/{tender:id}', [TenderController::class, 'update'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', function () {
     return view('dashBoard.kelolaSurat', [
@@ -140,8 +128,3 @@ Route::get('/dataKeuangan', function () {
     ]);
 })->middleware('auth:akun_user');
 
-Route::get('/tambahB', function () {
-    return view('dashBoard.tambahB', [
-        "title" => "Tambah Berita"
-    ]);
-})->middleware('auth:akun_user');

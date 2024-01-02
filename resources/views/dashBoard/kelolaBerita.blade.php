@@ -28,7 +28,7 @@
             <td>{{ $berita->author }}</td>
             <td>
                 <a href="/kelolaBerita/{{ $berita->id }}" class="badge bg-info"><span data-feather="eye"></span></a>
-                <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
+                <a href="/kelolaBerita/{{ $berita->id }}/editBerita" class="badge bg-warning"><span data-feather="edit"></span></a>
 
                 <!-- Form untuk delete -->
                 <form action="/kelolaBerita/{{ $berita->id }}" method="post" class="d-inline" >

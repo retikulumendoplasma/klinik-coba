@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\berita;
+use Illuminate\Validation\Rule;
 
 class BeritaController extends Controller
 {
@@ -51,7 +53,7 @@ class BeritaController extends Controller
     //controller untuk mengontrol tampilan viewBerita
     public function lihat(berita $berita)
     {
-        return view('dashBoard.viewBerita', [
+        return view('/dashBoard.viewBerita', [
             "title" => "Lihat Berita",
             //data berita sudah tersimpan dalam models berita
             "viewberita" => $berita
@@ -72,5 +74,60 @@ class BeritaController extends Controller
     }
     }
 
+    public function create()
+    {
+        return view('dashBoard.tambahB', [
+            //pengisian berita
+            "title" => "Tambah berita"
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        // dd('Metode Store diakses');
+        $validatedData = $request->validate([
+            'judul_berita' => 'required|max:100',
+            'slug' => 'required|string',
+            'author' => 'required|string',
+            'isi_berita' => 'required',
+            'excerpt' => 'required|max:150',
+            'img' => 'required|string',
+        ]);
+
+        $validatedData['id'] = auth()->user()->id;
+        $request->merge(['tgl_terbit' => $request->get('tgl_terbit', now())]);
+        berita::create($request->all());
+
+
+        return redirect('/kelolaBerita')->with('success', 'Tambah Berita Berhasil');
+    }
+
+    public function edit(berita $berita)
+    {
+        return view('dashBoard.editBerita', [
+            "title" => "Edit Berita",
+            "berita" => $berita,
+            //data berita sudah tersimpan dalam models berita
+            "kelolaberita" => berita::all()
+        ]);
+    }
+
+    public function update(Request $request, berita $berita)
+    {
+        // dd('Metode Store diakses');
+        $validatedData = $request->validate([
+            'judul_berita' => 'required|max:100',
+            'slug' => 'required|string',
+            'author' => 'required|string',
+            'isi_berita' => 'required',
+            'excerpt' => 'required|max:150',
+            'img' => 'required|string',
+        ]);
+
+        $request->merge(['tgl_terbit' => $request->get('tgl_terbit', now())]);
+        berita::where('id', $berita->id)->update($validatedData);
+
+        return redirect('/kelolaBerita')->with('success', 'Edit Berita Berhasil');
+    }
 
 }
