@@ -16,7 +16,7 @@ class LaporanKeuangan extends Migration
         Schema::create('laporan_keuangan', function (Blueprint $table) {
             $table->id();
             $table->enum('jenis_laporan',['Rencana Anggaran','Laporan Keuangan']);
-            $table->year('tahun_laporan');
+            $table->string('tahun_laporan');
             $table->string('file_laporan');
 
         });

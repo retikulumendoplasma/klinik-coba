@@ -2,24 +2,40 @@
 
 @section('main')
 
-<div class="container">
+<div class="container mb-5">
     <div class="row">
         <div class="col-2">
-            <h5>Histori rencana anggaran</h5>
+            <h5>Histori Rencana Anggaran Desa</h5>
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action">2020</a>
-                <a href="#" class="list-group-item list-group-item-action">2021</a>
-                <a href="#" class="list-group-item list-group-item-action">2022</a>
-                <a href="#" class="list-group-item list-group-item-action active">2023</a>
+                @foreach ($dataLaporan as $laporan)
+                    @if ($laporan->jenis_laporan == 'Rencana Anggaran')
+                        <a href="#" class="list-group-item list-group-item-action"
+                        data-pdf-url="{{ url($laporan->file_laporan) }}">
+                        {{ $laporan->tahun_laporan }}
+                        </a>
+                    @endif
+                @endforeach
             </div>
         </div>
-        <div class="col-9">
-            <div class="py-12">
-                <img src="img/Gambar Struktur Organisasi.png" class="img-fluid" alt="...">
+        <div class="col">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">PDF Viewer</div>
+                            <div class="card-body">
+                                <iframe id="pdf-viewer" src="" width="100%" height="600px"></iframe>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-success" href="#" download>Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="button" class="m-2 btn btn-dark">Download PDF</button>
         </div>
     </div>
 </div>
+
     
 @endsection

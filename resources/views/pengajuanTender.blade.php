@@ -12,11 +12,11 @@
                     <form method="post" action="/pengajuanTender" enctype="multipart/form-data">
                         @csrf
 
+                        <input type="hidden" name="id_tender" value="{{ $tender->id }}">
                         <div class="form-group">
                             <label for="nama">Nama</label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
-
                         <div class="form-group">
                             <label for="foto_ktp">Foto KTP</label>
                             <input type="file" class="form-control" id="foto_ktp" name="foto_ktp" accept="image/*" required>

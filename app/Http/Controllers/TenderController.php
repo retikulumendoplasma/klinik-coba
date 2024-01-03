@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tender;
+use App\Models\voting_tender;
 use App\Models\pengaju_proposal_tender;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdatetenderRequest;
@@ -17,7 +18,7 @@ class TenderController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function tampil()
+    public function tampil()
     {
         return view('tender', [
             //pengisian berita
@@ -29,7 +30,9 @@ class TenderController extends Controller
 
     public function tampilVote()
     {
+        $totalPengaju = pengaju_proposal_tender::where('status_pengajuan', 'diterima')->count();
         return view('tenderVote', [
+            'totalPengaju' => $totalPengaju,
             //pengisian berita
             "title" => "Tender Vote",
             //data berita sudah tersimpan dalam models berita
@@ -181,22 +184,72 @@ class TenderController extends Controller
         $userId = Auth::id();
     
         // Simpan data pengajuan tender ke dalam database
-        $request->merge(['id_tender' => $request->get('id_tender',1)]);
         $request->merge(['id_user' => $request->get('id_user',$userId)]);
         pengaju_proposal_tender::create($request->all());
 
-        // $pengajuanTender = pengaju_proposal_tender::create([
-        //     'id_tender' => $request->tender_id,
-        //     'id_user' => $userId,
-        //     'nama' => $request->nama,
-        //     'foto_ktp' => $fotoKtpPath,
-        //     'file_proposal' => $fileProposalPath,
-        //     'link_vidio' => $request->link_vidio,
-        //     'foto_pengaju' => $fotoPengajuPath,
-        // ]);
     
         // Redirect dengan pesan sukses
         return redirect('/tender')->with('success', 'Pengajuan Tender berhasil disimpan.');
     }
 
+    public function proposal(pengaju_proposal_tender $pengaju, tender $tender)
+    {
+        $pengajuProposal = pengaju_proposal_tender::where('id_tender', $tender->id)->get();
+
+        return view('dashBoard.kelolaPengajuProposal', [
+            "title" => "Proposal Tender",
+            'pengaju' => $pengaju,
+            'pengajuProposal' => $pengajuProposal
+        ]);
+    }
+
+    public function approveProposal($id)
+    {
+        // Temukan proposal berdasarkan ID
+        $proposal = pengaju_proposal_tender::find($id);
+
+        // Ubah status_pengajuan menjadi 'diterima'
+        $proposal->status_pengajuan = 'diterima';
+        $proposal->save();
+
+        // Redirect atau kembali ke halaman yang diinginkan
+        return redirect()->back()->with('success', 'Proposal berhasil disetujui');
+    }
+
+    //menampilkan jumlah pengaju pada tampilan user
+    
+
+    public function voting()
+    {
+        $pengajuDiterima = pengaju_proposal_tender::where('status_pengajuan', 'diterima')->get();
+        return view('voting', ["title" => "Proposal Tender", 'pengajuDiterima' => $pengajuDiterima]);
+    }
+
+    public function vote($id)
+    {
+        $pengaju = pengaju_proposal_tender::findOrFail($id);
+
+        // Cek apakah user sudah melakukan vote sebelumnya
+        $userHasVoted = voting_tender::where([
+            'id_user' => Auth::id(),
+            'id_pengaju_proposal' => $pengaju->id,
+        ])->exists();
+
+        if (!$userHasVoted) {
+            // Jika belum vote, simpan vote
+            voting_tender::create([
+                'id_user' => Auth::id(),
+                'id_pengaju_proposal' => $pengaju->id,
+                'id_tender' => $pengaju->id_tender, // Sesuaikan dengan kolom yang menyimpan ID tender pada tabel pengaju_proposal_tender
+                'tanggal_vote' => now(),
+            ]);
+
+            // Update jumlah_vote pada tabel pengaju_proposal_tender
+            $pengaju->increment('jumlah_vote');
+
+            return redirect()->back()->with('success', 'Vote berhasil disimpan.');
+        } else {
+            return redirect()->back()->with('error', 'Anda sudah melakukan vote untuk pengaju ini sebelumnya.');
+        }
+    }
 }

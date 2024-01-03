@@ -22,7 +22,7 @@ class PengajuProposalTender extends Migration
             $table->binary('link_vidio');
             $table->binary('foto_pengaju');
             $table->binary('foto_ktp');
-            $table->enum('status_pengajuan',['pending','ditolak','Perempuan']);
+            $table->enum('status_pengajuan',['pending','ditolak','diterima']);
         });
     }
 

@@ -63,36 +63,100 @@
 
     </script>
 
-    <!-- all js saran masukan here -->
-    {{-- <script>
-      // Dummy chat data
-      var chatData = [
-          { type: 'user', message: 'Hello, how can I help you?' },
-          { type: 'admin', message: 'Hi there! How can I assist you today?' }
-      ];
-  
-      // Function to display chat messages
-      function displayChatMessages() {
-          var chatBox = document.getElementById('chat-box');
-          chatBox.innerHTML = '';
-  
-          chatData.forEach(function (chat) {
-              var messageClass = chat.type === 'admin' ? 'text-success' : 'text-primary';
-              chatBox.innerHTML += '<p class="' + messageClass + '">' + chat.message + '</p>';
-          });
-      }
-  
-      // Function to send a user message
-      function sendMessage() {
-          var userInput = document.getElementById('message-input').value;
-          chatData.push({ type: 'user', message: userInput });
-          displayChatMessages();
-          // Additional logic to send user message to the backend (AJAX, WebSockets, etc.) can be added here.
-      }
-  
-      // Display initial chat messages
-      displayChatMessages();
-    </script> --}}
+    {{-- script untuk bagian saran dan masukan --}}
+    <script>
+        // Dummy chat data
+        var chatData = [
+            { type: 'user', message: 'Assalamualakum Wr Wb' },
+            { type: 'admin', message: 'Ayo Sampaikan Saran dan Masukan yang membangun Desa KITA..., Mohon Gunakan Bahasa Yang Sopan' }
+        ];
+
+        // Function to display chat messages
+        function displayChatMessages() {
+            var chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = '';
+
+            chatData.forEach(function (chat) {
+                var messageClass = chat.type === 'admin' ? 'text-success' : 'text-primary';
+                chatBox.innerHTML += '<p class="' + messageClass + '">' + chat.message + '</p>';
+            });
+        }
+
+        // Function to send a user message
+        function sendMessage() {
+            var userInput = document.getElementById('message-input').value;
+            chatData.push({ type: 'user', message: userInput });
+            displayChatMessages();
+            // Clear the input field after sending the message
+            document.getElementById('message-input').value = '';
+        }
+
+        // Display initial chat messages
+        displayChatMessages();
+    </script>
+
+    {{-- script untuk bagian penampil PDF Keuangan desa --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ambil semua elemen list-group-item
+            var listItems = document.querySelectorAll('.list-group-item');
+        
+            // Simpan tahun-tahun dalam array
+            var years = [];
     
+            listItems.forEach(function(item) {
+                var currentYear = parseInt(item.textContent.trim());
+                years.push(currentYear);
+            });
+    
+            // Urutkan tahun-tahun dari terendah ke tertinggi
+            years.sort(function(a, b) {
+                return a - b;
+            });
+    
+            // Tambahkan kelas "active" ke elemen dengan tahun tertinggi
+            var highestYear = years[years.length - 1];
+            var highestYearElement = Array.from(listItems).find(function(item) {
+                return parseInt(item.textContent.trim()) === highestYear;
+            });
+    
+            if (highestYearElement) {
+                highestYearElement.classList.add('active');
+        
+                // Ambil data PDF URL dari atribut data-pdf-url
+                var pdfUrl = highestYearElement.dataset.pdfUrl;
+        
+                // Dapatkan elemen iframe
+                var pdfViewer = document.getElementById('pdf-viewer');
+        
+                // Ganti atribut src dengan URL PDF
+                pdfViewer.src = pdfUrl;
+            }
+        
+            // Tambahkan event listener untuk setiap item
+            listItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    // Hapus kelas "active" dari semua elemen
+                    listItems.forEach(function(item) {
+                        item.classList.remove('active');
+                    });
+        
+                    // Tambahkan kelas "active" ke elemen yang diklik
+                    this.classList.add('active');
+        
+                    // Ambil data PDF URL dari atribut data-pdf-url
+                    var pdfUrl = this.dataset.pdfUrl;
+        
+                    // Dapatkan elemen iframe
+                    var pdfViewer = document.getElementById('pdf-viewer');
+        
+                    // Ganti atribut src dengan URL PDF
+                    pdfViewer.src = pdfUrl;
+                });
+            });
+        });
+    </script>
+    
+        
   </body>
 </html>

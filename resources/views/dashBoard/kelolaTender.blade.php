@@ -38,6 +38,7 @@
                   @method('DELETE')
                   <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
               </form>
+              <a href="/kelolaPengajuProposal/{{ $tender->id }}" class="badge bg-success"><span data-feather="folder-minus"></span></a>
           </td>
       </tr>
       @endforeach

@@ -10,6 +10,9 @@ use App\Http\Controllers\ProfildesaController;
 use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
 use App\Http\Controllers\TenderController;
+use App\Http\Controllers\KeuanganDesaController;
+use App\Http\Controllers\UploadProposalController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,29 +40,13 @@ Route::get('/berita/{id}', [BeritaController::class, 'tampil']);
 
 Route::get('/profildesa', [ProfildesaController::class, 'index']);
 
-Route::get('/laporankeuangan', function () {
-    return view('laporankeuangan',[
-        "title" => "Laporan keuangan"
-    ]);
-});
-
-Route::get('/rencanaanggaran', function () {
-    return view('rencanaanggaran',[
-        "title" => "Rencana anggaran"
-    ]);
-});
+Route::get('/rencanaanggaran', [KeuanganDesaController::class, 'rencana'])->middleware('auth:akun_user');
+Route::get('/laporankeuangan', [KeuanganDesaController::class, 'laporan'])->middleware('auth:akun_user');
 
 Route::get('/tender', [TenderController::class, 'tampil']);
 Route::get('/tenderVote', [TenderController::class, 'tampilVote']);
 Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
 Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal');
-
-
-Route::get('/voting', function () {
-    return view('voting',[
-        "title" => "Voting"
-    ]);
-});
 
 Route::get('/detailvote', function () {
     return view('detailvote',[
@@ -110,6 +97,10 @@ Route::delete('/kelolaTender/{tender}', [TenderController::class, 'destroy']);
 Route::get('/kelolaTender/{tender:id}/editTender', [TenderController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/buatTender/{tender:id}', [TenderController::class, 'update'])->middleware('auth:akun_user');
 
+Route::get('/kelolaPengajuProposal/{tender}', [TenderController::class, 'proposal'])->name('kelolaPengajuProposal');
+Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approveProposal'])->middleware('auth:akun_user');
+Route::get('/voting', [TenderController::class, 'voting'])->middleware('auth:akun_user');
+
 Route::get('/kelolaSurat', function () {
     return view('dashBoard.kelolaSurat', [
         "title" => "Kelola Surat"
@@ -122,9 +113,6 @@ Route::get('/saranMasukanAdmin', function () {
     ]);
 })->middleware('auth:akun_user');
 
-Route::get('/dataKeuangan', function () {
-    return view('dashBoard.dataKeuangan', [
-        "title" => "Data Keuangan"
-    ]);
-})->middleware('auth:akun_user');
-
+Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
