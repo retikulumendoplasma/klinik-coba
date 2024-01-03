@@ -18,7 +18,6 @@ class adminTambahPendudukController extends Controller
 
     public function store(Request $request)
     {
-        // dd('Metode Store diakses');
         $validatedData = $request->validate([
             'nomor_kk' => 'required|string',
             'nik' => 'required|string',
@@ -33,10 +32,9 @@ class adminTambahPendudukController extends Controller
             'pendidikan' => 'required|string',
             'pekerjaan' => 'required|string',
             'status_hubungan_kk' => 'required|string',
-            'status_akun' => ['string', Rule::in(['belum_terdaftar'])],
         ]);
 
-        // dd($request->all());
+        dd($request->all());
         penduduk::create($request->all());
 
         return redirect('/dataPenduduk')->with('success', 'Tambah Penduduk Berhasil');

@@ -81,6 +81,8 @@ Route::get('/detailvote', function () {
 
 
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
+Route::post('/ajukansurat', [PengurusanSuratController::class, 'store'])->middleware('auth:akun_user');
+
 Route::get('/suratkematian',[PengurusanSuratController::class, 'suratkematian'])->middleware('auth:akun_user');
 Route::get('/suratdomisili',[PengurusanSuratController::class, 'suratdomisili'])->middleware('auth:akun_user');
 Route::get('/suratmenikah',[PengurusanSuratController::class, 'suratmenikah'])->middleware('auth:akun_user');
@@ -140,8 +142,5 @@ Route::get('/dataKeuangan', function () {
     ]);
 })->middleware('auth:akun_user');
 
-Route::get('/tambahB', function () {
-    return view('dashBoard.tambahB', [
-        "title" => "Tambah Berita"
-    ]);
-})->middleware('auth:akun_user');
+Route::get('/tambahB', [BeritaController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/tambahB', [BeritaController::class, 'store'])->middleware('auth:akun_user');
