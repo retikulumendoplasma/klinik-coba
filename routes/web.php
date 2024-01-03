@@ -99,7 +99,7 @@ Route::put('/buatTender/{tender:id}', [TenderController::class, 'update'])->midd
 
 Route::get('/kelolaPengajuProposal/{tender}', [TenderController::class, 'proposal'])->name('kelolaPengajuProposal');
 Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approveProposal'])->middleware('auth:akun_user');
-Route::get('/voting', [TenderController::class, 'voting'])->middleware('auth:akun_user');
+Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', function () {
     return view('dashBoard.kelolaSurat', [

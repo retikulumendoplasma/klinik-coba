@@ -14,9 +14,8 @@
                     <p class="card-text">Waktu mulai: {{ $Tender->jadwal_tender_dimulai }}</p>
                     <p class="card-text">Waktu selesai: {{ $Tender->jadwal_tender_berakhir }}</p>
                     <p class="card-text">Anggaran tersedia: {{ $Tender->anggaran_dana }}</p>
-                    <p class="card-text">Total Pengaju: {{ $totalPengaju }}</p>
                 </div>
-                <a href="/voting" class="btn btn-success">Lihat Pengajuan</a>
+                <a href="/voting/{{ $Tender->id }}" class="btn btn-success">Lihat Pengajuan</a>
             </div>
         </div>
         @endforeach
