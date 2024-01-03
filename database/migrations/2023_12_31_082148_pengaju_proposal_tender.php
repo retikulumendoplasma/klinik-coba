@@ -17,12 +17,12 @@ class PengajuProposalTender extends Migration
             $table->id();
             $table->unsignedBigInteger('id_tender');
             $table->unsignedBigInteger('id_user');
-            $table->string('nomor_hp');
             $table->string('nama');
             $table->binary('file_proposal');
+            $table->binary('link_vidio');
             $table->binary('foto_pengaju');
-            $table->date('tanggal_lahir');
-            $table->enum('status_pengajuan',['pending','ditolak','Perempuan']);
+            $table->binary('foto_ktp');
+            $table->enum('status_pengajuan',['pending','ditolak','diterima']);
         });
     }
 

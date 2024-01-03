@@ -21,7 +21,7 @@ class Berita extends Migration
             $table->string('slug');
             $table->string('img');
             $table->text('isi_berita');
-            $table->timestamp('tgl_terbit');
+            $table->timestamps('tgl_terbit');
             $table->string('author');
         });
     }

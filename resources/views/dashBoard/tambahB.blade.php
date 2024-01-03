@@ -7,7 +7,11 @@
         @csrf
         <div class="mb-3">
             <label for="judul_berita" class="form-label">Judul Berita:</label>
-            <input type="text" class="form-control" id="judul_berita" name="judul_berita" required>
+            <input type="text" class="form-control" id="judul_berita" name="judul_berita" maxlength="100" required>
+        </div>
+        <div class="mb-3">
+            <label for="slug" class="form-label">Slug:</label>
+            <input type="text" class="form-control" id="slug" name="slug" required>
         </div>
         <div class="mb-3">
             <label for="slug" class="form-label">Slug:</label>
@@ -19,12 +23,8 @@
         </div>
         <div class="mb-3">
             <label for="isi_berita" class="form-label">Isi Berita</label>
-            <input type="hidden" id="isi_berita" name="isi_berita" value="">
-            <trix-editor input="isi_berita"></trix-editor>
-        </div>
-        <div class="mb-3">
-            <label for="excerpt" class="form-label">excerpt:</label>
-            <input type="text" class="form-control" id="excerpt" name="excerpt" required>
+            <input id="isi_berita" type="hidden" name="content">
+            <trix-editor input="x"></trix-editor>
         </div>
         <div class="mb-3">
             <label for="img" class="form-label">URL Gambar:</label>

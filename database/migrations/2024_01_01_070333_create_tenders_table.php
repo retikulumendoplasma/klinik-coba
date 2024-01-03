@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class LaporanKeuangan extends Migration
+class CreateTendersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class LaporanKeuangan extends Migration
      */
     public function up()
     {
-        Schema::create('laporan_keuangan', function (Blueprint $table) {
+        Schema::create('tenders', function (Blueprint $table) {
             $table->id();
-            $table->enum('jenis_laporan',['Rencana Anggaran','Laporan Keuangan']);
-            $table->string('tahun_laporan');
-            $table->string('file_laporan');
-
+            $table->timestamps();
         });
     }
 
@@ -29,6 +26,6 @@ class LaporanKeuangan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laporan_keuangan');
+        Schema::dropIfExists('tenders');
     }
 }

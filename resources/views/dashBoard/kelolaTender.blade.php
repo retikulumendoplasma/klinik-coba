@@ -16,21 +16,32 @@
       <tr>
         <th scope="col">No</th>
         <th scope="col">Judul</th>
-        <th scope="col">Waktu</th>
+        <th scope="col">Waktu mulai</th>
+        <th scope="col">Waktu berakhir</th>
         <th class="text-center" scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Judul</td>
-            <td>Waktu</td>
-            <td class="text-center">
-                <a href="" class="badge bg-info"><span data-feather="eye"></span></a>
-                <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
-                <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a>
-            </td>
-          </tr>
+      @foreach ($dataTender as $tender)
+      <tr>
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $tender->judul_tender }}</td>
+          <td>{{ $tender->jadwal_tender_dimulai }}</td>
+          <td>{{ $tender->jadwal_tender_berakhir }}</td>
+          <td>
+              <a href="/kelolaTender/{{ $tender->id }}" class="badge bg-info"><span data-feather="eye"></span></a>
+              <a href="/kelolaTender/{{ $tender->id }}/editTender" class="badge bg-warning"><span data-feather="edit"></span></a>
+
+              <!-- Form untuk delete -->
+              <form action="/kelolaTender/{{ $tender->id }}" method="post" class="d-inline" >
+                  @csrf
+                  @method('DELETE')
+                  <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+              </form>
+              <a href="/kelolaPengajuProposal/{{ $tender->id }}" class="badge bg-success"><span data-feather="folder-minus"></span></a>
+          </td>
+      </tr>
+      @endforeach
     </tbody>
   </table>
 </div>
