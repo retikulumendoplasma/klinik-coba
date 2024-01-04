@@ -16,18 +16,14 @@
                     <img src="{{$pengaju->foto_pengaju}}" class="card-img-top" alt="Pengaju Image">
                     <div class="card-body">
                         <h5 class="card-title">{{ $pengaju->nama }}</h5>
-                        <a href="/detailvote" class="btn btn-info">Lihat Detail</a>
+                        <a href="/detailvote" class="btn btn-dark">Lihat Detail</a>
 
                         <form action="/voting/{{ $pengaju->id }}" method="POST">
                           @csrf
                           <button type="submit" class="btn btn-success text-white btn-block mb-3">Vote</button>
-                      </form>
+                        </form>
                     </div>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="voteModal_{{ $pengaju->id }}" tabindex="-1" aria-labelledby="voteModalLabel" aria-hidden="true">
-                      <!-- Isi modal -->
-                    </div>
                 </div>
               </div>
             @endif
