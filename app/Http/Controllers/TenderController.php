@@ -214,8 +214,6 @@ class TenderController extends Controller
     }
 
     //menampilkan jumlah pengaju pada tampilan user
-    
-
     public function voting(pengaju_proposal_tender $pengaju, tender $tender)
     {
         $pengajuProposal = pengaju_proposal_tender::where('id_tender', $tender->id)->get();
@@ -226,31 +224,18 @@ class TenderController extends Controller
         ]);
     }
 
+
     public function vote($id)
     {
-        $pengaju = pengaju_proposal_tender::findOrFail($id);
+        $pengaju = voting_tender::find($id);
 
-        // Cek apakah user sudah melakukan vote sebelumnya
-        $userHasVoted = voting_tender::where([
-            'id_user' => Auth::id(),
-            'id_pengaju_proposal' => $pengaju->id,
-        ])->exists();
+        // ... logika validasi lainnya ...
 
-        if (!$userHasVoted) {
-            // Jika belum vote, simpan vote
-            voting_tender::create([
-                'id_user' => Auth::id(),
-                'id_pengaju_proposal' => $pengaju->id,
-                'id_tender' => $pengaju->id_tender, // Sesuaikan dengan kolom yang menyimpan ID tender pada tabel pengaju_proposal_tender
-                'tanggal_vote' => now(),
-            ]);
+        // Simpan data voting di tabel voting_tender
+        $vote = new voting_tender();
+        $pengaju->voting_tender()->save($vote);
 
-            // Update jumlah_vote pada tabel pengaju_proposal_tender
-            $pengaju->increment('jumlah_vote');
-
-            return redirect()->back()->with('success', 'Vote berhasil disimpan.');
-        } else {
-            return redirect()->back()->with('error', 'Anda sudah melakukan vote untuk pengaju ini sebelumnya.');
-        }
+        // Redirect atau berikan respons yang sesuai
+        return redirect()->back()->with('success', 'Vote berhasil!');
     }
 }

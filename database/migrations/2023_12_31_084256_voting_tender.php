@@ -15,9 +15,8 @@ class VotingTender extends Migration
     {
         Schema::create('voting_tender', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_tender');
-            $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_pengaju_proposal');
+            $table->foreignId('pengaju_id')->constrained('pengaju_proposal_tender'); // foreign key ke tabel pengaju_proposals
+            $table->int('jumlahvote');
             $table->date('tanggal_vote');
         });
     }
