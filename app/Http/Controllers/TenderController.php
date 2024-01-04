@@ -30,12 +30,9 @@ class TenderController extends Controller
 
     public function tampilVote()
     {
-        $totalPengaju = pengaju_proposal_tender::where('status_pengajuan', 'diterima')->count();
         return view('tenderVote', [
-            'totalPengaju' => $totalPengaju,
-            //pengisian berita
             "title" => "Tender Vote",
-            //data berita sudah tersimpan dalam models berita
+            // 'pengajuProposal' => $pengajuProposal,
             "dataTender" => tender::all()
         ]);
     }
@@ -219,10 +216,14 @@ class TenderController extends Controller
     //menampilkan jumlah pengaju pada tampilan user
     
 
-    public function voting()
+    public function voting(pengaju_proposal_tender $pengaju, tender $tender)
     {
-        $pengajuDiterima = pengaju_proposal_tender::where('status_pengajuan', 'diterima')->get();
-        return view('voting', ["title" => "Proposal Tender", 'pengajuDiterima' => $pengajuDiterima]);
+        $pengajuProposal = pengaju_proposal_tender::where('id_tender', $tender->id)->get();
+        return view('voting', [
+            "title" => "Voting Tender",
+            'pengaju' => $pengaju,
+            'pengajuProposal' => $pengajuProposal,
+        ]);
     }
 
     public function vote($id)
