@@ -45,6 +45,9 @@ Route::get('/laporankeuangan', [KeuanganDesaController::class, 'laporan'])->midd
 
 Route::get('/tender', [TenderController::class, 'tampil']);
 Route::get('/tenderVote', [TenderController::class, 'tampilVote']);
+Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
+Route::post('/voting/{id}', [TenderController::class, 'pilih'])->middleware('auth:akun_user');
+Route::delete('/voting/{id}', [TenderController::class, 'batalVoting']);
 Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
 Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal');
 
@@ -75,7 +78,6 @@ Route::get('/dashboard', function () {
 })->middleware('auth:akun_user');
 
 Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth:akun_user');
-
 Route::get('/kelolaBerita/{berita:id}', [BeritaController::class, 'lihat']);
 Route::delete('/kelolaBerita/{id}', [BeritaController::class, 'destroy']);
 Route::get('/tambahB', [BeritaController::class, 'create'])->middleware('auth:akun_user');
@@ -91,6 +93,7 @@ Route::get('/dataPenduduk/{penduduk:nik}/editPenduduk', [adminDataPendudukContro
 Route::put('/tambahPenduduk/{penduduk:nik}', [adminDataPendudukController::class, 'update'])->middleware('auth:akun_user');
 
 Route::get('/kelolaTender', [TenderController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/kelolaTender/{tender:id}', [TenderController::class, 'viewT'])->middleware('auth:akun_user');
 Route::get('/buatTender', [TenderController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatTender', [TenderController::class, 'store'])->middleware('auth:akun_user');
 Route::delete('/kelolaTender/{tender}', [TenderController::class, 'destroy']);
@@ -98,9 +101,11 @@ Route::get('/kelolaTender/{tender:id}/editTender', [TenderController::class, 'ed
 Route::put('/buatTender/{tender:id}', [TenderController::class, 'update'])->middleware('auth:akun_user');
 
 Route::get('/kelolaPengajuProposal/{tender}', [TenderController::class, 'proposal'])->name('kelolaPengajuProposal');
+Route::get('/viewProposal/{tender}', [TenderController::class, 'viewProposal'])->name('viewProposal');
 Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approveProposal'])->middleware('auth:akun_user');
-Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
-Route::post('/voting/{id}', [TenderController::class, 'vote'])->middleware('auth:akun_user');
+Route::delete('/kelolaPengajuProposal/{id}', [TenderController::class, 'tolakProposal'])->middleware('auth:akun_user');
+
+Route::get('/kelolaProfilDesa', [ProfildesaController::class, 'kelolaTampil'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', function () {
     return view('dashBoard.kelolaSurat', [
@@ -117,3 +122,6 @@ Route::get('/saranMasukanAdmin', function () {
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
+Route::delete('/dataKeuangan/{laporan}', [KeuanganDesaController::class, 'delete']);
+Route::get('/dataKeuangan/{laporan:id}/editKeuangan', [KeuanganDesaController::class, 'edit']);
+Route::put('/buatLaporan/{laporan:id}', [KeuanganDesaController::class, 'update']);

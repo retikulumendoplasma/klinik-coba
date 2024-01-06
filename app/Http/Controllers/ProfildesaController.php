@@ -26,6 +26,15 @@ class ProfildesaController extends Controller
                                     ]);
     }
 
+    public function kelolaTampil()
+    {
+        return view('/dashboard.kelolaProfilDesa', [
+            "title" => "Kelola Profil Desa",
+            //data profil desa sudah tersimpan dalam models berita
+            "dataTender" => penduduk::all()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

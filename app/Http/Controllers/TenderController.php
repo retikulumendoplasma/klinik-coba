@@ -47,6 +47,16 @@ class TenderController extends Controller
         ]);
     }
 
+    public function viewT(tender $tender)
+    {
+        return view('/dashboard.viewTender', [
+            //pengisian berita
+            "title" => "Detail Tender",
+            //data berita sudah tersimpan dalam models berita
+            "dataTender" => $tender
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -213,6 +223,24 @@ class TenderController extends Controller
         return redirect()->back()->with('success', 'Proposal berhasil disetujui');
     }
 
+    public function tolakProposal(pengaju_proposal_tender $pengaju, $id)
+    {
+            // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
+        $proposal = pengaju_proposal_tender::find($id);
+
+        // Lakukan validasi apakah proposal ditemukan atau tidak
+        if (!$proposal) {
+            // Proposal tidak ditemukan, mungkin hendak melakukan redirect atau memberikan pesan error
+            return redirect()->back()->with('error', 'Proposal not found.');
+        }
+
+        // Lakukan tindakan penolakan disini
+        $proposal->delete(); // Atau lakukan tindakan penolakan sesuai kebutuhan
+
+        // Redirect atau berikan pesan sukses
+        return redirect()->back()->with('success', 'Proposal berhasil ditolak.');
+    }
+
     //menampilkan jumlah pengaju pada tampilan user
     public function voting(pengaju_proposal_tender $pengaju, tender $tender)
     {
@@ -220,22 +248,55 @@ class TenderController extends Controller
         return view('voting', [
             "title" => "Voting Tender",
             'pengaju' => $pengaju,
+            'tender' => $tender,
             'pengajuProposal' => $pengajuProposal,
         ]);
     }
 
-
-    public function vote($id)
+    public function pilih(Request $request, $id)
     {
-        $pengaju = voting_tender::find($id);
+       
+        $userId = Auth::id();
+    
+        // Simpan data pengajuan tender ke dalam database
+        $request->merge(['user_id' => $request->get('user_id',$userId)]);
+        $request->merge(['tanggal_vote' => $request->get('tanggal_vote', now())]);
+        
+        voting_tender::create($request->all());
+        return redirect('/tenderVote')->with('success', 'Memilih');
+    }
 
-        // ... logika validasi lainnya ...
+    public function batalVoting($id)
+    {
+        $voting = voting_tender::find($id);
 
-        // Simpan data voting di tabel voting_tender
-        $vote = new voting_tender();
-        $pengaju->voting_tender()->save($vote);
+        if (!$voting) {
+            // Handle jika voting tidak ditemukan
+            return redirect()->back()->with('error', 'Voting tidak ditemukan.');
+        }
 
-        // Redirect atau berikan respons yang sesuai
-        return redirect()->back()->with('success', 'Vote berhasil!');
+        $voting->delete();
+
+        // Handle jika penghapusan voting berhasil
+        return redirect()->back()->with('success', 'Pilihan berhasil dibatalkan.');
+    }
+
+    public function viewProposal($pengaju)
+    {
+        $dataProposal = pengaju_proposal_tender::find($pengaju);
+        $dataVote = voting_tender::where('proposal_id', $pengaju)->get();
+        $namayangngevote = [];
+        $namatender = [];
+        foreach ($dataVote as $vote) {
+            $namayangngevote[] = $vote->penduduk->nama;
+            $namatender[] = $vote->tender->judul_tender;
+        }
+        return view('/dashboard.viewProposal', [
+            "title" => "Detail Proposal",
+            "dataVote" => $dataVote,
+            "dataProposal" => $dataProposal,
+            "namayangngevote" => $namayangngevote,
+            "namatender" => $namatender,
+        ]);
     }
 }

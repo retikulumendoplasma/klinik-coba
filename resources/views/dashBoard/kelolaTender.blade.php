@@ -36,7 +36,7 @@
               <form action="/kelolaTender/{{ $tender->id }}" method="post" class="d-inline" >
                   @csrf
                   @method('DELETE')
-                  <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+                  <button class="badge bg-danger" onclick="return confirm('Yakin Hapus Tender?')"><span data-feather="x-circle"></span></button>
               </form>
               <a href="/kelolaPengajuProposal/{{ $tender->id }}" class="badge bg-success"><span data-feather="folder-minus"></span></a>
           </td>
