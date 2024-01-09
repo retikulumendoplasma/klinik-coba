@@ -7,6 +7,7 @@ use App\Models\penduduk;
 use App\Models\pengaju_surat;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PengurusanSuratController extends Controller
 {
@@ -108,29 +109,29 @@ class PengurusanSuratController extends Controller
      */
     public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
-            // 'nomor_kk' => 'required|string',
-            // 'nik' => 'required|string',
-            // 'nama' => 'required|string',
-            // 'tempat_lahir' => 'required|string',
-            // 'tanggal_lahir' => 'required|date',
-            // 'jenis_kelamin' => 'required|string',
-            // 'agama' => 'required|string',
-            // 'alamat' => 'required|string',
-            // 'nomor_hp' => 'required|string',
-            // 'status_perkawinan' => 'required|string',
-            // 'pendidikan' => 'required|string',
-            // 'pekerjaan' => 'required|string',
-            // 'status_hubungan_kk' => 'required|string',
+            'jenis_surat' => 'required|string',
+            'nik' => 'required|string',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|string',
+            'agama' => 'required|string',
+            'alamat' => 'required|string',
+            'nomor_hp' => 'required|string',
+            'status_perkawinan' => 'required|string',
+            'pekerjaan' => 'required|string',
+            'foto_ktp' => 'image|file',
+            'foto_kk' => 'image|file',
         ]);
-        dd($request->all());
-        $validatedData['foto_ktp']=$request->file('foto_ktp')->store('gambar_pengurusan_surat_kurangmampu');
-        $validatedData['foto_kk']=$request->file('foto_kk')->store('gambar_pengurusan_surat_kurangmampu');
-        if($request->file('foto_pendukung')){
-            $validatedData['foto_pendukung']=$request->file('foto_pendukung')->store('gambar_pengurusan_surat_kurangmampu'); 
+        $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('foto_ktp');
+        $validatedData['foto_kk'] = $request->file('foto_kk')->store('foto_kk');
+        if ($request->file('foto_pendukung')) {
+            $validatedData['foto_pendukung'] = $request->file('foto_pendukung')->store('foto_pendukung');
         }
-        pengaju_surat::create($request->all());
+       
+        // dd($request->all());
+        pengaju_surat::create($validatedData);
 
         return redirect('/')->with('success', 'Pengajuan Surat Berhasil Diajukan');
     }

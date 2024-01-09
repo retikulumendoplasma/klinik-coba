@@ -15,20 +15,27 @@
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Jenis Surat</td>
-            <td>Nama</td>
-            <td>NIK</td>
-            <td>Status</td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Jenis Surat</td>
-            <td>Nama</td>
-            <td>NIK</td>
-            <td>Status</td>
-        </tr>
+      @foreach ($dataSurat as $surat)
+      <tr>
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $surat->jenis_surat }}</td>
+          <td>{{ $surat->nama }}</td>
+          <td>{{ $surat->nik }}</td>
+          <td>{{ $surat->status_surat }}</td>
+          <td>
+              <a href="/kelolaSurat/{{ $surat->id }}" class="badge bg-info"><span data-feather="eye"></span></a>
+              <a href="/kelolaSurat/{{ $surat->id }}/editsurat" class="badge bg-warning"><span data-feather="edit"></span></a>
+
+              <!-- Form untuk delete -->
+              <form action="/kelolaSurat/{{ $surat->id }}" method="post" class="d-inline" >
+                  @csrf
+                  @method('DELETE')
+                  <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+              </form>
+              <a href="/kelolaPengajuProposal/{{ $surat->id }}" class="badge bg-success"><span data-feather="folder-minus"></span></a>
+          </td>
+      </tr>
+      @endforeach
     </tbody>
   </table>
 </div>

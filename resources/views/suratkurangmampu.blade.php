@@ -7,6 +7,7 @@
         <form action="/ajukansurat" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-6">
+                <input type="hidden" name="jenis_surat" value="Surat keterangan tidak mampu">
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">NIK</label>
                     <select id="namaSelector" name="nik" class="form-select" aria-label="Default select example">
@@ -20,9 +21,11 @@
                     <label for="exampleFormControlInput1" class="form-label">Nama</label>
                     <input class="form-control" type="text" id="namaInput" name="nama" aria-label="Disabled input example" disabled readonly>
                 </div>
+                <input type="hidden" id="tempat_lahirInput" name="tempat_lahir">
+                <input type="hidden" id="tanggal_lahirInput" name="tanggal_lahir">
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Tempat, tgl lahir</label>
-                    <input class="form-control" type="text" id="tempat_tanggal_lahirInput" name="tempat_tanggal_lahir" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" id="tempat_tanggal_lahirInput" aria-label="Disabled input example" disabled readonly>
                 </div>
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Jenis kelamin</label>
@@ -30,11 +33,11 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="formFile" class="form-label">Upload foto KTP</label>
-                    <input class="form-control" type="file" id="formFile" name="foto_ktp">
+                    <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*">
                 </div>
                 <div class="form-group mb-3">
                     <label for="formFile" class="form-label">Upload foto KK</label>
-                    <input class="form-control" type="file" id="formFile" name="foto_kk">
+                    <input class="form-control" type="file" id="foto_kk" name="foto_kk" accept="image/*">
                 </div>
             </div>
             <div class="col-6">
@@ -56,7 +59,11 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="formFile" class="form-label">Upload foto pendukung</label>
-                    <input class="form-control" type="file" id="formFile" name="foto_pendukung">
+                    <input class="form-control" type="file" id="foto_pendukung" name="foto_pendukung" accept="image/*">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Nomor Hp</label>
+                    <input class="form-control" type="text" id="nomor_hp" name="nomor_hp" aria-label="Disabled input example">
                 </div>
             </div>
             <button type="submit" class="position end-0 m-2 btn btn-dark">Ajukan</button>
@@ -78,6 +85,8 @@
                         $('#namaInput').val(response.nama);
                         var tempatTanggalLahir = response.tempat_lahir + ', ' + response.tanggal_lahir;
                         $('#tempat_tanggal_lahirInput').val(tempatTanggalLahir);
+                        $('#tempat_lahirInput').val(response.tempat_lahir);
+                        $('#tanggal_lahirInput').val(response.tanggal_lahir);
                         $('#jenis_kelaminInput').val(response.jenis_kelamin);
                         $('#status_perkawinanInput').val(response.status_perkawinan);
                         $('#agamaInput').val(response.agama);

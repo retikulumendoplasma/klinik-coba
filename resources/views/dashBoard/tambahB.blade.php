@@ -14,10 +14,6 @@
             <input type="text" class="form-control" id="slug" name="slug" required>
         </div>
         <div class="mb-3">
-            <label for="slug" class="form-label">Slug:</label>
-            <input type="text" class="form-control" id="slug" name="slug" required>
-        </div>
-        <div class="mb-3">
             <label for="author" class="form-label">Penulis:</label>
             <input type="text" class="form-control" id="author" name="author" required>
         </div>
@@ -27,9 +23,9 @@
             <trix-editor input="x"></trix-editor>
         </div>
         <div class="mb-3">
-            <label for="img" class="form-label">URL Gambar:</label>
-            <input type="text" class="form-control" id="img" name="img" required>
-        </div>
+            <label for="formFile" class="form-label">Gambar</label>
+            <input class="form-control" type="file" id="img" name="img" accept="image/*">
+        </div>?
         <button type="submit" class="btn btn-primary">Tambah Berita</button>
     </form>
     

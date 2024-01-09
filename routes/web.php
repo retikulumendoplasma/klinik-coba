@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminDataPendudukController;
+use App\Http\Controllers\AdminPengurusanSuratController;
 use App\Http\Controllers\adminTambahPendudukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -104,11 +105,8 @@ Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approvePro
 Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
 Route::post('/voting/{id}', [TenderController::class, 'vote'])->middleware('auth:akun_user');
 
-Route::get('/kelolaSurat', function () {
-    return view('dashBoard.kelolaSurat', [
-        "title" => "Kelola Surat"
-    ]);
-})->middleware('auth:akun_user');
+Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
+Route::get('/kelolaSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
 
 Route::get('/saranMasukanAdmin', function () {
     return view('dashBoard.saranMasukanAdmin', [

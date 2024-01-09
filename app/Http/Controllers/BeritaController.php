@@ -60,32 +60,6 @@ class BeritaController extends Controller
         ]);
     }
 
-    public function create(berita $berita)
-    {
-        return view('dashBoard.tambahB', [
-            "title" => "Tambah Berita"
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        // dd('Metode Store diakses');
-        $validatedData = $request->validate([
-            'judul_berita' => 'required|string',
-            'slug' => 'required|string',
-            'excerpt' => 'required|string',
-            'author' => 'required|string',
-            'isi_berita' => 'required|string',
-            'img' => 'required|string',
-        ]);
-
-        // dd($request->all());
-        $request->merge(['tgl_terbit' => $request->get('tgl_terbit', now())]);
-        berita::create($request->all());
-
-        return redirect('/kelolaBerita')->with('success', 'Tambah Berita Berhasil');
-    }
-
     public function destroy($id)
     {
         // Cari berita berdasarkan ID
