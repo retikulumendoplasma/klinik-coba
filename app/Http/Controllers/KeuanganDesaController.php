@@ -57,4 +57,37 @@ class KeuanganDesaController extends Controller
 
         return redirect('/dataKeuangan')->with('success', 'Tambah Data Berhasil');
     }
+
+    public function delete(laporan_keuangan $laporan)
+    {
+        if ($laporan) {
+            $laporan->delete();
+            return redirect('/dataKeuangan')->with('success', 'Data berhasil dihapus.');
+        } else {
+            return redirect('/dataKeuangan')->with('error', 'Data tidak ditemukan.');
+        }
+    }
+
+    public function edit(laporan_keuangan $laporan)
+    {
+        return view('dashBoard.editKeuangan', [
+            
+            "title" => "Edit data keuangan",
+            "laporan" => $laporan,
+            "dataLaporan" => laporan_keuangan::all()
+
+        ]);
+    }
+
+    public function update(Request $request, laporan_keuangan $laporan)
+    {
+        $validatedData = $request->validate([
+            'jenis_laporan' => 'required|string',
+            'file_laporan' => 'required|string',
+            'tahun_laporan' => 'required|string',
+        ]);
+        // dd($request->all());
+        laporan_keuangan::where('id', $laporan->id)->update($validatedData);
+        return redirect('/dataKeuangan')->with('success', 'Edit Data Berhasil');
+    }
 }

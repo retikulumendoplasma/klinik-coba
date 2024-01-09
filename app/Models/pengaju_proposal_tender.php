@@ -12,9 +12,8 @@ class pengaju_proposal_tender extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-    public function voting_tender()
-    {
-        return $this->hasMany(voting_tender::class);
+    public function votes(){
+        return $this->hasMany("App\Models\voting_tender");
     }
 
 }

@@ -29,13 +29,13 @@
               <td>{{ $laporan->jenis_laporan }}</td>
               <td>
                   <a href="#" class="badge bg-info"><span data-feather="eye"></span></a>
-                  <a href="#" class="badge bg-warning"><span data-feather="edit"></span></a>
+                  <a href="/dataKeuangan/{{ $laporan->id }}/editKeuangan" class="badge bg-warning"><span data-feather="edit"></span></a>
 
                   <!-- Form untuk delete -->
-                  <form action="#" method="post" class="d-inline" >
+                  <form action="/dataKeuangan/{{ $laporan->id }}" method="post" class="d-inline" >
                       @csrf
                       @method('DELETE')
-                      <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>
+                      <button class="badge bg-danger" onclick="return confirm('Yakin Hapus Data?')"><span data-feather="x-circle"></span></button>
                   </form>
               </td>
           </tr>
@@ -69,10 +69,10 @@
               <td>{{ $laporan->jenis_laporan }}</td>
               <td>
                   <a href="#" class="badge bg-info"><span data-feather="eye"></span></a>
-                  <a href="#" class="badge bg-warning"><span data-feather="edit"></span></a>
+                  <a href="/dataKeuangan/{{ $laporan->id }}/editKeuangan" class="badge bg-warning"><span data-feather="edit"></span></a>
 
                   <!-- Form untuk delete -->
-                  <form action="#" method="post" class="d-inline" >
+                  <form action="/dataKeuangan/{{ $laporan->id }}" method="post" class="d-inline" >
                       @csrf
                       @method('DELETE')
                       <button class="badge bg-danger" onclick="return confirm('are you sure')"><span data-feather="x-circle"></span></button>

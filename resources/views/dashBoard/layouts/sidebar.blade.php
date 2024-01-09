@@ -38,7 +38,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('dataPenduduk') ? 'active' : '' }}" href="/dataPenduduk">
+            <a class="nav-link {{ Request::is('kelolaProfilDesa') ? 'active' : '' }}" href="/kelolaProfilDesa">
             <span data-feather="folder"></span>
             Update Profil Desa
             </a>
