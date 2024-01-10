@@ -78,16 +78,16 @@ class TenderController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $validatedData = $request->validate([
             'judul_tender' => 'required|max:100',
             'jadwal_tender_dimulai' => 'required|date',
             'jadwal_tender_berakhir' => 'required|date',
             'anggaran_dana' => 'required',
-            'gambar_tender' => 'required|string',
+            'gambar_tender' => 'image|file',
         ]);
+        $validatedData['gambar_tender'] = $request->file('gambar_tender')->store('gambar_tender');
         // dd($request->all());
-        tender::create($request->all());
+        tender::create($validatedData);
 
 
         return redirect('/kelolaTender')->with('success', 'Tambah Tender Berhasil');
@@ -166,12 +166,13 @@ class TenderController extends Controller
         ]);
     }
 
-    public function storeProposal(Request $request, pengaju_proposal_tender $tender)
+    public function storeProposal(Request $request)
     {
         // Validasi data yang dikirimkan melalui form
         // dd($request->all());
-        $request->validate([
+        $validatedData = $request->validate([
             'nama' => 'required',
+            'id_tender' => 'required',
             'foto_ktp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan tipe file gambar yang diizinkan
             'file_proposal' => 'required|file|mimes:pdf,docx', // Sesuaikan dengan tipe file dokumen yang diizinkan
             'link_vidio' => 'required|url',
@@ -179,20 +180,22 @@ class TenderController extends Controller
         ]);
     
         // Handle file foto_ktp
-        $fotoKtpPath = $request->file('foto_ktp')->store('public/tender_files');
+        $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
         
         // Handle file file_proposal
-        $fileProposalPath = $request->file('file_proposal')->store('public/tender_files');
+        $validatedData['file_proposal'] = $request->file('file_proposal')->store('tender-files');
     
         // Handle file foto_pengaju
-        $fotoPengajuPath = $request->file('foto_pengaju')->store('public/tender_files');
+        $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
+
+
+
 
         // Handle id user
         $userId = Auth::id();
-    
+        $validatedData['id_user'] = $userId;
         // Simpan data pengajuan tender ke dalam database
-        $request->merge(['id_user' => $request->get('id_user',$userId)]);
-        pengaju_proposal_tender::create($request->all());
+        pengaju_proposal_tender::create($validatedData);
 
     
         // Redirect dengan pesan sukses

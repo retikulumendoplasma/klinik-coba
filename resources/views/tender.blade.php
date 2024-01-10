@@ -8,7 +8,7 @@
         @foreach ($dataTender as $Tender)
         <div class="col-md-4 pb-3">
             <div class="card h-100">
-                <img src="{{ $Tender->gambar_tender }}" class="card-img-top" alt="...">
+                <img src="{{ asset('storage/' . $Tender->gambar_tender) }}" alt="Foto Pendukung" style="max-width: 100%; max-height: 350px;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $Tender->judul_tender }}</h5>
                     <p class="card-text">Waktu mulai: {{ $Tender->jadwal_tender_dimulai }}</p>

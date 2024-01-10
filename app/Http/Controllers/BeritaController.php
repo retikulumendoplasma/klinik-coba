@@ -90,13 +90,13 @@ class BeritaController extends Controller
             'slug' => 'required|string',
             'author' => 'required|string',
             'isi_berita' => 'required',
-            'excerpt' => 'required|max:150',
-            'img' => 'required|string',
+            'img' => 'image|file',
         ]);
-
-        $validatedData['id'] = auth()->user()->id;
-        $request->merge(['tgl_terbit' => $request->get('tgl_terbit', now())]);
-        berita::create($request->all());
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->isi_berita), 200);
+        $validatedData['tgl_terbit'] = $request->input('tgl_terbit', now());
+        $validatedData['img'] = $request->file('img')->store('gambar-berita');
+        // dd($request->all());
+        berita::create($validatedData);
 
 
         return redirect('/kelolaBerita')->with('success', 'Tambah Berita Berhasil');

@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Buat Tender </h1>
             </div>
-            <form action="/buatTender" method="post">
+            <form action="/buatTender" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group pb-3">
                     <label for="judul_tender">Judul Tender</label>
@@ -25,9 +25,9 @@
                     <label for="Anggaran">Anggaran</label>
                     <input type="number" class="form-control"  id="anggaran_dana" name="anggaran_dana" required placeholder="Silahkan Masukkan Nominal" >
                 </div>
-                <div class="mb-3">
-                    <label for="img" class="form-label">URL Gambar:</label>
-                    <input type="text" class="form-control" id="gambar_tender" name="gambar_tender" required>
+                <div class="form-group mb-3">
+                    <label for="gambar_tender" class="form-label">gambar</label>
+                    <input class="form-control" type="file" id="gambar_tender" name="gambar_tender" accept="image/*">
                 </div>
                 <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Buat Tender</button>
             </form>

@@ -28,7 +28,7 @@
         @foreach ($berita as $Berita)
         <div class="col-md-4">
             <div class="card">
-                <img src="{{ $Berita->img }}" class="card-img-top img-fluid" alt="...">
+                <img src="{{ asset('storage/' . $Berita->img) }}" alt="Foto Pendukung" style="max-width: 100%; max-height: 350px;">
                   <div class="card-body">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight"><a href="/berita/{{ $Berita->id }}">{{ $Berita->judul_berita }}</a></h2>
                     <h5 class="card-text font-semibold">{{ $Berita->author }}</h5>

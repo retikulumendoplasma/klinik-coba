@@ -13,7 +13,7 @@
             @if ($pengaju->status_pengajuan == 'diterima')
               <div class="col-md-4 pb-3">
                 <div class="card border-dark h-100 text-center" style="width: 18rem;">
-                    <img src="{{$pengaju->foto_pengaju}}" class="card-img-top" alt="Pengaju Image">
+                    <img src="{{ asset('storage/' . $pengaju->foto_pengaju) }}" alt="Foto Pendukung" style="max-width: 100%; max-height: 350px;">
                     <div class="card-body">
                         <h5 class="card-title">{{ $pengaju->nama }}</h5>
                         <a href="/detailvote" class="btn btn-dark">Lihat Detail</a>

@@ -4,7 +4,7 @@
     <h2 class="text-center">Detail Pengaju Proposal Tender</h2>
 
     <div class="container text-center pb-5 border border-dark my-5">
-        <img src="{{ $dataProposal->foto_ktp }}" alt="Your Image" class="rounded-circle mx-auto p-3" height="250" width="250">
+        <img src="{{ asset('storage/' . $dataProposal->foto_ktp) }}" alt="Your Image" style="max-width: 100%; max-height: 300px;">
         <h2 class="head-text">{{ $dataProposal->nama }}</h2>
     
         <div class="container mt-5">
