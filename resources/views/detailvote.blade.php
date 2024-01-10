@@ -3,8 +3,8 @@
 @section('main')
 
 <div class="container text-center pb-5 border border-dark my-5">
-    <img src="img/Gambar TK Harapan Kita.jpg" alt="Your Image" class="rounded-circle mx-auto p-3" height="250" width="250">
-    <h2 class="head-text">Sudarianto</h2>
+    <img src="img/jongek.jpg" alt="Your Image" class="rounded-circle mx-auto p-3" height="250" width="250">
+    <h2 class="head-text">Meysa Syafrina</h2>
 
     <div class="container mt-5">
         <div class="row justify-content-center">

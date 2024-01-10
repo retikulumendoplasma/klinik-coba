@@ -4,9 +4,9 @@
 <div class="container">
     <h1 class="text-center pb-2">Surat Keterangan Belum/Sudah Menikah</h1>
     <div class="row">
-        <form action="/ajukansurat" method="post" enctype="multipart/form-data">
+        <form action="/ajukansurat" method="post" enctype="multipart/form-data" class="row">
             @csrf
-            <div class="col-6">
+            <div class="col-md-6 col-12">
                 <input type="hidden" name="jenis_surat" value="Surat keterangan belum/sudah menikah">
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">NIK</label>
@@ -40,7 +40,7 @@
                     <input class="form-control" type="file" id="foto_kk" name="foto_kk" accept="image/*">
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 col-12">
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Status perkawinan</label>
                     <input class="form-control" type="text" id="status_perkawinanInput" name="status_perkawinan" aria-label="Disabled input example" disabled readonly>
@@ -62,7 +62,9 @@
                     <input class="form-control" type="text" id="nomor_hp" name="nomor_hp" aria-label="Disabled input example">
                 </div>
             </div>
-            <button type="submit" class="position end-0 m-2 btn btn-dark">Ajukan</button>
+            <div class="col-12">
+                <button type="submit" class="position end-0 m-2 btn btn-dark">Ajukan</button>
+            </div>
         </form>
     </div>
 

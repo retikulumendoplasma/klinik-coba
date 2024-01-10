@@ -170,3 +170,38 @@ button:focus, input:focus, textarea:focus {
 }
 /* visi misi end */
 
+/* responsif css */
+/* Responsivitas Font */
+@media screen and (max-width: 767px) {
+	.head_text {
+	  font-size: 30px;
+	}
+  
+	.card_text h4 {
+	  font-size: 20px;
+	}
+  
+	.card_text p {
+	  font-size: 12px;
+	}
+  
+	.jum-total {
+	  font-size: 24px;
+	}
+  
+	.des_card {
+	  font-size: 16px;
+	}
+  
+	.card_content {
+	  font-size: 14px;
+	}
+  }
+  
+  /* Responsivitas Owl Carousel Navigation */
+  @media screen and (max-width: 767px) {
+	.slider_carousel .owl-nav {
+	  display: none;
+	}
+  }
+  
