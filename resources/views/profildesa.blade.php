@@ -64,75 +64,33 @@
 {{-- jumlah penduduk end --}}
 
 {{-- visi misi --}}
-<div class="container p-5">
+
+
+<div class="container mt-4 pb-5">
     <div class="row">
-        <div class="col-md-12 text-center">
-            <h2 class="head_text">Visi dan Misi</h2>
-        </div>
-    </div>
-    <div class="row mt-4 mb-4">
-        <div class="col-6 text-center">
-            <h3>Visi</h3>
-        </div>
-        <div class="col-6 text-center">
-            <h3>Misi</h3>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Kesejahteraan Bersama</h5>
-                <p>Menjadi desa di mana kesejahteraan bersama menjadi kenyataan, dengan setiap warga menikmati tingkat hidup yang lebih baik.</p>
+        <div class="col-md-6 mb-5">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <h5 class="card-title head_text">Visi</h5>
+                    <p class="des_card text-center">Kesejahteraan Bersama : Menjadi desa di mana kesejahteraan bersama menjadi kenyataan, dengan setiap warga menikmati tingkat hidup yang lebih baik.</p>
+                    <p class="des_card text-center">Keberlanjutan Lingkungan : Mengembangkan desa yang berkelanjutan, menjaga keindahan alam, dan meminimalkan dampak negatif terhadap lingkungan.</p>
+                    <p class="des_card text-center">Keterlibatan Warga : Menciptakan desa inklusif dengan melibatkan aktif seluruh warga dalam proses pengambilan keputusan dan pembangunan.</p>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 text-center center-v">
-            {{-- <i class="bi bi-arrow-down-square"></i> --}}
-            <img class="icon-manfaat-digides" src="https://digitaldesa.id/templates/homepage/media/misc/icon/kecerdasan.svg" alt="aplikasi desa pintar">
-        </div>
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Pembangunan Infrastruktur yang Berkesinambungan</h5>
-                <p>Merencanakan dan melaksanakan pembangunan infrastruktur yang berkelanjutan, termasuk jaringan jalan, air bersih, sanitasi, dan listrik, untuk meningkatkan kualitas hidup warga desa.</p>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Keberlanjutan Lingkungan</h5>
-                <p>Mengembangkan desa yang berkelanjutan, menjaga keindahan alam, dan meminimalkan dampak negatif terhadap lingkungan.</p>
-            </div>
-        </div>
-        <div class="col-12 col-md-2 text-center center-v">
-            {{-- <i class="bi bi-arrow-down-square"></i> --}}
-            <img class="icon-manfaat-digides" src="https://digitaldesa.id/templates/homepage/media/misc/icon/kecepatan.svg" alt="sistem informasi desa online">
-        </div>
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Pemberdayaan Ekonomi Lokal</h5>
-                <p>Menggalakkan pertumbuhan ekonomi dengan mendukung usaha mikro dan kecil, menciptakan lapangan kerja lokal, dan mendorong inovasi ekonomi untuk meningkatkan taraf hidup warga desa.</p>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Keterlibatan Warga</h5>
-                <p>Menciptakan desa inklusif dengan melibatkan aktif seluruh warga dalam proses pengambilan keputusan dan pembangunan.</p>
-            </div>
-        </div>
-        <div class="col-12 col-md-2 text-center center-v">
-            {{-- <i class="bi bi-arrow-down-square"></i> --}}
-            <img class="icon-manfaat-digides" src="https://digitaldesa.id/templates/homepage/media/misc/icon/jangkauan.svg" alt="aplikasi e desa">
-        </div>
-        <div class="col-md-6 col-lg-5 col-xl-5">
-            <div class="card_content">
-                <h5 class="pb-2">Konservasi Lingkungan dan Warisan Budaya</h5>
-                <p>Melindungi dan mempertahankan keanekaragaman alam serta warisan budaya desa, sambil mempromosikan praktik berkelanjutan dan kesadaran lingkungan dikalangan warga.</p>
+        <div class="col-md-6 mb-5">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <h5 class="card-title head_text">Misi</h5>
+                    <p class="des_card text-center">Pembangunan Infrastruktur yang Berkesinambungan : Merencanakan dan melaksanakan pembangunan infrastruktur yang berkelanjutan, termasuk jaringan jalan, air bersih, sanitasi, dan listrik, untuk meningkatkan kualitas hidup warga desa.</p>
+                    <p class="des_card text-center">Pemberdayaan Ekonomi Lokal : Menggalakkan pertumbuhan ekonomi dengan mendukung usaha mikro dan kecil, menciptakan lapangan kerja lokal, dan mendorong inovasi ekonomi untuk meningkatkan taraf hidup warga desa.</p>
+                    <p class="des_card text-center">Konservasi Lingkungan dan Warisan Budaya : Melindungi dan mempertahankan keanekaragaman alam serta warisan budaya desa, sambil mempromosikan praktik berkelanjutan dan kesadaran lingkungan dikalangan warga.</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 {{-- visi misi end --}}
 
 <!-- card area start -->
@@ -151,55 +109,26 @@
                         <div class="card_text">
                             <h4>Sudarianto</h4>
                             <p>Kepala Desa Jatirejo</p>
+                            <p>Wa : 085370626861</p>
                             <p>1967, 14 Juni Jatirejo</p>
                         </div>
                     </div>
                     <div class="card_box">
                       <img src="img/Boy palestine.jpg" alt="" class="card-image w-100">
                       <div class="card_text">
-                        <h4>Bani Ilyas</h4>
-                        <p>Kepala Dusun Sukaramai</p>
-                        <p>2001, 27 Mei Purworejo</p>
+                        <h4>Rian Andrianto</h4>
+                        <p>Kepala Seksi Kesejahteraan</p>
+                        <p>Wa : 082217794691</p>
+                        <p>2001, 27 Mei Jatirejo</p>
                       </div>
                     </div>
                     <div class="card_box">
                       <img src="img/Palestina.jpg" alt="" class="card-image w-100">
                       <div class="card_text">
-                        <h4>Pranata</h4>
-                        <p>Seksi Keamanan</p>
-                        <p>2001, 07 July Belawan</p>
-                      </div>
-                    </div>
-                    <div class="card_box">
-                      <img src="img/Palestina.jpg" alt="" class="card-image w-100">
-                      <div class="card_text">
-                        <h4>Febry Aji</h4>
+                        <h4>Mega Silpia</h4>
                         <p>Sekretaris</p>
-                        <p>2001, 09 April Purwodadi</p>
-                      </div>
-                    </div>
-                    <div class="card_box">
-                      <img src="img/Boy palestine.jpg" alt="" class="card-image w-100">
-                      <div class="card_text">
-                        <h4>Bani Ilyas</h4>
-                        <p>Kepala Dusun Sukaramai</p>
-                        <p>2001, 27 Mei Purworejo</p>
-                      </div>
-                    </div>
-                    <div class="card_box">
-                      <img src="img/Palestina.jpg" alt="" class="card-image w-100">
-                      <div class="card_text">
-                        <h4>Pranata</h4>
-                        <p>Seksi Keamanan</p>
-                        <p>2001, 07 July Belawan</p>
-                      </div>
-                    </div>
-                    <div class="card_box">
-                      <img src="img/Palestina.jpg" alt="" class="card-image w-100">
-                      <div class="card_text">
-                        <h4>Febry Aji</h4>
-                        <p>Sekretaris</p>
-                        <p>2001, 09 April Purwodadi</p>
+                        <p>Wa : 082267870037</p>
+                        <p>2001, 07 July Jatirejo</p>
                       </div>
                     </div>
                 </div>
