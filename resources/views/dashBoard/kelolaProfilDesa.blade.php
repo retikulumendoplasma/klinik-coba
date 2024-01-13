@@ -8,7 +8,7 @@
             <h4>List Aparatur</h4>
         </div>
         <div class="col-4">
-            <button type="submit" onclick="window.location.href='/tambahAparatur'" class="nav-link px-3 bg-success border-0 text-white"><span data-feather="plus"></span> Tambah Berita</button>
+            <button type="submit" onclick="window.location.href='/tambahAparatur'" class="nav-link px-3 bg-success border-0 text-white"><span data-feather="plus"></span> Tambah Aparatur</button>
         </div>
     </div>
     {{-- <table class="table table-striped table-sm">

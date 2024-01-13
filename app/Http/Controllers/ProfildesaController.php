@@ -42,7 +42,11 @@ class ProfildesaController extends Controller
      */
     public function create()
     {
-        //
+        return view('/dashboard.tambahAparatur', [
+            "title" => "Tambah Aparatur",
+            //data profil desa sudah tersimpan dalam models berita
+            "dataTender" => penduduk::all()
+        ]);
     }
 
     /**

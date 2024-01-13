@@ -18,11 +18,9 @@ class Berita extends Migration
             // $table->integer('id_admin');
             $table->string('judul_berita');
             $table->text('excerpt');
-            $table->string('slug');
             $table->string('img');
             $table->text('isi_berita');
             $table->timestamps('tgl_terbit');
-            $table->string('author');
         });
     }
 

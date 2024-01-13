@@ -87,8 +87,6 @@ class BeritaController extends Controller
         // dd('Metode Store diakses');
         $validatedData = $request->validate([
             'judul_berita' => 'required|max:100',
-            'slug' => 'required|string',
-            'author' => 'required|string',
             'isi_berita' => 'required',
             'img' => 'image|file',
         ]);
@@ -117,14 +115,14 @@ class BeritaController extends Controller
         // dd('Metode Store diakses');
         $validatedData = $request->validate([
             'judul_berita' => 'required|max:100',
-            'slug' => 'required|string',
-            'author' => 'required|string',
             'isi_berita' => 'required',
-            'excerpt' => 'required|max:150',
-            'img' => 'required|string',
         ]);
 
-        $request->merge(['tgl_terbit' => $request->get('tgl_terbit', now())]);
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->isi_berita), 200);
+        $validatedData['tgl_terbit'] = $request->input('tgl_terbit', now());
+        if ($request->hasFile('img')) {
+            $validatedData['img'] = $request->file('img')->store('gambar-berita');
+        }
         berita::where('id', $berita->id)->update($validatedData);
 
         return redirect('/kelolaBerita')->with('success', 'Edit Berita Berhasil');

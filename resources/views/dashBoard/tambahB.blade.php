@@ -10,14 +10,6 @@
             <input type="text" class="form-control" id="judul_berita" name="judul_berita" maxlength="100" required>
         </div>
         <div class="mb-3">
-            <label for="slug" class="form-label">Slug:</label>
-            <input type="text" class="form-control" id="slug" name="slug" required>
-        </div>
-        <div class="mb-3">
-            <label for="author" class="form-label">Penulis:</label>
-            <input type="text" class="form-control" id="author" name="author" required>
-        </div>
-        <div class="mb-3">
             <label for="isi_berita" class="form-label">Isi Berita</label>
             <input id="isi_berita" type="hidden" name="isi_berita">
             <trix-editor input="isi_berita"></trix-editor>

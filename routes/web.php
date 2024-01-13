@@ -45,11 +45,11 @@ Route::get('/rencanaanggaran', [KeuanganDesaController::class, 'rencana'])->midd
 Route::get('/laporankeuangan', [KeuanganDesaController::class, 'laporan'])->middleware('auth:akun_user');
 
 Route::get('/tender', [TenderController::class, 'tampil']);
-Route::get('/tenderVote', [TenderController::class, 'tampilVote']);
+Route::get('/tenderVote', [TenderController::class, 'tampilVote'])->middleware('auth:akun_user');
 Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
 Route::post('/voting/{id}', [TenderController::class, 'pilih'])->middleware('auth:akun_user');
 Route::delete('/voting/{id}', [TenderController::class, 'batalVoting']);
-Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
+Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender')->middleware('auth:akun_user');;
 Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal');
 
 Route::get('/detailvote', function () {
@@ -109,6 +109,7 @@ Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approvePro
 Route::delete('/kelolaPengajuProposal/{id}', [TenderController::class, 'tolakProposal'])->middleware('auth:akun_user');
 
 Route::get('/kelolaProfilDesa', [ProfildesaController::class, 'kelolaTampil'])->middleware('auth:akun_user');
+Route::get('/tambahAparatur', [ProfildesaController::class, 'create'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
 Route::get('/kelolaSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
@@ -122,3 +123,4 @@ Route::get('/saranMasukanAdmin', function () {
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
+

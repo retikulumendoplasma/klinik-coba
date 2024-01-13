@@ -16,6 +16,7 @@ class Tender extends Migration
         Schema::create('tender', function (Blueprint $table) {
             $table->id();
             $table->string('judul_tender');
+            $table->string('detail');
             $table->date('jadwal_tender_dimulai');
             $table->date('jadwal_tender_berakhir');
             $table->string('gambar_tender');
