@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\berita;
 use Illuminate\Validation\Rule;
+use illuminate\Support\Facades\Gate;
 
 class BeritaController extends Controller
 {

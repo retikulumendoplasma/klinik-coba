@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\akun_user;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,11 +28,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (! function_exists('convertYouTubeUrl')) {
-            function convertYouTubeUrl($url) {
-                // Mengganti "watch" menjadi "embed"
-                return Str::replaceFirst('watch?v=', 'embed/', $url);
-            }
-        }
+        Gate::define('admin', function(akun_user $akun_user){
+            return $akun_user->is_admin;
+        });
+        
     }
 }

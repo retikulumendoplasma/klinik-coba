@@ -61,8 +61,11 @@
                   Selamat Datang, {{ auth()->user()->username }}
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/">home</a></li>
-                  <li><hr class="dropdown-divider"></li>
+                  @can('admin')
+                    <li><a class="dropdown-item" href="/dashboard">Kelola Desa</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  @endcan
+                  
                   <li>
                     <form action="/logout" method="post">
                       @csrf

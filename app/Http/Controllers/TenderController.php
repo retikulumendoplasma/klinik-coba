@@ -229,7 +229,7 @@ class TenderController extends Controller
         return redirect()->back()->with('success', 'Proposal berhasil disetujui');
     }
 
-    public function tolakProposal(pengaju_proposal_tender $pengaju, $id)
+    public function tolakProposal($id)
     {
             // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
         $proposal = pengaju_proposal_tender::find($id);

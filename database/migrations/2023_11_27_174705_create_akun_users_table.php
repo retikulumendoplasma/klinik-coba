@@ -19,6 +19,7 @@ class CreateAkunUsersTable extends Migration
             $table->string('email/nomor_hp');
             $table->string('nik');
             $table->string('password');
+            $table->boolean('is_admin')->default(false);
         });
     }
 

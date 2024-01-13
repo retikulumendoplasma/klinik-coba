@@ -19,10 +19,13 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $nomorpending = 1;
+                @endphp
                 @foreach ($pengajuProposal as $proposal)
                     @if ($proposal->status_pengajuan == 'pending')
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $nomorpending++ }}</td>
                             <td>{{ $proposal->nama }}</td>
                             <td>{{ $proposal->status_pengajuan }}</td>
                             <td>
@@ -62,10 +65,13 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $nomorditerima = 1;
+                @endphp
                 @foreach ($pengajuProposal as $proposal)
                     @if ($proposal->status_pengajuan == 'diterima')
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $nomorditerima++ }}</td>
                             <td>{{ $proposal->nama }}</td>
                             <td>{{ $proposal->status_pengajuan }}</td>
                             <td>

@@ -13,7 +13,7 @@ use App\Http\Controllers\PengurusanSuratController;
 use App\Http\Controllers\TenderController;
 use App\Http\Controllers\KeuanganDesaController;
 use App\Http\Controllers\UploadProposalController;
-
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +49,8 @@ Route::get('/tenderVote', [TenderController::class, 'tampilVote'])->middleware('
 Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
 Route::post('/voting/{id}', [TenderController::class, 'pilih'])->middleware('auth:akun_user');
 Route::delete('/voting/{id}', [TenderController::class, 'batalVoting']);
-Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender')->middleware('auth:akun_user');;
-Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal');
+Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
+Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal')->middleware('auth:akun_user');
 
 Route::get('/detailvote', function () {
     return view('detailvote',[
@@ -113,6 +113,8 @@ Route::get('/tambahAparatur', [ProfildesaController::class, 'create'])->middlewa
 
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
 Route::get('/kelolaSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
+Route::post('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
+Route::delete('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
 
 Route::get('/saranMasukanAdmin', function () {
     return view('dashBoard.saranMasukanAdmin', [
@@ -123,4 +125,3 @@ Route::get('/saranMasukanAdmin', function () {
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
-
