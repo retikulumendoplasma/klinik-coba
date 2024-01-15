@@ -28,22 +28,25 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', [BeritaController::class, 'home']);
 
+// login or regis
 Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('guest:akun_user');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
-
 Route::get('/register', [RegisterController::class, 'register'])->middleware('guest:akun_user');
 Route::post('/register', [RegisterController::class, 'store']);
 
+// berita
 Route::get('/berita', [BeritaController::class, 'index']);
-
 Route::get('/berita/{id}', [BeritaController::class, 'tampil']);
 
+// profile desa
 Route::get('/profildesa', [ProfildesaController::class, 'index']);
 
+// data keuangan
 Route::get('/rencanaanggaran', [KeuanganDesaController::class, 'rencana'])->middleware('auth:akun_user');
 Route::get('/laporankeuangan', [KeuanganDesaController::class, 'laporan'])->middleware('auth:akun_user');
 
+// tender
 Route::get('/tender', [TenderController::class, 'tampil']);
 Route::get('/tenderVote', [TenderController::class, 'tampilVote'])->middleware('auth:akun_user');
 Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
@@ -58,14 +61,20 @@ Route::get('/detailvote', function () {
     ]);
 });
 
-
+// pengurusan surat
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');
 Route::post('/ajukansurat', [PengurusanSuratController::class, 'store'])->middleware('auth:akun_user');
-
 Route::get('/suratkematian',[PengurusanSuratController::class, 'suratkematian'])->middleware('auth:akun_user');
 Route::get('/suratdomisili',[PengurusanSuratController::class, 'suratdomisili'])->middleware('auth:akun_user');
 Route::get('/suratmenikah',[PengurusanSuratController::class, 'suratmenikah'])->middleware('auth:akun_user');
 Route::get('/getPendudukData/{nik}', [PengurusanSuratController::class, 'getPenduduk']);
+
+// lihat pengajuan
+Route::get('/pengajuanSurat', [AdminPengurusanSuratController::class, 'statusPengajuan'])->middleware('auth:akun_user');
+Route::get('/berhasilurussurat/{id}', [PengurusanSuratController::class, 'berhasil'])->middleware('auth:akun_user');
+Route::get('/pengajuanProposalTender', [TenderController::class, 'statusPengajuan'])->middleware('auth:akun_user');
+Route::get('/berhasilurusproposal/{id}', [TenderController::class, 'berhasil'])->middleware('auth:akun_user');
+
 
 Route::get('/saranmasukan', function () {
     return view('saranmasukan',[
@@ -89,6 +98,7 @@ Route::get('/kelolaBerita/{berita:id}/editBerita', [BeritaController::class, 'ed
 Route::put('/tambahB/{berita:id}', [BeritaController::class, 'update'])->middleware('auth:akun_user');
 
 Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/viewdataPenduduk/{penduduk:nik}', [adminDataPendudukController::class, 'show'])->middleware('auth:akun_user');
 Route::delete('/dataPenduduk/{nik}', [adminDataPendudukController::class, 'destroy']);
 Route::get('/tambahPenduduk', [adminDataPendudukController::class,'create'])->middleware('auth:akun_user');
 Route::post('/tambahPenduduk', [adminDataPendudukController::class,'store'])->middleware('auth:akun_user');
@@ -112,7 +122,7 @@ Route::get('/kelolaProfilDesa', [ProfildesaController::class, 'kelolaTampil'])->
 Route::get('/tambahAparatur', [ProfildesaController::class, 'create'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
-Route::get('/kelolaSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
+Route::get('/viewSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
 Route::post('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
 Route::delete('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
 
@@ -125,3 +135,5 @@ Route::get('/saranMasukanAdmin', function () {
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
+Route::get('/dataKeuangan/{laporan:id}/editKeuangan', [KeuanganDesaController::class, 'edit'])->middleware('auth:akun_user');
+Route::post('/buatLaporan{laporan:id}', [KeuanganDesaController::class, 'update'])->middleware('auth:akun_user');

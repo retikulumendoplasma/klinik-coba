@@ -33,8 +33,8 @@
                 <li><a class="dropdown-item" href="/suratmenikah">Surat Keterangan Belum/Sudah Menikah</a></li>
               </ul>
             </li>
-              <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {{ ($title === "Rencana anggaran" || $title === "Laporan keuangan") ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Keuangan Desa
               </a>
               <ul class="dropdown-menu">
@@ -48,8 +48,14 @@
             <li class="nav-item">
               <a class="nav-link {{ ($title === "Profil Desa") ? 'active' : '' }}" href="/profildesa">Profil Desa</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link {{ ($title === "Profil Desa") ? 'active' : '' }}" href="/dashboard">Kelola Desa</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {{ ($title === "Pengajuan surat" || $title === "Pengajuan proposal tender") ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Pengajuan
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item {{ ($title === "Pengajuan surat") ? 'active' : '' }}" href="/pengajuanSurat">Pengajuan Surat</a></li>
+                <li><a class="dropdown-item {{ ($title === "Pengajuan proposal tender") ? 'active' : '' }}" href="/pengajuanProposalTender">Pengajuan Proposal Tender</a></li>
+              </ul>
             </li>
           </ul>
 
@@ -76,7 +82,7 @@
               </li>
               @else
               <li class="nav-item">
-                    <a href="/login" class="nav-link {{ ($title === "Login") ? 'active' : '' }}"><i class="bi bi-box-arrow-in-right"></i>Login</a>
+                <a href="/login" class="nav-link {{ ($title === "Login") ? 'active' : '' }}"><i class="bi bi-box-arrow-in-right"></i>Login</a>
               </li>
               @endauth
           </ul>

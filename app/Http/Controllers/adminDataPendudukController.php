@@ -108,4 +108,12 @@ class adminDataPendudukController extends Controller
 
         return redirect('/dataPenduduk')->with('success', 'Tambah Penduduk Berhasil');
     }
+
+    public function show(penduduk $penduduk)
+    {
+        return view('/dashBoard.viewdataPenduduk', [
+            "title" => "Tambah Penduduk",
+            "penduduk" => $penduduk
+        ]);
+    }
 }

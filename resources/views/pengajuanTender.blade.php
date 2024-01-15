@@ -29,7 +29,7 @@
 
                         <div class="form-group">
                             <label for="link_vidio">Link Vidio</label>
-                            <input type="text" class="form-control" id="link_vidio" name="link_vidio" required>
+                            <input type="text" class="form-control" id="link_vidio" name="link_vidio">
                         </div>
 
                         <div class="form-group">

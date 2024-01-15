@@ -19,9 +19,9 @@
             <label for="formFile" class="form-label">Gambar</label>
             <input class="form-control" type="file" id="img" name="img" accept="image/*">
         </div>        
-        <button type="submit" class="btn btn-primary">Edit Berita</button>
+        <button type="submit" class="btn btn-success">Edit Berita</button>
     </form>
     
-    <a href="/kelolaBerita" class="btn btn-success"><span data-feather="arrow-left"></span> Kembali</a>
+    <a href="/kelolaBerita" class="btn btn-primary"><span data-feather="arrow-left"></span> Kembali</a>
 </div>
 @endsection

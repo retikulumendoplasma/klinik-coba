@@ -16,14 +16,16 @@ class AdminPengurusanSuratController extends Controller
             "dataSurat" => pengaju_surat::all()
         ]);
     }
+
     public function lihat(pengaju_surat $surat)
     {
-        return view('/dashBoard.viewsurat', [
+        return view('/dashBoard.viewSurat', [
             "title" => "Lihat surat",
             //data surat sudah tersimpan dalam models surat
             "data" => $surat
         ]);
     }
+
     public function terimasurat($id)
     {
         // Temukan surat berdasarkan ID
@@ -36,6 +38,7 @@ class AdminPengurusanSuratController extends Controller
         // Redirect atau kembali ke halaman yang diinginkan
         return redirect()->back()->with('success', 'Proposal berhasil disetujui');
     }
+    
     public function tolaksurat($id)
     {
             // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
@@ -52,6 +55,15 @@ class AdminPengurusanSuratController extends Controller
 
         // Redirect atau berikan pesan sukses
         return redirect()->back()->with('success', 'surat berhasil ditolak.');
+    }
+
+    public function statusPengajuan(pengaju_surat $surat)
+    {
+        return view('pengajuanSurat', [
+            "title" => "Pengajuan surat",
+            //data surat sudah tersimpan dalam models surat
+            "data" => $surat
+        ]);
     }
 
 }

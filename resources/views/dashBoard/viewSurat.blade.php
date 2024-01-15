@@ -1,9 +1,9 @@
 @extends('dashBoard.dashboard')
 
 @section('container')
-<div class="row">
-    <form action="/ajukansurat" method="post" enctype="multipart/form-data">
-        @csrf
+  <div class="container">
+    <div class="row pb-5">
+        <h2>Surat Diajukan</h2>
         <div class="col-6">
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama</label>
@@ -19,10 +19,6 @@
                 <label for="exampleFormControlInput1" class="form-label">Jenis kelamin</label>
                 <input class="form-control" type="text" id="jenis_kelaminInput" value="{{ $data->jenis_kelamin }}" name="jenis_kelamin" aria-label="Disabled input example" disabled readonly>
             </div>
-            {{-- <div class="form-group mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Foto KTP</label>
-                <a href="{{ asset('storage/' . $data->foto_ktp) }}" target="_blank">Lihat foto KTP</a>
-            </div> --}}
             <div class="form-group mb-3">
                 <label for="formFile" class="form-label">Foto KTP</label>
                 <div>
@@ -78,9 +74,33 @@
                 <input class="form-control" type="text" id="nomor_hp" value="{{ $data->nomor_hp }}" name="nomor_hp" aria-label="Disabled input example" disabled readonly>
             </div>
         </div>
-        <button type="submit" class="position end-0 m-2 btn btn-dark">Kirim</button>
+    </div>
+    <a href="/kelolaSurat" class="badge btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+        </svg>
+         Kembali
+    </a>
+    @if($data->status_surat == 'Proses')
+        <form action="/kelolaPengajusurat/{{ $data->id }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="badge bg-success border-0" onclick="return confirm('Terima surat ini?')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+                Proses
+            </button>
+        </form>
+    @endif
+    <form action="/kelolaPengajusurat/{{ $data->id }}" method="post" class="d-inline">
+        @csrf
+        @method('DELETE')
+        <button class="badge bg-danger border-0" onclick="return confirm('Tolak Permohonan ini?')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+            </svg>
+             Tolak
+        </button>
     </form>
-</div>
-
-
+  </div>
 @endsection

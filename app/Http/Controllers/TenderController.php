@@ -178,7 +178,7 @@ class TenderController extends Controller
             'id_tender' => 'required',
             'foto_ktp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan tipe file gambar yang diizinkan
             'file_proposal' => 'required|file|mimes:pdf,docx', // Sesuaikan dengan tipe file dokumen yang diizinkan
-            'link_vidio' => 'required|url',
+            'link_vidio' => 'nullable|url',
             'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan tipe file gambar yang diizinkan
         ]);
     
@@ -198,11 +198,21 @@ class TenderController extends Controller
         $userId = Auth::id();
         $validatedData['id_user'] = $userId;
         // Simpan data pengajuan tender ke dalam database
-        pengaju_proposal_tender::create($validatedData);
+        $pengaju = pengaju_proposal_tender::create($validatedData);
 
-    
         // Redirect dengan pesan sukses
-        return redirect('/tender')->with('success', 'Pengajuan Tender berhasil disimpan.');
+        return redirect('berhasilurusproposal/' . $pengaju->id)->with('success', 'Pengajuan Tender berhasil disimpan.');
+    }
+
+    public function berhasil($pengaju)
+    {
+        $dataProposal = pengaju_proposal_tender::find($pengaju);
+        return view('berhasilurusproposal', [
+            "title" => "Berhasil",
+            //data surat sudah tersimpan dalam models surat
+            "dataProposal" => $dataProposal
+
+        ]);
     }
 
     public function proposal(pengaju_proposal_tender $pengaju, tender $tender)
@@ -303,6 +313,15 @@ class TenderController extends Controller
             "dataProposal" => $dataProposal,
             "namayangngevote" => $namayangngevote,
             "namatender" => $namatender,
+        ]);
+    }
+
+    public function statusPengajuan(pengaju_proposal_tender $pengaju)
+    {
+        return view('pengajuanProposalTender', [
+            "title" => "Pengajuan proposal tender",
+            //data surat sudah tersimpan dalam models surat
+            "pengaju" => $pengaju
         ]);
     }
 }

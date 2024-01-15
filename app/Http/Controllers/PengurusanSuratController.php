@@ -131,9 +131,19 @@ class PengurusanSuratController extends Controller
         }
        
         // dd($request->all());
-        pengaju_surat::create($validatedData);
+        $pengaju = pengaju_surat::create($validatedData);
 
-        return redirect('/')->with('success', 'Pengajuan Surat Berhasil Diajukan');
+        return redirect('berhasilurussurat/'.$pengaju->id)->with('success', 'Pengajuan Surat Berhasil Diajukan');
+    }
+
+    public function berhasil($pengaju)
+    {
+        $datasurat = pengaju_surat::find($pengaju);
+        return view('berhasilurussurat', [
+            "title" => "Berhasil",
+            //data surat sudah tersimpan dalam models surat
+            "datasurat" => $datasurat
+        ]);
     }
 
     /**
