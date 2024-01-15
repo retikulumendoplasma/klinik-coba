@@ -1,27 +1,48 @@
 @extends('layouts.main')
 
 @section('main')
-<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="3000">
-          <img src="img/Gambar Mesjid Al-Ikhlas.jpg" class="d-block w-100" alt="..." height="720">
-      </div>
-      <div class="carousel-item" data-bs-interval="3000">
-          <img src="img/Gambar Kantor Desa Jatirejo.jpg" class="d-block w-100" alt="..." height="720">
-      </div>
-      <div class="carousel-item" data-bs-interval="3000">
-          <img src="img/Gambar Struktur Organisasi.png" class="d-block w-100" alt="..." height="720">
-      </div>
-  </div>
-  <button class="carousel-control-prev d-md-none" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next d-md-none" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-  </button>
-</div>
+    {{-- Slider image --}}
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <img src="img/Gambar Mesjid Al-Ikhlas.jpg" class="d-block w-100 carousel-img" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="img/Gambar Kantor Desa Jatirejo.jpg" class="d-block w-100 carousel-img" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="img/Gambar Struktur Organisasi.png" class="d-block w-100 carousel-img" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev d-md-none" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next d-md-none" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <style>
+        .carousel-img {
+            height: 80vh; /* Default height for larger screens */
+            object-fit: cover;
+        }
+
+        /* Media query for smaller screens */
+        @media only screen and (max-width: 600px) {
+            .carousel-img {
+                height: 45vh; /* Adjust the height for smaller screens */
+            }
+            .card_box {
+                max-width: 100%; /* Adjust the width for smaller screens */
+            }
+            .owl-nav {
+                display: none;
+            }
+        }
+    </style>
 
 {{-- jumlah penduduk start --}}
 <div class="container p-3">
@@ -105,7 +126,7 @@
                 <!-- Adjusted the column to take full width on all screen sizes -->
                 <div class="owl-carousel slider_carousel">
                     <div class="card_box">
-                        <img src="img/Boy palestine.jpg" alt="" class="card-image w-100">
+                        <img src="img/Boy palestine.jpg" alt="" class="card-image w-100 h-auto">
                         <div class="card_text">
                             <h4>Sudarianto</h4>
                             <p>Kepala Desa Jatirejo</p>
@@ -114,7 +135,7 @@
                         </div>
                     </div>
                     <div class="card_box">
-                      <img src="img/Boy palestine.jpg" alt="" class="card-image w-100">
+                      <img src="img/Boy palestine.jpg" alt="" class="card-image w-100 h-auto">
                       <div class="card_text">
                         <h4>Rian Andrianto</h4>
                         <p>Kepala Seksi Kesejahteraan</p>
@@ -123,7 +144,7 @@
                       </div>
                     </div>
                     <div class="card_box">
-                      <img src="img/Palestina.jpg" alt="" class="card-image w-100">
+                      <img src="img/Palestina.jpg" alt="" class="card-image w-100 h-auto">
                       <div class="card_text">
                         <h4>Mega Silpia</h4>
                         <p>Sekretaris</p>
