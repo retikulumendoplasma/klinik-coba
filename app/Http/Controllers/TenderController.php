@@ -170,39 +170,46 @@ class TenderController extends Controller
     }
 
     public function storeProposal(Request $request)
-    {
-        // Validasi data yang dikirimkan melalui form
-        // dd($request->all());
-        $validatedData = $request->validate([
-            'nama' => 'required',
-            'id_tender' => 'required',
-            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan tipe file gambar yang diizinkan
-            'file_proposal' => 'required|file|mimes:pdf,docx', // Sesuaikan dengan tipe file dokumen yang diizinkan
-            'link_vidio' => 'nullable|url',
-            'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan tipe file gambar yang diizinkan
-        ]);
-    
-        // Handle file foto_ktp
-        $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
-        
-        // Handle file file_proposal
-        $validatedData['file_proposal'] = $request->file('file_proposal')->store('tender-files');
-    
-        // Handle file foto_pengaju
-        $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
+{
+    // Validasi data yang dikirimkan melalui form
+    $validatedData = $request->validate([
+        'nama' => 'required',
+        'id_tender' => 'required',
+        'foto_ktp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'file_proposal' => 'required|file|mimes:pdf,docx',
+        'link_vidio' => 'nullable|url',
+        'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
+    // Handle id user
+    $userId = Auth::id();
+    $validatedData['id_user'] = $userId;
 
+    // Check if the proposal for the given tender and user already exists
+    $existingProposal = pengaju_proposal_tender::where('id_tender', $validatedData['id_tender'])
+                                                ->where('id_user', $userId)
+                                                ->first();
 
-
-        // Handle id user
-        $userId = Auth::id();
-        $validatedData['id_user'] = $userId;
-        // Simpan data pengajuan tender ke dalam database
-        $pengaju = pengaju_proposal_tender::create($validatedData);
-
-        // Redirect dengan pesan sukses
-        return redirect('berhasilurusproposal/' . $pengaju->id)->with('success', 'Pengajuan Tender berhasil disimpan.');
+    if ($existingProposal) {
+        // Redirect with an error message if proposal already exists
+        return redirect()->back()->with('error', 'Anda sudah mengajukan proposal untuk tender ini sebelumnya.');
     }
+
+    // Handle file foto_ktp
+    $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
+
+    // Handle file file_proposal
+    $validatedData['file_proposal'] = $request->file('file_proposal')->store('tender-files');
+
+    // Handle file foto_pengaju
+    $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
+
+    // Simpan data pengajuan tender ke dalam database
+    $pengaju = pengaju_proposal_tender::create($validatedData);
+
+    // Redirect dengan pesan sukses
+    return redirect('berhasilurusproposal/' . $pengaju->id)->with('success', 'Pengajuan Tender berhasil disimpan.');
+}
 
     public function berhasil($pengaju)
     {
@@ -321,7 +328,7 @@ class TenderController extends Controller
         return view('pengajuanProposalTender', [
             "title" => "Pengajuan proposal tender",
             //data surat sudah tersimpan dalam models surat
-            "pengaju" => $pengaju
+            "pengaju" => pengaju_proposal_tender::all()
         ]);
     }
 }

@@ -80,6 +80,7 @@ class PengurusanSuratController extends Controller
 
         return Response::json([
             'nama' => $penduduk->nama,
+            'nomor_kk' => $penduduk->nomor_kk,
             'tempat_lahir' => $penduduk->tempat_lahir,
             'tanggal_lahir' => $penduduk->tanggal_lahir,
             'jenis_kelamin' => $penduduk->jenis_kelamin,
@@ -112,6 +113,7 @@ class PengurusanSuratController extends Controller
         $validatedData = $request->validate([
             'jenis_surat' => 'required|string',
             'nik' => 'required|string',
+            'nomor_kk' => 'required|string',
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
@@ -124,10 +126,22 @@ class PengurusanSuratController extends Controller
             'foto_ktp' => 'image|file',
             'foto_kk' => 'image|file',
         ]);
+
         $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('foto_ktp');
         $validatedData['foto_kk'] = $request->file('foto_kk')->store('foto_kk');
+
+        // pengecekan surat sudah pernah dikirim
+        $existingSurat = pengaju_surat::where('nik', $validatedData['nik'])
+                                        ->where('jenis_surat', $validatedData['jenis_surat'])
+                                        ->first();
+
+
         if ($request->file('foto_pendukung')) {
             $validatedData['foto_pendukung'] = $request->file('foto_pendukung')->store('foto_pendukung');
+        }
+
+        if ($existingSurat && $existingSurat->status_surat != 'Selesai') {
+            return redirect()->back()->with('error', 'Anda sudah mengajukan pembuatan surat ini sebelumnya.');
         }
        
         // dd($request->all());

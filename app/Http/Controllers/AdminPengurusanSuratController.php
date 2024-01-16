@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\pengaju_surat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminPengurusanSuratController extends Controller
 {
@@ -57,12 +59,19 @@ class AdminPengurusanSuratController extends Controller
         return redirect()->back()->with('success', 'surat berhasil ditolak.');
     }
 
-    public function statusPengajuan(pengaju_surat $surat)
+    public function statusPengajuan()
     {
+        $user = Auth::user();
+
+        // Mendapatkan nomor KK dari relasi dengan model Penduduk
+        $nomorKK = $user->penduduk->nomor_kk;
+
+        // Mendapatkan data Penduduk yang memiliki nomor KK yang sesuai dengan nomor KK user yang login
+        $dataSurat = pengaju_surat::where('nomor_kk', $nomorKK)->get();
         return view('pengajuanSurat', [
             "title" => "Pengajuan surat",
             //data surat sudah tersimpan dalam models surat
-            "data" => $surat
+            "dataSurat" => $dataSurat
         ]);
     }
 
