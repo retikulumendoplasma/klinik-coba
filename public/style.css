@@ -41,7 +41,7 @@ header,
 menu,
 nav,
 section {
-	margin: 0;
+	/* margin: 0; */
 	padding: 0;
 }
 
@@ -177,4 +177,17 @@ button:focus, input:focus, textarea:focus {
 	font-size: 20px;
 }
 
+.carousel-img {
+    height: 100vh;
+    object-fit: cover;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: auto;
+    margin-left: auto;
+}
   
