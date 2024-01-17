@@ -48,11 +48,12 @@ class KeuanganDesaController extends Controller
         // dd('Metode Store diakses');
         $validatedData = $request->validate([
             'jenis_laporan' => 'required|string',
-            'file_laporan' => 'required|string',
+            'file_laporan' => 'required|file|mimes:pdf,docx',
             'tahun_laporan' => 'required|string',
         ]);
+        $validatedData['file_laporan'] = $request->file('file_laporan')->store('file_laporan');
 
-        laporan_keuangan::create($request->all());
+        laporan_keuangan::create($validatedData);
 
 
         return redirect('/dataKeuangan')->with('success', 'Tambah Data Berhasil');

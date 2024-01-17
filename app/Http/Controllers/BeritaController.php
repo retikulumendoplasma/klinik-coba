@@ -47,7 +47,7 @@ class BeritaController extends Controller
             //pengisian berita
             "title" => "Kelola Berita",
             //data berita sudah tersimpan dalam models berita
-            "kelolaberita" => berita::all()
+            "kelolaberita" => berita::paginate(10)
         ]);
     }
 

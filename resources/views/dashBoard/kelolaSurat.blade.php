@@ -8,6 +8,12 @@
             <div class="col-8">
                 <h4>List Pengaju Surat - Dalam Proses</h4>
             </div>
+            <form action="/kelolaSurat"  class="d-inline">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Cari nama atau NIK penduduk" aria-label="Recipient's username" name='cari'>
+                  <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
+                </div>
+            </form>
         </div>
         <table class="table table-striped table-sm">
             <thead>
@@ -24,7 +30,7 @@
               @php
                     $nomordiproses = 1;
                 @endphp
-                @foreach ($dataSurat as $surat)
+                @foreach ($dataSuratProses as $surat)
                     @if ($surat->status_surat == 'Proses')
                         <tr>
                             <td>{{ $nomordiproses++ }}</td>
@@ -86,7 +92,7 @@
               @php
                     $nomorditerima = 1;
                 @endphp
-                @foreach ($dataSurat as $surat)
+                @foreach ($dataSuratSelesai as $surat)
                     @if ($surat->status_surat == 'Selesai')
                         <tr>
                             <td>{{ $nomorditerima++ }}</td>

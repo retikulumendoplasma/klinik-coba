@@ -7,11 +7,11 @@
             <div class="text-center">
                 <h1>Buat Laporan </h1>
             </div>
-            <form action="/buatLaporan" method="post">
+            <form action="/buatLaporan" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group pb-3">
                     <label for="tahun_laporan">Tahun</label>
-                    <input type="number" class="form-control" id="tahun_laporan" name="tahun_laporan" required placeholder="Silahkan Masukkan Judul" min="1900" max="2100">
+                    <input type="number" class="form-control" id="tahun_laporan" name="tahun_laporan" required placeholder="Silahkan Masukkan Tahun Laporan" min="1900" max="2100">
                 </div>
                 <div class="form-group pb-3">
                     <label for="exampleFormControlInput1" class="form-label">Jenis Laporan</label>
@@ -20,9 +20,9 @@
                         <option value="2">Laporan Keuangan</option>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label for="img" class="form-label">URL Gambar:</label>
-                    <input type="text" class="form-control" id="file_laporan" name="file_laporan" required>
+                <div class="form-group pb-3">
+                    <label for="file_proposal">File Laporan</label>
+                    <input type="file" class="form-control" id="file_laporan" name="file_laporan" accept=".pdf,.docx" required>
                 </div>
                 <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Buat</button>
             </form>

@@ -61,6 +61,9 @@
         @endforeach
     </tbody>
   </table>
+  <div class="pagination justify-content-center">
+    {{ $kelolaberita->links() }}
+</div>
 </div>
 
 

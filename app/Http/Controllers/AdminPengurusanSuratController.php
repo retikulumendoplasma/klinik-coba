@@ -9,11 +9,29 @@ class AdminPengurusanSuratController extends Controller
 {
     public function tampildata()
     {
+        $surat = pengaju_surat::query();
+        $suratselesai = pengaju_surat::query();
+    
+        if (request('cari')) {
+            $surat->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            });
+        }
+        if (request('cari')) {
+            $suratselesai->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            });
+        }
+    
+        $dataSuratProses = $surat->where('status_surat', 'Proses')->get();
+        $dataSuratSelesai = $suratselesai->where('status_surat', 'Selesai')->get();
+    
         return view('dashBoard.kelolaSurat', [
-            //pengisian berita
             "title" => "Data Surat",
-            //data berita sudah tersimpan dalam models berita
-            "dataSurat" => pengaju_surat::all()
+            "dataSuratProses" => $dataSuratProses,
+            "dataSuratSelesai" => $dataSuratSelesai,
         ]);
     }
 
