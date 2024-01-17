@@ -9,6 +9,12 @@
                 <div class="card-header">Form Upload Pengajuan Tender</div>
 
                 <div class="card-body">
+                    {{-- pesan bahwa proposal sudah diajukan --}}
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
                     <form method="post" action="/pengajuanTender" enctype="multipart/form-data">
                         @csrf
 

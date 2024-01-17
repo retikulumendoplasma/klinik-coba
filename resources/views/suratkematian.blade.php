@@ -4,10 +4,17 @@
 <div class="container">
     <h1 class="text-center pb-2">Surat Keterangan Meninggal Dunia</h1>
     <div class="row">
+        {{-- pesan bahwa proposal sudah diajukan --}}
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <form action="/ajukansurat" method="post" enctype="multipart/form-data" class="row">
             @csrf
             <div class="col-md-6 col-12">
                 <input type="hidden" name="jenis_surat" value="Surat keterangan meninggal dunia">
+                <input type="hidden" id="nomor_kk" name="nomor_kk" value="">
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">NIK</label>
                     <select id="namaSelector" name="nik" class="form-select" aria-label="Default select example">
@@ -90,6 +97,7 @@
                         $('#agamaInput').val(response.agama);
                         $('#pekerjaanInput').val(response.pekerjaan);
                         $('#alamatInput').val(response.alamat);
+                        $('#nomor_kk').val(response.nomor_kk);
                         
                         // Update nilai atribut "disabled" menjadi "false"
                         $('#namaInput, #tempat_tanggal_lahirInput, #jenis_kelaminInput, #status_perkawinanInput, #agamaInput, #pekerjaanInput, #alamatInput').prop('disabled', false);
