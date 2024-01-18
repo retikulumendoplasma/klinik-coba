@@ -3,7 +3,7 @@
 @section('container')
     <h2>Kelola Pengaju Surat</h2>
 
-    <div class="table-responsive col-lg-8 mb-5">
+    <div class="table-responsive col-lg-10 mb-5">
         <div class="row">
             <div class="col-8">
                 <h4>List Pengaju Surat - Dalam Proses</h4>
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-              @php
+                @php
                     $nomordiproses = 1;
                 @endphp
                 @foreach ($dataSurat as $surat)
@@ -47,14 +47,22 @@
                                         </svg>
                                     </button>
                                 </form>
-                                <!-- Form untuk delete -->
-                                <form action="/kelolaPengajusurat/{{ $surat->id }}" method="post" class="d-inline">
+
+                                <!-- Form untuk reject -->
+                                <form id="rejectForm{{ $surat->id }}" action="/kelolaPengajusurat/{{ $surat->id }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="badge bg-danger border-0" onclick="return confirm('Tolak Permohonan ini?')">
+                                    <div id="rejectInputContainer{{ $surat->id }}" class="mb-3" style="display: none;">
+                                        <label for="tolak_surat" class="form-label">Pesan Penolakan</label>
+                                        <textarea class="form-control" id="tolak_surat" name="tolak_surat" rows="3" required></textarea>
+                                        <button type="submit" class="btn btn-danger">Tolak</button>
+                                        <button type="button" class="btn btn-secondary" onclick="hideRejectInput('{{ $surat->id }}')">Batal</button>
+                                    </div>
+                                    <button type="button" class="badge bg-danger border-0" onclick="showRejectInput('{{ $surat->id }}')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                         </svg>
+                                        Tolak
                                     </button>
                                 </form>
                             </td>
@@ -65,7 +73,7 @@
         </table>
     </div>
 
-    <div class="table-responsive col-lg-8">
+    <div class="table-responsive col-lg-10">
         <div class="row">
             <div class="col-8">
                 <h4>List Pengaju Surat Diterima</h4>
@@ -83,7 +91,7 @@
                 </tr>
             </thead>
             <tbody>
-              @php
+                @php
                     $nomorditerima = 1;
                 @endphp
                 @foreach ($dataSurat as $surat)
@@ -102,13 +110,22 @@
                                     </svg>
                                 </a>
                                 <!-- Form untuk delete -->
-                                <form action="/kelolaPengajusurat/{{ $surat->id }}" method="post" class="d-inline">
+                                <form id="rejectForm{{ $surat->id }}" action="/kelolaPengajusurat/{{ $surat->id }}" method="post" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="badge bg-danger border-0" onclick="return confirm('Tolak Permohonan ini?')">
+                                    <div id="rejectInputContainer{{ $surat->id }}" style="display: none;">
+                                        <div class="mb-3 pb-1">
+                                            <label for="pesan_penolakan" class="form-label">Pesan Penolakan</label>
+                                            <textarea class="form-control" id="pesan_penolakan" name="pesan_penolakan" rows="3" required></textarea>
+                                        </div>
+                                        <button type="submit" class="badge btn-danger">Tolak</button>
+                                        <button type="button" class="badge btn-secondary" onclick="hideRejectInput('{{ $surat->id }}')">Batal</button>
+                                    </div>
+                                    <button class="badge bg-danger border-0" onclick="showRejectInput('{{ $surat->id }}')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                         </svg>
+                                        Tolak
                                     </button>
                                 </form>
                             </td>
@@ -118,4 +135,18 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        function showRejectInput(id) {
+            document.getElementById('rejectInputContainer' + id).style.display = 'block';
+            document.getElementById('rejectForm' + id).getElementsByTagName('button')[3].style.display = 'block';
+            document.getElementById('rejectForm' + id).getElementsByTagName('button')[4].style.display = 'none';
+        }
+    
+        function hideRejectInput(id) {
+            document.getElementById('rejectInputContainer' + id).style.display = 'none';
+            document.getElementById('rejectForm' + id).getElementsByTagName('button')[3].style.display = 'none';
+            document.getElementById('rejectForm' + id).getElementsByTagName('button')[4].style.display = 'block';
+        }
+    </script>
 @endsection

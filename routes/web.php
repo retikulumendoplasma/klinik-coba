@@ -120,11 +120,16 @@ Route::delete('/kelolaPengajuProposal/{id}', [TenderController::class, 'tolakPro
 
 Route::get('/kelolaProfilDesa', [ProfildesaController::class, 'kelolaTampil'])->middleware('auth:akun_user');
 Route::get('/tambahAparatur', [ProfildesaController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/tambahAparatur', [ProfildesaController::class, 'store'])->middleware('auth:akun_user');
 
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
 Route::get('/viewSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
 Route::post('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
-Route::delete('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
+// Menampilkan form untuk menolak surat
+Route::match(['post', 'delete'], '/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
+Route::get('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'showRejectForm'])->name('surat.showRejectForm');
+// Menolak surat
+Route::post('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat'])->name('surat.tolaksurat');
 
 Route::get('/saranMasukanAdmin', function () {
     return view('dashBoard.saranMasukanAdmin', [

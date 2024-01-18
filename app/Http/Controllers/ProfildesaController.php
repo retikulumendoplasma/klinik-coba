@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\aparatur;
 use App\Models\penduduk;
 use Illuminate\Http\Request;
 
@@ -57,7 +58,20 @@ class ProfildesaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nip_nipd' => 'required',
+            'nama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'no_wa' => 'required',
+            'jabatan' => 'required'
+        ]);
+
+        dd($request->all());
+        aparatur::create($validatedData);
+
+        return redirect('kelolaProfilDesa')->with('success', 'Data aparatur berhasil ditambah');
     }
 
     /**
