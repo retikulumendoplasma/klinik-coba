@@ -140,7 +140,7 @@ class PengurusanSuratController extends Controller
             $validatedData['foto_pendukung'] = $request->file('foto_pendukung')->store('foto_pendukung');
         }
 
-        if ($existingSurat && $existingSurat->status_surat != 'Selesai') {
+        if ($existingSurat && ($existingSurat->status_surat != 'Selesai' && $existingSurat->status_surat != 'Ditolak')) {
             return redirect()->back()->with('error', 'Anda sudah mengajukan pembuatan surat ini sebelumnya.');
         }
        

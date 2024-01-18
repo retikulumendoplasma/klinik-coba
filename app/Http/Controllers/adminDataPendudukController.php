@@ -29,7 +29,7 @@ class adminDataPendudukController extends Controller
             return redirect('/dataPenduduk')->with('success', 'Berita berhasil dihapus.');
         } else {
             return redirect('/dataPenduduk')->with('error', 'Berita tidak ditemukan.');
-    }
+        }
     }
 
     public function create()

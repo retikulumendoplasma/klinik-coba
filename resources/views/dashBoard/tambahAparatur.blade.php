@@ -7,11 +7,15 @@
             <div class="text-center">
                 <h1>Tambah Aparatur </h1>
             </div>
-            <form action="/tambahAparatur" method="post">
+            <form action="/tambahAparatur" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
+                <div class="form-group pb-3">
                     <label for="foto">Foto</label>
                     <input type="file" class="form-control" id="foto" name="foto" accept="image/*" required>
+                </div>
+                <div class="form-group pb-3">
+                    <label for="nama">NIP/NIPD</label>
+                    <input type="number" class="form-control" id="nip_nipd" name='nip_nipd' required placeholder="Silahkan Masukkan NIP atau NIPD" >
                 </div>
                 <div class="form-group pb-3">
                     <label for="nama">Nama</label>
@@ -31,9 +35,9 @@
                 </div>
                 <div class="form-group pb-3">
                     <label for="Jabatan">Jabatan</label>
-                    <input type="text" class="form-control"  id="jabatan" name='jabatan' required placeholder="Pekerjaan" >
+                    <input type="text" class="form-control"  id="jabatan" name='jabatan' required placeholder="Jabatan" >
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Tambah Aparatur</button>
+                <button type="submit" class="btn btn-success text-white btn-block mb-3">Tambah Aparatur</button>
             </form>
         </div>
     </div>

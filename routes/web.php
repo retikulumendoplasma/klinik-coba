@@ -83,13 +83,15 @@ Route::get('/saranmasukan', function () {
     ]);
 })->middleware('auth:akun_user');
 
-// route admin
+
+// ................ ROUTE ADMIN ...............//
 Route::get('/dashboard', function () {
     return view('dashBoard.beranda', [
         "title" => "Beranda"
     ]);
 })->middleware('auth:akun_user');
 
+// kelola berita
 Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth:akun_user');
 Route::get('/kelolaBerita/{berita:id}', [BeritaController::class, 'lihat']);
 Route::delete('/kelolaBerita/{id}', [BeritaController::class, 'destroy']);
@@ -98,6 +100,7 @@ Route::post('/tambahB', [BeritaController::class, 'store'])->middleware('auth:ak
 Route::get('/kelolaBerita/{berita:id}/editBerita', [BeritaController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/tambahB/{berita:id}', [BeritaController::class, 'update'])->middleware('auth:akun_user');
 
+// kelola data penduduk
 Route::get('/dataPenduduk', [adminDataPendudukController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/viewdataPenduduk/{penduduk:nik}', [adminDataPendudukController::class, 'show'])->middleware('auth:akun_user');
 Route::delete('/dataPenduduk/{nik}', [adminDataPendudukController::class, 'destroy']);
@@ -106,6 +109,7 @@ Route::post('/tambahPenduduk', [adminDataPendudukController::class,'store'])->mi
 Route::get('/dataPenduduk/{penduduk:nik}/editPenduduk', [adminDataPendudukController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/tambahPenduduk/{penduduk:nik}', [adminDataPendudukController::class, 'update'])->middleware('auth:akun_user');
 
+// kelola tender
 Route::get('/kelolaTender', [TenderController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/kelolaTender/{tender:id}', [TenderController::class, 'viewT'])->middleware('auth:akun_user');
 Route::get('/buatTender', [TenderController::class, 'create'])->middleware('auth:akun_user');
@@ -114,18 +118,34 @@ Route::delete('/kelolaTender/{tender}', [TenderController::class, 'destroy']);
 Route::get('/kelolaTender/{tender:id}/editTender', [TenderController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/buatTender/{tender:id}', [TenderController::class, 'update'])->middleware('auth:akun_user');
 
+// kelola pengaju proposal
 Route::get('/kelolaPengajuProposal/{tender}', [TenderController::class, 'proposal'])->name('kelolaPengajuProposal');
 Route::get('/viewProposal/{tender}', [TenderController::class, 'viewProposal'])->name('viewProposal');
-Route::post('/kelolaPengajuProposal/{id}', [TenderController::class, 'approveProposal'])->middleware('auth:akun_user');
-Route::delete('/kelolaPengajuProposal/{id}', [TenderController::class, 'tolakProposal'])->middleware('auth:akun_user');
+Route::post('/terimaPengajuProposal/{id}', [TenderController::class, 'approveProposal'])->middleware('auth:akun_user');
+// Menampilkan form untuk menolak surat
+Route::match(['post', 'delete'], '/kelolaPengajuProposal/{id}', [TenderController::class, 'alasanditolak']);
+Route::get('/alasanditolak/{id}', [TenderController::class, 'showRejectForm'])->name('surat.showRejectForm');
+// Menolak surat
+Route::post('/alasanditolak/{id}', [TenderController::class, 'alasanditolak'])->name('surat.alasanditolak');
 
+// kelola profil desa
 Route::get('/kelolaProfilDesa', [ProfildesaController::class, 'kelolaTampil'])->middleware('auth:akun_user');
 Route::get('/tambahAparatur', [ProfildesaController::class, 'create'])->middleware('auth:akun_user');
+Route::post('/tambahAparatur', [ProfildesaController::class, 'store'])->middleware('auth:akun_user');
+Route::get('/kelolaProfilDesa/{aparatur:nip_nipd}/editProfilDesa', [ProfildesaController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/tambahAparatur/{aparatur:nip_nipd}', [ProfildesaController::class, 'update'])->middleware('auth:akun_user');
+Route::delete('/kelolaProfilDesa/{nip_nipd}', [ProfildesaController::class, 'destroy'])->middleware('auth:akun_user');
 
+// kelola surat
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
 Route::get('/viewSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
-Route::post('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
-Route::delete('/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
+Route::post('/terimaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
+Route::post('/selesaiPengajusurat/{id}', [AdminPengurusanSuratController::class, 'selesai']);
+// Menampilkan form untuk menolak surat
+Route::match(['post', 'delete'], '/kelolaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat']);
+Route::get('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'showRejectForm'])->name('surat.showRejectForm');
+// Menolak surat
+Route::post('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat'])->name('surat.tolaksurat');
 
 Route::get('/saranMasukanAdmin', function () {
     return view('dashBoard.saranMasukanAdmin', [
@@ -133,6 +153,7 @@ Route::get('/saranMasukanAdmin', function () {
     ]);
 })->middleware('auth:akun_user');
 
+// kelola data keuangan
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');

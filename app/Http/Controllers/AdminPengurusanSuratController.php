@@ -51,30 +51,43 @@ class AdminPengurusanSuratController extends Controller
         // Temukan surat berdasarkan ID
         $surat = pengaju_surat::find($id);
 
-        // Ubah status_pengajuan menjadi 'diterima'
+        // Ubah status_pengajuan menjadi 'Proses'
+        $surat->status_surat = 'Proses';
+        $surat->save();
+
+        // Redirect atau kembali ke halaman yang diinginkan
+        return redirect()->back()->with('success', 'Surat diproses');
+    }
+
+    public function selesai($id)
+    {
+        // Temukan surat berdasarkan ID
+        $surat = pengaju_surat::find($id);
+
+        // Ubah status_pengajuan menjadi 'Selesai'
         $surat->status_surat = 'Selesai';
         $surat->save();
 
         // Redirect atau kembali ke halaman yang diinginkan
-        return redirect()->back()->with('success', 'Proposal berhasil disetujui');
+        return redirect()->back()->with('success', ' surat telah selesai');
     }
     
-    public function tolaksurat($id)
+    public function tolaksurat(Request $request, $id)
     {
-            // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
+        $request->validate([
+            'tolak_surat' => 'required',
+        ]);
+    
+        // Ambil surat berdasarkan ID
         $surat = pengaju_surat::find($id);
-
-        // Lakukan validasi apakah surat ditemukan atau tidak
-        if (!$surat) {
-            // surat tidak ditemukan, mungkin hendak melakukan redirect atau memberikan pesan error
-            return redirect()->back()->with('error', 'surat tidak ditemukan.');
-        }
-
-        // Lakukan tindakan penolakan disini
-        $surat->delete(); // Atau lakukan tindakan penolakan sesuai kebutuhan
-
-        // Redirect atau berikan pesan sukses
-        return redirect()->back()->with('success', 'surat berhasil ditolak.');
+    
+        // Simpan pesan penolakan
+        $surat->update([
+            'status_surat' => 'Ditolak',
+            'tolak_surat' => $request->tolak_surat,
+        ]);
+    
+        return redirect()->back()->with('success', 'Surat ditolak dan pesan penolakan berhasil disimpan.');
     }
 
     public function statusPengajuan()
