@@ -44,6 +44,7 @@ Route::get('/profildesa', [ProfildesaController::class, 'index']);
 
 // data keuangan
 Route::get('/rencanaanggaran', [KeuanganDesaController::class, 'rencana'])->middleware('auth:akun_user');
+// Route::get('/view-pdf/{filename}', [KeuanganDesaController::class, 'viewPdf'])->name('view-pdf');
 Route::get('/laporankeuangan', [KeuanganDesaController::class, 'laporan'])->middleware('auth:akun_user');
 
 // tender

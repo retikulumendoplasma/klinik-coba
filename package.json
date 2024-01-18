@@ -16,6 +16,7 @@
         "postcss": "^8.1.14"
     },
     "dependencies": {
+        "gulp": "^4.0.2",
         "pdfjs-dist": "^4.0.379"
     }
 }

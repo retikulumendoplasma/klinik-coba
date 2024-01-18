@@ -10,17 +10,24 @@ class KeuanganDesaController extends Controller
 {
     public function rencana()
     {
-        $dataLaporan = laporan_keuangan::all()->sortByDesc('tahun_laporan');
+        // $dataLaporan = laporan_keuangan::all()->sortByDesc('tahun_laporan');
+        $dataLaporan = laporan_keuangan::where('jenis_laporan', 'Rencana Anggaran')->orderBy('tahun_laporan', 'desc')->get();
         return view('rencanaanggaran',[
             "title" => "Rencana anggaran",
             "dataLaporan" => $dataLaporan,
         ]);
     }
+    // public function viewPdf($filename)
+    // {
+    //     $path = storage_path('app/public/file_laporan/' . $filename);
+
+    //     return response()->file($path, ['Content-Type' => 'application/pdf']);
+    // }
 
     public function laporan()
     {
-        $dataLaporan = laporan_keuangan::all()->sortByDesc('tahun_laporan');
-        
+        // $dataLaporan = laporan_keuangan::all()->sortByDesc('tahun_laporan');
+        $dataLaporan = laporan_keuangan::where('jenis_laporan', 'Laporan Keuangan')->orderBy('tahun_laporan', 'desc')->get();
         return view('laporankeuangan',[
             "title" => "Laporan Keuangan",
             "dataLaporan" => $dataLaporan,
