@@ -11,10 +11,7 @@
           <h5 class="card-title">Status : {{ $dataProposal->status_pengajuan }}</h5>
           <p class="card-text">Berhasil mengirim proposal, proposal anda sedang dalam pengecekan oleh kami.</p>
           <p>Terimakasih</p>
-          <a href="#" class="btn btn-primary">Kembali</a>
-        </div>
-        <div class="card-footer text-muted">
-          2 days ago
+          <a href="/" class="btn btn-primary">Kembali</a>
         </div>
       </div>
 </div>

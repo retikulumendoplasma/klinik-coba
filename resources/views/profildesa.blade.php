@@ -120,38 +120,22 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h2 class="head_text">Aparatur Desa Jatirejo</h2>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores culpa, commodi dignissimos vel at eaque! Officiis excepturi, voluptatum sapiente debitis in provident laborum natus quo dolore, hic quod animi sed.</p>
+                <p class="des_card">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores culpa, commodi dignissimos vel at eaque! Officiis excepturi, voluptatum sapiente debitis in provident laborum natus quo dolore, hic quod animi sed.</p>
             </div>
             <div class="col-md-12">
                 <!-- Adjusted the column to take full width on all screen sizes -->
                 <div class="owl-carousel slider_carousel">
+                    @foreach ($aparatur as $dataaparatur)
                     <div class="card_box">
-                        <img src="img/Boy palestine.jpg" alt="" class="card-image w-100 h-auto">
+                        <img src="{{ $dataaparatur->foto }}" alt="" class="card-image w-100 h-auto">
                         <div class="card_text">
-                            <h4>Sudarianto</h4>
-                            <p>Kepala Desa Jatirejo</p>
-                            <p>Wa : 085370626861</p>
-                            <p>1967, 14 Juni Jatirejo</p>
+                            <h4>{{ $dataaparatur->nama }}</h4>
+                            <p>{{ $dataaparatur->jabatan }}</p>
+                            <p>Wa : {{ $dataaparatur->no_wa }}</p>
+                            <p>{{ $dataaparatur->tanggal_lahir }} {{ $dataaparatur->tempat_lahir }}</p>
                         </div>
                     </div>
-                    <div class="card_box">
-                      <img src="img/Boy palestine.jpg" alt="" class="card-image w-100 h-auto">
-                      <div class="card_text">
-                        <h4>Rian Andrianto</h4>
-                        <p>Kepala Seksi Kesejahteraan</p>
-                        <p>Wa : 082217794691</p>
-                        <p>2001, 27 Mei Jatirejo</p>
-                      </div>
-                    </div>
-                    <div class="card_box">
-                      <img src="img/Palestina.jpg" alt="" class="card-image w-100 h-auto">
-                      <div class="card_text">
-                        <h4>Mega Silpia</h4>
-                        <p>Sekretaris</p>
-                        <p>Wa : 082267870037</p>
-                        <p>2001, 07 July Jatirejo</p>
-                      </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

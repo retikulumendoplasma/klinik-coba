@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Tambah Aparatur </h1>
             </div>
-            <form action="/tambahAparatur" method="post">
+            <form action="/tambahAparatur" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group pb-3">
                     <label for="foto">Foto</label>

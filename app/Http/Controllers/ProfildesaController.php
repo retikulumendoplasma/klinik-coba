@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Validation\Rule;
 use App\Models\aparatur;
 use App\Models\penduduk;
 use Illuminate\Http\Request;
@@ -23,7 +24,8 @@ class ProfildesaController extends Controller
                                     'totallakilaki' => $totallakilaki,
                                     'totalperempuan' => $totalperempuan,
                                     'totalNomorKK' => $totalNomorKK,
-                                    'title' => "Profil Desa"
+                                    'title' => "Profil Desa",
+                                    'aparatur' => aparatur::all(),
                                     ]);
     }
 
@@ -32,7 +34,7 @@ class ProfildesaController extends Controller
         return view('/dashboard.kelolaProfilDesa', [
             "title" => "Kelola Profil Desa",
             //data profil desa sudah tersimpan dalam models berita
-            "dataTender" => penduduk::all()
+            "data" => aparatur::all()
         ]);
     }
 
@@ -59,16 +61,17 @@ class ProfildesaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'nip_nipd' => 'required',
+            'foto' => 'image|file',
+            'nip_nipd' => 'required|string',
             'nama' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
             'no_wa' => 'required',
             'jabatan' => 'required'
         ]);
+        $validatedData['foto'] =  $request->file('foto')->store('foto');
 
-        dd($request->all());
+        // dd($request->all());
         aparatur::create($validatedData);
 
         return redirect('kelolaProfilDesa')->with('success', 'Data aparatur berhasil ditambah');
@@ -88,12 +91,16 @@ class ProfildesaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     
      */
-    public function edit($id)
+    public function edit(aparatur $aparatur)
     {
-        //
+        return view('dashBoard.editProfilDesa', [
+            "title" => "Edit Aparatur",
+            "aparatur" => $aparatur,
+            //data berita sudah tersimpan dalam models berita
+            "dataaparatur" => aparatur::all()
+        ]);
     }
 
     /**
@@ -103,9 +110,26 @@ class ProfildesaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,aparatur $aparatur)
     {
-        //
+        $validatedData = $request->validate([
+            'foto' => 'image|file',
+            'nip_nipd' => 'required|string',
+            'nama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'no_wa' => 'required',
+            'jabatan' => 'required'
+        ]);
+        if ($request->hasFile('foto')) {
+            $validatedData['foto'] =  $request->file('foto')->store('foto');
+        }
+        
+
+        // dd($request->all());
+        aparatur::where('nip_nipd', $aparatur->nip_nipd)->update($validatedData);
+
+        return redirect('kelolaProfilDesa')->with('success', 'Data aparatur berhasil diedit');
     }
 
     /**
@@ -114,8 +138,16 @@ class ProfildesaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($nip_nipd)
     {
-        //
+        $aparatur = aparatur::find($nip_nipd);
+
+        // Hapus penduduk jika ditemukan
+        if ($aparatur) {
+            $aparatur->delete();
+            return redirect('/kelolaProfilDesa')->with('success', 'Berita berhasil dihapus.');
+        } else {
+            return redirect('/kelolaProfilDesa')->with('error', 'Berita tidak ditemukan.');
+    }
     }
 }

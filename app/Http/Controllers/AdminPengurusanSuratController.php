@@ -33,12 +33,25 @@ class AdminPengurusanSuratController extends Controller
         // Temukan surat berdasarkan ID
         $surat = pengaju_surat::find($id);
 
-        // Ubah status_pengajuan menjadi 'diterima'
+        // Ubah status_pengajuan menjadi 'Proses'
+        $surat->status_surat = 'Proses';
+        $surat->save();
+
+        // Redirect atau kembali ke halaman yang diinginkan
+        return redirect()->back()->with('success', 'Surat diproses');
+    }
+
+    public function selesai($id)
+    {
+        // Temukan surat berdasarkan ID
+        $surat = pengaju_surat::find($id);
+
+        // Ubah status_pengajuan menjadi 'Selesai'
         $surat->status_surat = 'Selesai';
         $surat->save();
 
         // Redirect atau kembali ke halaman yang diinginkan
-        return redirect()->back()->with('success', 'Proposal berhasil disetujui');
+        return redirect()->back()->with('success', ' surat telah selesai');
     }
     
     public function tolaksurat(Request $request, $id)

@@ -175,7 +175,7 @@ class TenderController extends Controller
     $validatedData = $request->validate([
         'nama' => 'required',
         'id_tender' => 'required',
-        'foto_ktp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         'file_proposal' => 'required|file|mimes:pdf,docx',
         'link_vidio' => 'nullable|url',
         'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -190,7 +190,7 @@ class TenderController extends Controller
                                                 ->where('id_user', $userId)
                                                 ->first();
 
-    if ($existingProposal) {
+    if ($existingProposal && $existingProposal->status_pengajuan != 'Ditolak') {
         // Redirect with an error message if proposal already exists
         return redirect()->back()->with('error', 'Anda sudah mengajukan proposal untuk tender ini sebelumnya.');
     }
@@ -236,32 +236,33 @@ class TenderController extends Controller
     public function approveProposal($id)
     {
         // Temukan proposal berdasarkan ID
-        $proposal = pengaju_proposal_tender::find($id);
+        $terima = pengaju_proposal_tender::find($id);
 
         // Ubah status_pengajuan menjadi 'diterima'
-        $proposal->status_pengajuan = 'diterima';
-        $proposal->save();
+        $terima->status_pengajuan = 'Diterima';
+        $terima->save();
 
         // Redirect atau kembali ke halaman yang diinginkan
-        return redirect()->back()->with('success', 'Proposal berhasil disetujui');
+        return redirect()->back()->with('success', 'Proposal diterima');
     }
 
-    public function tolakProposal($id)
+    public function alasanditolak(Request $request, $id)
     {
-            // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
+        // Temukan proposal berdasarkan $id dan lakukan tindakan penolakan
+        $request->validate([
+            'alasan_ditolak' => 'required',
+        ]);
+
+        // Ambil surat berdasarkan ID
         $proposal = pengaju_proposal_tender::find($id);
 
-        // Lakukan validasi apakah proposal ditemukan atau tidak
-        if (!$proposal) {
-            // Proposal tidak ditemukan, mungkin hendak melakukan redirect atau memberikan pesan error
-            return redirect()->back()->with('error', 'Proposal not found.');
-        }
+        // Simpan pesan penolakan
+        $proposal->update([
+            'status_pengajuan' => 'Ditolak',
+            'alasan_ditolak' => $request->alasan_ditolak,
+        ]);
 
-        // Lakukan tindakan penolakan disini
-        $proposal->delete(); // Atau lakukan tindakan penolakan sesuai kebutuhan
-
-        // Redirect atau berikan pesan sukses
-        return redirect()->back()->with('success', 'Proposal berhasil ditolak.');
+        return redirect()->back()->with('success', 'Proposal ditolak dan pesan penolakan berhasil disimpan.');
     }
 
     //menampilkan jumlah pengaju pada tampilan user
