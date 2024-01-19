@@ -84,6 +84,8 @@ Route::post('/berisaran', [SaranDanMasukanController::class, 'store'])->middlewa
 
 // ................ ROUTE ADMIN ...............//
 
+// Dashboard Admin
+Route::get('/dashboard', [AdminPengurusanSuratController::class, 'adminhome'])->middleware('auth:akun_user');
 
 // kelola berita
 Route::get('/kelolaBerita', [BeritaController::class, 'data'])->middleware('auth:akun_user');
@@ -133,7 +135,6 @@ Route::get('/viewAparatur/{nip_nipd}', [ProfildesaController::class, 'show'])->m
 
 // kelola surat
 Route::get('/kelolaSurat', [AdminPengurusanSuratController::class, 'tampildata'])->middleware('auth:akun_user');
-Route::get('/dashboard', [AdminPengurusanSuratController::class, 'adminhome'])->middleware('auth:akun_user');
 Route::get('/viewSurat/{surat:id}', [AdminPengurusanSuratController::class, 'lihat']);
 Route::post('/terimaPengajusurat/{id}', [AdminPengurusanSuratController::class, 'terimasurat']);
 Route::post('/selesaiPengajusurat/{id}', [AdminPengurusanSuratController::class, 'selesai']);
@@ -149,9 +150,11 @@ Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middlewar
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
 Route::get('/dataKeuangan/{laporan:id}/editKeuangan', [KeuanganDesaController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/buatLaporan/{laporan:id}', [KeuanganDesaController::class, 'update'])->middleware('auth:akun_user');
+Route::delete('/dataKeuangan/{laporan:id}', [KeuanganDesaController::class, 'delete']);
 
 // saran dan masukan
 Route::get('/saranMasukanAdmin', [SaranDanMasukanController::class, 'indexsaran'])->middleware('auth:akun_user');
 Route::get('/balasSaran/{saran:id}/balas', [SaranDanMasukanController::class, 'indexbalasan'])->middleware('auth:akun_user');
 Route::post('/balasSaran/{saran:id}', [SaranDanMasukanController::class, 'storebalasan'])->middleware('auth:akun_user');
-Route::post('/berisaran', [SaranDanMasukanController::class, 'store'])->middleware('auth:akun_user');Route::delete('/dataKeuangan/{laporan:id}', [KeuanganDesaController::class, 'delete']);
+Route::post('/berisaran', [SaranDanMasukanController::class, 'store'])->middleware('auth:akun_user');
+Route::put('/editbalasan/{saran:id}', [SaranDanMasukanController::class, 'update'])->middleware('auth:akun_user');

@@ -123,6 +123,7 @@ class BeritaController extends Controller
         if ($request->hasFile('img')) {
             $validatedData['img'] = $request->file('img')->store('gambar-berita');
         }
+        dd($validatedData);
         berita::where('id', $berita->id)->update($validatedData);
 
         return redirect('/kelolaBerita')->with('success', 'Edit Berita Berhasil');

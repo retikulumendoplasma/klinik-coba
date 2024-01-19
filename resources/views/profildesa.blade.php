@@ -127,12 +127,12 @@
                 <div class="owl-carousel slider_carousel">
                     @foreach ($aparatur as $dataaparatur)
                     <div class="card_box">
-                        <img src="{{ $dataaparatur->foto }}" alt="" class="card-image w-100 h-auto">
+                        <img src="{{ asset('storage/' . $dataaparatur->foto) }}" alt="" class="card-image w-100 h-auto">
                         <div class="card_text">
                             <h4>{{ $dataaparatur->nama }}</h4>
                             <p>{{ $dataaparatur->jabatan }}</p>
                             <p>Wa : {{ $dataaparatur->no_wa }}</p>
-                            <p>{{ $dataaparatur->tanggal_lahir }} {{ $dataaparatur->tempat_lahir }}</p>
+                            <p>{{ $dataaparatur->tempat_lahir }}, {{ $dataaparatur->tanggal_lahir }}</p>
                         </div>
                     </div>
                     @endforeach

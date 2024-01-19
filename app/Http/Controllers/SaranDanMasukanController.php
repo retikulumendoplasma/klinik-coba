@@ -54,7 +54,7 @@ class SaranDanMasukanController extends Controller
 
     public function storebalasan(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'isi_balasan' => 'required',
             'tanggal_balasan' => 'required|date',
         ]);
@@ -67,5 +67,18 @@ class SaranDanMasukanController extends Controller
         ]);
 
         return redirect('/saranMasukanAdmin')->with('success', 'Berhasil memberi balasan');
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'isi_balasan' => 'required',
+            'tanggal_balasan' => 'required|date',
+        ]);
+        // dd($validatedData);
+        $balasan = saran_dan_masukan::find($id);
+        $balasan->update($validatedData);
+        return redirect('/saranMasukanAdmin')->with('success', 'Berhasil edit balasan');
     }
 }
