@@ -136,10 +136,10 @@ class TenderController extends Controller
             'jadwal_tender_dimulai' => 'required|date',
             'jadwal_tender_berakhir' => 'required|date',
             'anggaran_dana' => 'required',
-            'gambar_tender' => 'required|string',
         ]);
-        // dd($request->all());
-        $validatedData['gambar_tender'] = $request->file('gambar_tender')->store('gambar_tender');
+        if ($request->hasFile('gambar_tender')) {
+            $validatedData['gambar_tender'] = $request->file('gambar_tender')->store('gambar_tender');
+        }
         tender::where('id', $tender->id)->update($validatedData);
         return redirect('/kelolaTender')->with('success', 'Edit Tender Berhasil');
     }

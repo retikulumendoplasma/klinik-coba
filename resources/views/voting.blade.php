@@ -10,7 +10,7 @@
         <div class="row m-3">
 
             @foreach ($pengajuProposal as $pengaju)
-                @if ($pengaju->status_pengajuan == 'diterima')
+                @if ($pengaju->status_pengajuan == 'Diterima')
                     <div class="col-md-4 pb-3">
                         <div class="card border-dark h-100 text-center" style="width: 100%;">
                             <img src="{{ asset('storage/' . $pengaju->foto_pengaju) }}" alt="Foto Pendukung"

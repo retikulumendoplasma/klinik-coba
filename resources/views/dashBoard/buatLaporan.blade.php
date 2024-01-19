@@ -24,7 +24,7 @@
                     <label for="file_proposal">File Laporan</label>
                     <input type="file" class="form-control" id="file_laporan" name="file_laporan" accept=".pdf,.docx" required>
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Buat</button>
+                <button type="submit" class="btn btn-success text-white btn-block mb-3" >Buat</button>
             </form>
         </div>
     </div>

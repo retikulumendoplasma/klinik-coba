@@ -58,11 +58,9 @@ class KeuanganDesaController extends Controller
             'file_laporan' => 'required|file|mimes:pdf,docx',
             'tahun_laporan' => 'required|string',
         ]);
-        $validatedData['file_laporan'] = $request->file('file_laporan')->store('file_laporan');
-
+        // dd($request->all());
+        $validatedData['file_laporan'] = $request->file('file_laporan')->store('file-laporan');
         laporan_keuangan::create($validatedData);
-
-
         return redirect('/dataKeuangan')->with('success', 'Tambah Data Berhasil');
     }
 
@@ -91,10 +89,12 @@ class KeuanganDesaController extends Controller
     {
         $validatedData = $request->validate([
             'jenis_laporan' => 'required|string',
-            'file_laporan' => 'required|string',
             'tahun_laporan' => 'required|string',
         ]);
         // dd($request->all());
+        if ($request->hasFile('file_laporan')) {
+            $validatedData['file_laporan'] = $request->file('file_laporan')->store('file-laporan');
+        }
         laporan_keuangan::where('id', $laporan->id)->update($validatedData);
         return redirect('/dataKeuangan')->with('success', 'Edit Data Berhasil');
     }

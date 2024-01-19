@@ -83,9 +83,12 @@ class ProfildesaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($nip_nipd)
     {
-        //
+        return view('/dashBoard.viewAparatur', [
+            "title" => "Detail Aparatur",
+            "aparatur" => aparatur::find($nip_nipd)
+        ]);
     }
 
     /**
@@ -125,7 +128,6 @@ class ProfildesaController extends Controller
             $validatedData['foto'] =  $request->file('foto')->store('foto');
         }
         
-
         // dd($request->all());
         aparatur::where('nip_nipd', $aparatur->nip_nipd)->update($validatedData);
 
@@ -148,6 +150,7 @@ class ProfildesaController extends Controller
             return redirect('/kelolaProfilDesa')->with('success', 'Berita berhasil dihapus.');
         } else {
             return redirect('/kelolaProfilDesa')->with('error', 'Berita tidak ditemukan.');
+        }
     }
-    }
+
 }
