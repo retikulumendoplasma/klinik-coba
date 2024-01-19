@@ -30,7 +30,7 @@
                 @php
                     $nomordiproses = 1;
                 @endphp
-                @foreach ($dataSurat as $surat)
+                @foreach ($dataSuratPending as $surat)
                     @if ($surat->status_surat == 'Pending')
                         <tr>
                             <td>{{ $nomordiproses++ }}</td>

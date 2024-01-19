@@ -20,7 +20,7 @@
             @endif
 
             <div class="text-center">
-                <img src="img/Palestina.jpg" alt="Logo Situs Anda" width="250" height="250">
+                <img src="../img/Logo Nagan Raya.jpg" alt="Logo Situs Anda" width="250" height="250">
                 <h1>Desa Jatirejo</h1>
             </div>
         </div>

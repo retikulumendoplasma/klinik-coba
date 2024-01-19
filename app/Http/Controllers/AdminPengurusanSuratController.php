@@ -12,10 +12,17 @@ class AdminPengurusanSuratController extends Controller
     public function tampildata()
     {
         $surat = pengaju_surat::query();
+        $suratpending = pengaju_surat::query();
         $suratselesai = pengaju_surat::query();
     
         if (request('cari')) {
             $surat->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            });
+        }
+        if (request('cari')) {
+            $suratpending->where(function ($query) {
                 $query->where('nama', 'like', '%' . request('cari') . '%')
                       ->orWhere('nik', 'like', '%' . request('cari') . '%');
             });
@@ -28,11 +35,13 @@ class AdminPengurusanSuratController extends Controller
         }
     
         $dataSuratProses = $surat->where('status_surat', 'Proses')->get();
+        $dataSuratPending = $suratpending->where('status_surat', 'Pending')->get();
         $dataSuratSelesai = $suratselesai->where('status_surat', 'Selesai')->get();
     
         return view('dashBoard.kelolaSurat', [
             "title" => "Data Surat",
             "dataSuratProses" => $dataSuratProses,
+            "dataSuratPending" => $dataSuratPending,
             "dataSuratSelesai" => $dataSuratSelesai,
         ]);
     }

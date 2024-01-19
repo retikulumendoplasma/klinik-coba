@@ -12,6 +12,7 @@ use App\Http\Controllers\KelolaBeritaController;
 use App\Http\Controllers\PengurusanSuratController;
 use App\Http\Controllers\TenderController;
 use App\Http\Controllers\KeuanganDesaController;
+use App\Http\Controllers\SaranDanMasukanController;
 use App\Http\Controllers\UploadProposalController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -76,12 +77,9 @@ Route::get('/berhasilurussurat/{id}', [PengurusanSuratController::class, 'berhas
 Route::get('/pengajuanProposalTender', [TenderController::class, 'statusPengajuan'])->middleware('auth:akun_user');
 Route::get('/berhasilurusproposal/{id}', [TenderController::class, 'berhasil'])->middleware('auth:akun_user');
 
-
-Route::get('/saranmasukan', function () {
-    return view('saranmasukan',[
-        "title" => "Saran dan Masukan"
-    ]);
-})->middleware('auth:akun_user');
+// saran dan masukan
+Route::get('/saranmasukan', [SaranDanMasukanController::class, 'index'])->middleware('auth:akun_user');
+Route::post('/berisaran', [SaranDanMasukanController::class, 'store'])->middleware('auth:akun_user');
 
 
 // ................ ROUTE ADMIN ...............//
@@ -147,15 +145,15 @@ Route::get('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'showReje
 // Menolak surat
 Route::post('/tolaksurat/{id}', [AdminPengurusanSuratController::class, 'tolaksurat'])->name('surat.tolaksurat');
 
-Route::get('/saranMasukanAdmin', function () {
-    return view('dashBoard.saranMasukanAdmin', [
-        "title" => "Saran Masukan"
-    ]);
-})->middleware('auth:akun_user');
-
 // kelola data keuangan
 Route::get('/dataKeuangan', [KeuanganDesaController::class, 'index'])->middleware('auth:akun_user');
 Route::get('/buatLaporan', [KeuanganDesaController::class, 'create'])->middleware('auth:akun_user');
 Route::post('/buatLaporan', [KeuanganDesaController::class, 'store'])->middleware('auth:akun_user');
 Route::get('/dataKeuangan/{laporan:id}/editKeuangan', [KeuanganDesaController::class, 'edit'])->middleware('auth:akun_user');
 Route::post('/buatLaporan{laporan:id}', [KeuanganDesaController::class, 'update'])->middleware('auth:akun_user');
+
+// saran dan masukan
+Route::get('/saranMasukanAdmin', [SaranDanMasukanController::class, 'indexsaran'])->middleware('auth:akun_user');
+Route::get('/balasSaran/{saran:id}/balas', [SaranDanMasukanController::class, 'indexbalasan'])->middleware('auth:akun_user');
+Route::post('/balasSaran/{saran:id}', [SaranDanMasukanController::class, 'storebalasan'])->middleware('auth:akun_user');
+Route::post('/berisaran', [SaranDanMasukanController::class, 'store'])->middleware('auth:akun_user');
