@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Buat Laporan </h1>
             </div>
-            <form action="/buatLaporan" method="post">
+            <form action="/buatLaporan" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group pb-3">
                     <label for="tahun_laporan">Tahun</label>
@@ -20,11 +20,11 @@
                         <option value="2">Laporan Keuangan</option>
                     </select>
                 </div>
-                <<div class="form-group">
-                    <label for="file_proposal">File Proposal</label>
-                    <input type="file" class="form-control" id="file_proposal" name="file_proposal" accept=".pdf,.docx" required>
+                <div class="form-group">
+                    <label for="file_laporan">File Laporan</label>
+                    <input type="file" class="form-control" id="file_laporan" name="file_laporan" accept=".pdf,.docx" required>
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Buat</button>
+                <button type="submit" class="btn btn-success text-white btn-block mb-3" >Buat</button>
             </form>
         </div>
     </div>

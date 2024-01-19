@@ -97,7 +97,6 @@ class BeritaController extends Controller
         // dd($request->all());
         berita::create($validatedData);
 
-
         return redirect('/kelolaBerita')->with('success', 'Tambah Berita Berhasil');
     }
 

@@ -4,7 +4,7 @@
 
 <div class="container pb-5">
     <h2>Edit Tender</h2>
-    <form action="/buatTender/{{ $tender->id }}" method="post">
+    <form action="/buatTender/{{ $tender->id }}" method="post" enctype="multipart/form-data">
         @method('put')
         @csrf
         <div class="form-group pb-3">
@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3">
             <label for="gambar_tender" class="form-label">Gambar</label>
-            <input class="form-control" type="file" id="gambar_tender" name="gambar_tender" accept="image/*" required value="{{ old('gambar_tender', $tender->gambar_tender) }}">
+            <input class="form-control" type="file" id="gambar_tender" name="gambar_tender" accept="image/*" value="{{ old('gambar_tender', $tender->gambar_tender) }}">
         </div>
         <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Edit Tender</button>
     </form>

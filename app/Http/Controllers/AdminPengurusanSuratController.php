@@ -3,12 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\pengaju_surat;
+use App\Models\pengaju_proposal_tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class AdminPengurusanSuratController extends Controller
 {
+    public function adminhome()
+    {
+        $suratmasuk = pengaju_surat::where('status_surat', 'Pending')->count();
+        $proposalmasuk = pengaju_proposal_tender::where('status_pengajuan', 'Pending')->count();
+        return view('dashboard.beranda', [
+            "title" => "Dashboard Admin",
+            "suratmasuk" => $suratmasuk,
+            "proposalmasuk" => $proposalmasuk
+        ]);
+    }
+
     public function tampildata()
     {
         return view('dashBoard.kelolaSurat', [
