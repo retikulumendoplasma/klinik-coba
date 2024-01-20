@@ -12,6 +12,12 @@ class pengaju_proposal_tender extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+    
+    public function tender()
+    {
+        return $this->belongsTo(Tender::class, 'id_tender', 'id');
+    }
+
     public function votes(){
         return $this->hasMany("App\Models\voting_tender");
     }

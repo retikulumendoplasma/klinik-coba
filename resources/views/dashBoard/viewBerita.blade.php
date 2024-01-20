@@ -3,7 +3,7 @@
 @section('container')
 <div class="container pb-5">
     <article class="py-4">
-        <img src="{{ $viewberita->img }}" class="img_dberita card-img-top img-fluid" alt="..."> 
+        <img src="{{ asset('storage/' . $viewberita->img  ) }}" class="img_dberita card-img-top img-fluid" alt="..."> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $viewberita->judul_berita }}</h2>
         <h5 class="font-semibold">{{ $viewberita->author }}</h5>
         <p>{!! $viewberita->isi_berita !!}</p>

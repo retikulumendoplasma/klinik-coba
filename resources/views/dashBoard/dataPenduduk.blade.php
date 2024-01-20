@@ -4,9 +4,12 @@
 <h2>Data Penduduk</h2>
 <div class="table-responsive col-lg-8" style="max-height: unset; overflow-x: hidden;">
     <div class="row">
-        <div class="col-8">
-            <input class="bg-white form-control form-control-dark w-100 border-dark" type="text" placeholder="Search" aria-label="Search">
+      <form action="/dataPenduduk"  class="d-inline">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Cari nama atau NIK penduduk" aria-label="Recipient's username" name='cari'>
+          <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
         </div>
+    </form>
         <div class="col-4">
             <button type="submit" onclick="window.location.href='/tambahPenduduk'" class="nav-link px-3 bg-success border-0 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">

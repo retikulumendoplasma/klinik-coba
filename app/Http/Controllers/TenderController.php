@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdatetenderRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class TenderController extends Controller
 {
@@ -49,7 +50,7 @@ class TenderController extends Controller
 
     public function viewT(tender $tender)
     {
-        return view('/dashboard.viewTender', [
+        return view('/dashBoard.viewTender', [
             //pengisian berita
             "title" => "Detail Tender",
             //data berita sudah tersimpan dalam models berita
@@ -170,46 +171,59 @@ class TenderController extends Controller
     }
 
     public function storeProposal(Request $request)
-{
-    // Validasi data yang dikirimkan melalui form
-    $validatedData = $request->validate([
-        'nama' => 'required',
-        'id_tender' => 'required',
-        'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        'file_proposal' => 'required|file|mimes:pdf,docx',
-        'link_vidio' => 'nullable|url',
-        'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
+        // Validasi data yang dikirimkan melalui form
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'id_tender' => 'required',
+            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'file_proposal' => 'required|file|mimes:pdf,docx',
+            'link_vidio' => 'nullable|url',
+            'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Handle id user
-    $userId = Auth::id();
-    $validatedData['id_user'] = $userId;
+        // Handle id user
+        $userId = Auth::id();
+        $validatedData['id_user'] = $userId;
 
-    // Check if the proposal for the given tender and user already exists
-    $existingProposal = pengaju_proposal_tender::where('id_tender', $validatedData['id_tender'])
-                                                ->where('id_user', $userId)
-                                                ->first();
+        // Check if the proposal for the given tender and user already exists
+        $existingProposal = pengaju_proposal_tender::where('id_tender', $validatedData['id_tender'])
+                                                    ->where('id_user', $userId)
+                                                    ->first();
 
-    if ($existingProposal && $existingProposal->status_pengajuan != 'Ditolak') {
-        // Redirect with an error message if proposal already exists
-        return redirect()->back()->with('error', 'Anda sudah mengajukan proposal untuk tender ini sebelumnya.');
+        if ($existingProposal && $existingProposal->status_pengajuan != 'Ditolak') {
+            // Redirect with an error message if proposal already exists
+            return redirect()->back()->with('error', 'Anda sudah mengajukan proposal untuk tender ini sebelumnya.');
+        }
+
+        $url = $validatedData['link_vidio'];
+
+        // Handle link video
+        if ($request->has('link_vidio')) {
+            $url = $validatedData['link_vidio'];
+
+            // Menghapus "watch?v=" menggunakan preg_replace
+            $videoId = preg_replace("/watch\?v=/", "embed/", $url);
+            $validatedData['link_vidio'] = $videoId;
+        }
+        // Handle file foto_ktp
+        $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
+
+        // Handle file file_proposal
+        $validatedData['file_proposal'] = $request->file('file_proposal')->store('tender-files');
+
+        // Handle file foto_pengaju
+        $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
+
+        // Handle link vidio
+        $validatedData['link_vidio'] =  $videoId;
+
+        // Simpan data pengajuan tender ke dalam database
+        $pengaju = pengaju_proposal_tender::create($validatedData);
+
+        // Redirect dengan pesan sukses
+        return redirect('berhasilurusproposal/' . $pengaju->id)->with('success', 'Pengajuan Tender berhasil disimpan.');
     }
-
-    // Handle file foto_ktp
-    $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
-
-    // Handle file file_proposal
-    $validatedData['file_proposal'] = $request->file('file_proposal')->store('tender-files');
-
-    // Handle file foto_pengaju
-    $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
-
-    // Simpan data pengajuan tender ke dalam database
-    $pengaju = pengaju_proposal_tender::create($validatedData);
-
-    // Redirect dengan pesan sukses
-    return redirect('berhasilurusproposal/' . $pengaju->id)->with('success', 'Pengajuan Tender berhasil disimpan.');
-}
 
     public function berhasil($pengaju)
     {
@@ -305,6 +319,16 @@ class TenderController extends Controller
         return redirect()->back()->with('success', 'Pilihan berhasil dibatalkan.');
     }
 
+    public function detailVote($pengaju)
+    {
+        $dataProposal = pengaju_proposal_tender::find($pengaju);
+        return view('/detailvote', [
+            "title" => "Detail Pengaju Proposal",
+            "dataProposal" => $dataProposal,
+        ]);
+    }
+    
+
     public function viewProposal($pengaju)
     {
         $dataProposal = pengaju_proposal_tender::find($pengaju);
@@ -315,7 +339,7 @@ class TenderController extends Controller
             $namayangngevote[] = $vote->penduduk->nama;
             $namatender[] = $vote->tender->judul_tender;
         }
-        return view('/dashboard.viewProposal', [
+        return view('/dashBoard.viewProposal', [
             "title" => "Detail Proposal",
             "dataVote" => $dataVote,
             "dataProposal" => $dataProposal,
@@ -326,10 +350,23 @@ class TenderController extends Controller
 
     public function statusPengajuan(pengaju_proposal_tender $pengaju)
     {
+        // DB::enableQueryLog();
+        $pengajuData = DB::table('pengaju_proposal_tender')
+            ->join('tender', 'pengaju_proposal_tender.id_tender', '=', 'tender.id')
+            ->select(
+                'pengaju_proposal_tender.nama',
+                'tender.judul_tender',
+                'pengaju_proposal_tender.id_user',
+                'pengaju_proposal_tender.status_pengajuan',
+                'pengaju_proposal_tender.id_tender',
+                'pengaju_proposal_tender.alasan_ditolak',
+            )
+        ->get();
+        // dd(DB::getQueryLog());
         return view('pengajuanProposalTender', [
             "title" => "Pengajuan proposal tender",
             //data surat sudah tersimpan dalam models surat
-            "pengaju" => pengaju_proposal_tender::all()
+            "pengaju" => $pengajuData,
         ]);
     }
 }

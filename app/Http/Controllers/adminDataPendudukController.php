@@ -10,11 +10,21 @@ class adminDataPendudukController extends Controller
 {
     public function index()
     {
+        $penduduk = penduduk::query();
+        if (request('cari')) {
+            $penduduk->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            });
+        }
+
+        $caripenduduk = $penduduk->get();
+
         return view('dashBoard.dataPenduduk', [
             //pengisian berita
             "title" => "Data Penduduk",
             //data berita sudah tersimpan dalam models berita
-            "datapenduduk" => penduduk::all()
+            "datapenduduk" => $caripenduduk
         ]);
     }
 

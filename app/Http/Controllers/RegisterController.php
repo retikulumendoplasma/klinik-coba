@@ -28,7 +28,7 @@ class RegisterController extends Controller
             'nik' => [
                 'required',
                 Rule::exists('penduduk','nik')->where(function($query) {
-                    $query->where('status_akun', '!=', 'terdaftar');
+                    $query->where('status_akun', '=', 'belum_terdaftar');
                 }),
             ],
             'password' => 'required|min:6'
@@ -36,8 +36,10 @@ class RegisterController extends Controller
 
         $penduduk = penduduk::where('nik', $request->nik)->first();
 
+        $validatedData['is_admin'] = '0';
         $validatedData['password'] = bcrypt($validatedData['password']);
 
+        dd($validatedData);
         akun_user::create($validatedData);
         $penduduk->update(['status_akun' => 'terdaftar', 'nik' => $penduduk->nik]);
 

@@ -3,7 +3,7 @@
 @section('container')
 <div class="container pb-5">
     <article class="py-4">
-        <img src="{{ $dataTender->gambar_tender }}" class="img_dberita card-img-top img-fluid" alt="..."> 
+        <img src="{{ asset('storage/' . $dataTender->gambar_tender ) }}" class="img_dberita card-img-top img-fluid" alt="..."> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $dataTender->judul_tender }}</h2>
         <h5 class="font-semibold">Tender dimulai pada: {{ $dataTender->jadwal_tender_dimulai }}</h5>
         <h5 class="font-semibold">Tender berakhir pada: {{ $dataTender->jadwal_tender_berakhir }}</h5>

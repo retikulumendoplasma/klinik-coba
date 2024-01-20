@@ -14,7 +14,7 @@
               <tr>
                   <th scope="col">No</th>
                   <th scope="col">Nama</th>
-                  <th scope="col">Id Tender</th>
+                  <th scope="col">Nama Tender</th>
                   <th scope="col">Status</th>
               </tr>
           </thead>
@@ -27,7 +27,7 @@
                 <tr>
                   <td>{{ $nomordiproses++ }}</td>
                   <td>{{ $proposal->nama }}</td>
-                  <td>{{ $proposal->id_tender }}</td>
+                  <td>{{ $proposal->judul_tender }}</td>
                   <td>{{ $proposal->status_pengajuan }}</td>
                 </tr>
               @endif
@@ -47,7 +47,7 @@
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama</th>
-                <th scope="col">Id Tender</th>
+                <th scope="col">Nama Tender</th>
                 <th scope="col">Alasan Ditolak</th>
                 <th scope="col">Status</th>
             </tr>
@@ -61,7 +61,7 @@
               <tr>
                 <td>{{ $nomordiproses++ }}</td>
                 <td>{{ $proposal->nama }}</td>
-                <td>{{ $proposal->id_tender }}</td>
+                <td>{{ $proposal->judul_tender }}</td>
                 <td>{{ $proposal->alasan_ditolak }}</td>
                 <td class="text-danger">{{ $proposal->status_pengajuan }}</td>
               </tr>

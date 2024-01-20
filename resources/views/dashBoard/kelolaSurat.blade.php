@@ -10,7 +10,15 @@
             </div>
             <form action="/kelolaSurat"  class="d-inline">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Cari nama atau NIK penduduk" aria-label="Recipient's username" name='cari'>
+                    <input type="text" class="form-control" placeholder="Cari nama atau NIK penduduk" aria-label="Recipient's username" name='cari'>
+                    <input type="date" class="form-control" name="tanggal_pengajuan" placeholder="Pilih Tanggal Pengajuan">
+                    <select class="form-select" name="jenis_surat">
+                        <option value="">Pilih Jenis Surat</option>
+                        <option value="Surat keterangan tidak mampu">Surat Keterangan Tidak Mampu</option>
+                        <option value="Surat keterangan meninggal dunia">Surat Keterangan Meninggal Dunia</option>
+                        <option value="Surat keterangan domisili">Surat Keterangan Domisili</option>
+                        <option value="Surat keterangan belum/sudah menikah">Surat Keterangan Belum/Sudah Menikah</option>
+                    </select>
                   <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
                 </div>
             </form>

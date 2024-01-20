@@ -16,7 +16,7 @@ class AdminPengurusanSuratController extends Controller
         $suratmasuk = pengaju_surat::where('status_surat', 'Pending')->count();
         $proposalmasuk = pengaju_proposal_tender::where('status_pengajuan', 'Pending')->count();
         $saranmasukan = saran_dan_masukan::whereNull('isi_balasan')->count();
-        return view('dashboard.beranda', [
+        return view('dashBoard.beranda', [
             "title" => "Dashboard Admin",
             "suratmasuk" => $suratmasuk,
             "proposalmasuk" => $proposalmasuk,
@@ -47,6 +47,20 @@ class AdminPengurusanSuratController extends Controller
                 $query->where('nama', 'like', '%' . request('cari') . '%')
                       ->orWhere('nik', 'like', '%' . request('cari') . '%');
             });
+        }
+
+        // Filter berdasarkan tanggal_pengajuan
+        if (request('tanggal_pengajuan')) {
+            $surat->whereDate('tanggal_pengajuan', request('tanggal_pengajuan'));
+            $suratpending->whereDate('tanggal_pengajuan', request('tanggal_pengajuan'));
+            $suratselesai->whereDate('tanggal_pengajuan', request('tanggal_pengajuan'));
+        }
+
+        // Filter berdasarkan jenis_surat
+        if (request('jenis_surat')) {
+            $surat->where('jenis_surat', request('jenis_surat'));
+            $suratpending->where('jenis_surat', request('jenis_surat'));
+            $suratselesai->where('jenis_surat', request('jenis_surat'));
         }
     
         $dataSuratProses = $surat->where('status_surat', 'Proses')->get();

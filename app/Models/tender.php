@@ -12,5 +12,11 @@ class tender extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+    
+    public function pengaju_proposal_tender()
+    {
+        return $this->hasOne(pengaju_proposal_tender::class, 'id_tender', 'id');
+    }
+
 
 }

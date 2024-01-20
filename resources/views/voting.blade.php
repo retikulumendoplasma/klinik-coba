@@ -17,7 +17,7 @@
                                 style="width: 100%; max-height: 350px; object-fit: cover;">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $pengaju->nama }}</h5>
-                                <a href="/detailvote" class="btn btn-dark mb-2">Lihat Detail</a>
+                                <a href="/detailvote/{{ $pengaju->id }}" class="btn btn-dark mb-2">Lihat Detail</a>
 
                                 @php
                                     $existingVote = \App\Models\voting_tender::where('tender_id', $tender->id)

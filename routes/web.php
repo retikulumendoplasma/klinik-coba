@@ -54,14 +54,9 @@ Route::get('/tenderVote', [TenderController::class, 'tampilVote'])->middleware('
 Route::get('/voting/{tender}', [TenderController::class, 'voting'])->middleware('auth:akun_user');
 Route::post('/voting/{id}', [TenderController::class, 'pilih'])->middleware('auth:akun_user');
 Route::delete('/voting/{id}', [TenderController::class, 'batalVoting']);
-Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender');
+Route::get('/pengajuanTender/{tender}', [TenderController::class, 'showPengajuanForm'])->name('pengajuanTender')->middleware('auth:akun_user');
 Route::post('/pengajuanTender', [TenderController::class, 'storeProposal'])->name('tender.storeProposal')->middleware('auth:akun_user');
-
-Route::get('/detailvote', function () {
-    return view('detailvote',[
-        "title" => "Detail"
-    ]);
-});
+Route::get('/detailvote/{id}', [TenderController::class, 'detailVote'])->name('tender.detailVote')->middleware('auth:akun_user');
 
 // pengurusan surat
 Route::get('/suratkurangmampu',[PengurusanSuratController::class, 'suratkurangmampu'])->middleware('auth:akun_user');

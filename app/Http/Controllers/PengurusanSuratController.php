@@ -7,6 +7,7 @@ use App\Models\penduduk;
 use App\Models\pengaju_surat;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class PengurusanSuratController extends Controller
@@ -129,6 +130,7 @@ class PengurusanSuratController extends Controller
 
         $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('foto_ktp');
         $validatedData['foto_kk'] = $request->file('foto_kk')->store('foto_kk');
+        $validatedData['tanggal_pengajuan'] = Carbon::now()->toDateString();;
 
         // pengecekan surat sudah pernah dikirim
         $existingSurat = pengaju_surat::where('nik', $validatedData['nik'])
@@ -144,7 +146,7 @@ class PengurusanSuratController extends Controller
             return redirect()->back()->with('error', 'Anda sudah mengajukan pembuatan surat ini sebelumnya.');
         }
        
-        // dd($request->all());
+        // dd($validatedData);
         $pengaju = pengaju_surat::create($validatedData);
 
         return redirect('berhasilurussurat/'.$pengaju->id)->with('success', 'Pengajuan Surat Berhasil Diajukan');
