@@ -170,16 +170,47 @@ class TenderController extends Controller
         ]);
     }
 
+    public function transformYouTubeLink($originalLink)
+    {
+        // Mengecek apakah link merupakan YouTube Shorts
+        if (strpos($originalLink, 'youtube.com/shorts/') !== false) {
+            // Mendapatkan kode video dari link YouTube Shorts
+            $videoCode = substr($originalLink, strpos($originalLink, '/shorts/') + 8);
+
+            // Membuat link YouTube embedded dari kode video
+            $transformedLink = "https://www.youtube.com/embed/{$videoCode}";
+
+            return $transformedLink;
+        } else {
+            // Mengecek apakah link merupakan link standar YouTube
+            if (strpos($originalLink, 'youtu.be/') !== false || strpos($originalLink, 'youtube.com/watch?v=') !== false) {
+                // Mengambil kode video dari link standar YouTube
+                $videoCode = '';
+
+                if (strpos($originalLink, 'youtu.be/') !== false) {
+                    $videoCode = substr($originalLink, strpos($originalLink, 'youtu.be/') + 9);
+                } elseif (strpos($originalLink, 'youtube.com/watch?v=') !== false) {
+                    $videoCode = substr($originalLink, strpos($originalLink, 'youtube.com/watch?v=') + 20);
+                }
+
+                // Membuat link YouTube embedded dari kode video
+                $transformedLink = "https://www.youtube.com/embed/{$videoCode}";
+
+                return $transformedLink;
+            } else {
+                // Jika bukan link YouTube atau YouTube Shorts, kembalikan link asli
+                return $originalLink;
+            }
+        }
+    }
+
     public function storeProposal(Request $request)
     {
         // Validasi data yang dikirimkan melalui form
         $validatedData = $request->validate([
             'nama' => 'required',
             'id_tender' => 'required',
-            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'file_proposal' => 'required|file|mimes:pdf,docx',
             'link_vidio' => 'nullable|url',
-            'foto_pengaju' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle id user
@@ -196,15 +227,10 @@ class TenderController extends Controller
             return redirect()->back()->with('error', 'Anda sudah mengajukan proposal untuk tender ini sebelumnya.');
         }
 
-        $url = $validatedData['link_vidio'];
-
         // Handle link video
         if ($request->has('link_vidio')) {
-            $url = $validatedData['link_vidio'];
-
-            // Menghapus "watch?v=" menggunakan preg_replace
-            $videoId = preg_replace("/watch\?v=/", "embed/", $url);
-            $validatedData['link_vidio'] = $videoId;
+            $transformedLink = $this->transformYouTubeLink($request->input('link_vidio'));
+            $validatedData['link_vidio'] = $transformedLink;
         }
         // Handle file foto_ktp
         $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('tender-foto_ktp');
@@ -216,8 +242,9 @@ class TenderController extends Controller
         $validatedData['foto_pengaju'] =  $request->file('foto_pengaju')->store('tender-foto_pengaju');
 
         // Handle link vidio
-        $validatedData['link_vidio'] =  $videoId;
+        $validatedData['link_vidio'] =  $transformedLink;
 
+        // dd($validatedData);
         // Simpan data pengajuan tender ke dalam database
         $pengaju = pengaju_proposal_tender::create($validatedData);
 
@@ -301,7 +328,7 @@ class TenderController extends Controller
         $request->merge(['tanggal_vote' => $request->get('tanggal_vote', now())]);
         
         voting_tender::create($request->all());
-        return redirect('/tenderVote')->with('success', 'Memilih');
+        return redirect()->back()->with('success', 'Berhasil memilih');
     }
 
     public function batalVoting($id)

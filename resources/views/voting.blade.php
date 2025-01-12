@@ -8,6 +8,11 @@
     <div class="container border border-dark">
         <h4>Silahkan Pilih Salah Satu Peserta</h4>
         <div class="row m-3">
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('success') }}
+            </div>
+            @endif
 
             @foreach ($pengajuProposal as $pengaju)
                 @if ($pengaju->status_pengajuan == 'Diterima')

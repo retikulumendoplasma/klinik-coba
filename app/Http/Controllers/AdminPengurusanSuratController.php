@@ -13,14 +13,14 @@ class AdminPengurusanSuratController extends Controller
 {
     public function adminhome()
     {
-        $suratmasuk = pengaju_surat::where('status_surat', 'Pending')->count();
-        $proposalmasuk = pengaju_proposal_tender::where('status_pengajuan', 'Pending')->count();
-        $saranmasukan = saran_dan_masukan::whereNull('isi_balasan')->count();
+        // $suratmasuk = pengaju_surat::where('status_surat', 'Pending')->count();
+        // $proposalmasuk = pengaju_proposal_tender::where('status_pengajuan', 'Pending')->count();
+        // $saranmasukan = saran_dan_masukan::whereNull('isi_balasan')->count();
         return view('dashBoard.beranda', [
             "title" => "Dashboard Admin",
-            "suratmasuk" => $suratmasuk,
-            "proposalmasuk" => $proposalmasuk,
-            "saranmasukan" => $saranmasukan,
+            // "suratmasuk" => $suratmasuk,
+            // "proposalmasuk" => $proposalmasuk,
+            // "saranmasukan" => $saranmasukan,
         ]);
     }
 
@@ -31,23 +31,47 @@ class AdminPengurusanSuratController extends Controller
         $suratselesai = pengaju_surat::query();
     
         if (request('cari')) {
-            $surat->where(function ($query) {
-                $query->where('nama', 'like', '%' . request('cari') . '%')
-                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            $cari = request('cari');
+            $surat->whereHas('penduduk', function ($query) use ($cari) {
+                $query->where('nama', 'like', '%' . $cari . '%')
+                      ->orWhere('nik', 'like', '%' . $cari . '%');
             });
         }
+
         if (request('cari')) {
-            $suratpending->where(function ($query) {
-                $query->where('nama', 'like', '%' . request('cari') . '%')
-                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            $cari = request('cari');
+            $suratpending->whereHas('penduduk', function ($query) use ($cari) {
+                $query->where('nama', 'like', '%' . $cari . '%')
+                      ->orWhere('nik', 'like', '%' . $cari . '%');
             });
         }
+
         if (request('cari')) {
-            $suratselesai->where(function ($query) {
-                $query->where('nama', 'like', '%' . request('cari') . '%')
-                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            $cari = request('cari');
+            $suratselesai->whereHas('penduduk', function ($query) use ($cari) {
+                $query->where('nama', 'like', '%' . $cari . '%')
+                      ->orWhere('nik', 'like', '%' . $cari . '%');
             });
         }
+
+        // if (request('cari')) {
+        //     $surat->where(function ($query) {
+        //         $query->where('nama', 'like', '%' . request('cari') . '%')
+        //               ->orWhere('nik', 'like', '%' . request('cari') . '%');
+        //     });
+        // }
+        // if (request('cari')) {
+        //     $suratpending->where(function ($query) {
+        //         $query->where('nama', 'like', '%' . request('cari') . '%')
+        //               ->orWhere('nik', 'like', '%' . request('cari') . '%');
+        //     });
+        // }
+        // if (request('cari')) {
+        //     $suratselesai->where(function ($query) {
+        //         $query->where('nama', 'like', '%' . request('cari') . '%')
+        //               ->orWhere('nik', 'like', '%' . request('cari') . '%');
+        //     });
+        // }
 
         // Filter berdasarkan tanggal_pengajuan
         if (request('tanggal_pengajuan')) {

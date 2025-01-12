@@ -5,7 +5,7 @@
 <div class="container py-5">
     <div class="card text-center">
         <div class="card-header">
-          Status Pengajuan Proposal
+          Status Pengajuan Surat
         </div>
         <div class="card-body">
           <h5 class="card-title">Status : {{ $datasurat->status_surat }}</h5>

@@ -14,6 +14,15 @@
 
     <!-- Custom styles for this template -->
     <link href="../../dashboard.css" rel="stylesheet">
+
+    {{-- <!-- Muat jQuery terlebih dahulu -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Muat Select2 CSS dan JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script> --}}
+
+
   </head>
   <body>
     @include('dashBoard.layouts.header')
@@ -34,9 +43,6 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
     
     <script src="../../dashboard.js"></script>
-
-    {{-- bagian onclik kelola surat --}}
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   </body>
 </html>

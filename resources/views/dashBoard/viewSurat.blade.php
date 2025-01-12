@@ -7,17 +7,17 @@
         <div class="col-6">
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                <input class="form-control" type="text" id="namaInput" value="{{ $data->nama }}" name="nama" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="namaInput" value="{{ $data->penduduk->nama }}" name="nama" aria-label="Disabled input example" disabled readonly>
             </div>
             <input type="hidden" id="tempat_lahirInput" name="tempat_lahir">
             <input type="hidden" id="tanggal_lahirInput" name="tanggal_lahir">
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Tempat, tgl lahir</label>
-                <input class="form-control" type="text" id="tempat_tanggal_lahirInput" value="{{ $data->tempat_lahir }}" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="tempat_tanggal_lahirInput" value="{{ $data->penduduk->tempat_lahir }}" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Jenis kelamin</label>
-                <input class="form-control" type="text" id="jenis_kelaminInput" value="{{ $data->jenis_kelamin }}" name="jenis_kelamin" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="jenis_kelaminInput" value="{{ $data->penduduk->jenis_kelamin }}" name="jenis_kelamin" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group mb-3">
                 <label for="formFile" class="form-label">Foto KTP</label>
@@ -43,19 +43,19 @@
         <div class="col-6">
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Status perkawinan</label>
-                <input class="form-control" type="text" id="status_perkawinanInput" value="{{ $data->status_perkawinan }}" name="status_perkawinan" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="status_perkawinanInput" value="{{ $data->penduduk->status_perkawinan }}" name="status_perkawinan" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Agama</label>
-                <input class="form-control" type="text" id="agamaInput" value="{{ $data->agama }}" name="agama" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="agamaInput" value="{{ $data->penduduk->agama }}" name="agama" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Pekerjaan</label>
-                <input class="form-control" type="text" id="pekerjaanInput" value="{{ $data->pekerjaan }}" name="pekerjaan" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="pekerjaanInput" value="{{ $data->penduduk->pekerjaan }}" name="pekerjaan" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Alamat</label>
-                <input class="form-control" type="text" id="alamatInput" value="{{ $data->alamat }}" name="alamat" aria-label="Disabled input example" disabled readonly>
+                <input class="form-control" type="text" id="alamatInput" value="{{ $data->penduduk->alamat }}" name="alamat" aria-label="Disabled input example" disabled readonly>
             </div>
             @if ($data->foto_pendukung)
                 <div class="form-group mb-3">

@@ -111,46 +111,61 @@ class PengurusanSuratController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi data input
         $validatedData = $request->validate([
             'jenis_surat' => 'required|string',
             'nik' => 'required|string',
-            'nomor_kk' => 'required|string',
-            'nama' => 'required|string',
-            'tempat_lahir' => 'required|string',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|string',
-            'agama' => 'required|string',
-            'alamat' => 'required|string',
             'nomor_hp' => 'required|string',
-            'status_perkawinan' => 'required|string',
-            'pekerjaan' => 'required|string',
-            'foto_ktp' => 'image|file',
-            'foto_kk' => 'image|file',
+            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg',
+            'foto_kk' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
+        // Ambil data penduduk berdasarkan NIK
+        $penduduk = Penduduk::where('nik', $validatedData['nik'])->first();
+        
+        if (!$penduduk) {
+            return redirect()->back()->with('error', 'NIK tidak ditemukan dalam database penduduk.');
+        }
+
+        // Menyimpan file foto
         $validatedData['foto_ktp'] = $request->file('foto_ktp')->store('foto_ktp');
         $validatedData['foto_kk'] = $request->file('foto_kk')->store('foto_kk');
-        $validatedData['tanggal_pengajuan'] = Carbon::now()->toDateString();;
+        $validatedData['tanggal_pengajuan'] = Carbon::now()->toDateString();
 
-        // pengecekan surat sudah pernah dikirim
+        // Menambahkan data nama dan data penduduk lainnya ke dalam data pengajuan surat
+        $validatedData['nama'] = $penduduk->nama;
+        $validatedData['tempat_lahir'] = $penduduk->tempat_lahir;
+        $validatedData['tanggal_lahir'] = $penduduk->tanggal_lahir;
+        $validatedData['jenis_kelamin'] = $penduduk->jenis_kelamin;
+        $validatedData['status_perkawinan'] = $penduduk->status_perkawinan;
+        $validatedData['agama'] = $penduduk->agama;
+        $validatedData['pekerjaan'] = $penduduk->pekerjaan;
+        $validatedData['alamat'] = $penduduk->alamat;
+        $validatedData['nomor_kk'] = $penduduk->nomor_kk;
+
+        // Cek apakah surat sudah pernah diajukan untuk jenis surat dan NIK yang sama
         $existingSurat = pengaju_surat::where('nik', $validatedData['nik'])
-                                        ->where('jenis_surat', $validatedData['jenis_surat'])
-                                        ->first();
+                                    ->where('jenis_surat', $validatedData['jenis_surat'])
+                                    ->first();
 
-
+        // Jika ada foto pendukung, simpan foto tersebut
         if ($request->file('foto_pendukung')) {
             $validatedData['foto_pendukung'] = $request->file('foto_pendukung')->store('foto_pendukung');
         }
 
+        // Jika surat sudah pernah diajukan dan status surat tidak selesai atau ditolak
         if ($existingSurat && ($existingSurat->status_surat != 'Selesai' && $existingSurat->status_surat != 'Ditolak')) {
             return redirect()->back()->with('error', 'Anda sudah mengajukan pembuatan surat ini sebelumnya.');
         }
-       
-        // dd($validatedData);
+
+        // Menyimpan data pengajuan surat ke database
         $pengaju = pengaju_surat::create($validatedData);
 
+        // Mengarahkan ke halaman setelah pengajuan berhasil
         return redirect('berhasilurussurat/'.$pengaju->id)->with('success', 'Pengajuan Surat Berhasil Diajukan');
     }
+
+
 
     public function berhasil($pengaju)
     {
@@ -162,15 +177,50 @@ class PengurusanSuratController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function cari()
     {
-        //
+        $user = Auth::user();
+
+        // Mendapatkan nomor KK dari relasi dengan model Penduduk
+        $nomorKK = $user->penduduk->nomor_kk;
+
+        // Mendapatkan data Penduduk yang memiliki nomor KK yang sesuai dengan nomor KK user yang login
+        // $dataSurat = pengaju_surat::where('nomor_kk', $nomorKK)->get();
+        // return view('pengajuanSurat', [
+        //     "title" => "Pengajuan surat",
+        //     //data surat sudah tersimpan dalam models surat
+        //     "dataSurat" => $dataSurat
+        // ]);
+
+        $surat = pengaju_surat::where('nomor_kk', $nomorKK);
+        $suratpending = pengaju_surat::query();
+        $suratselesai = pengaju_surat::query();
+        $suratditolak = pengaju_surat::query();
+    
+        // Filter berdasarkan NIK atau nama
+        if (request('cari')) {
+            $surat->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('nik', 'like', '%' . request('cari') . '%');
+            });
+        }
+    
+        // Filter berdasarkan tanggal_pengajuan
+        if (request('tanggal_pengajuan')) {
+            $surat->whereDate('tanggal_pengajuan', request('tanggal_pengajuan'));
+        }
+    
+        // Filter berdasarkan jenis_surat
+        if (request('jenis_surat')) {
+            $surat->where('jenis_surat', request('jenis_surat'));
+        }
+
+        $dataSurat = $surat->get();
+    
+        return view('pengajuanSurat', [
+            "title" => "Data Surat",
+            "dataSurat" => $dataSurat,
+        ]);
     }
 
     /**

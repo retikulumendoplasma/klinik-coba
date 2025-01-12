@@ -10,7 +10,7 @@
             {{ session('error') }}
         </div>
         @endif
-        <form action="/ajukansurat" method="post" enctype="multipart/form-data" class="row">
+        <form id="myForm" action="/ajukansurat" method="post" enctype="multipart/form-data" class="row">
             @csrf
             <div class="col-md-6 col-12">
                 <input type="hidden" name="jenis_surat" value="Surat keterangan tidak mampu">
@@ -41,11 +41,18 @@
                 <div class="form-group mb-3">
                     <label for="formFile" class="form-label">Upload foto KTP</label>
                     <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*">
+                    @error('foto_ktp')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
+                
                 <div class="form-group mb-3">
                     <label for="formFile" class="form-label">Upload foto KK</label>
                     <input class="form-control" type="file" id="foto_kk" name="foto_kk" accept="image/*">
-                </div>
+                    @error('foto_kk')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>                
             </div>
             <div class="col-md-6 col-12">
                 <div class="form-group mb-3">
@@ -70,7 +77,10 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Nomor Hp</label>
-                    <input class="form-control" type="text" id="nomor_hp" name="nomor_hp" aria-label="Disabled input example">
+                    <input class="form-control" type="number" id="nomor_hp" name="nomor_hp" aria-label="Disabled input example">
+                    @error('nomor_hp')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="col-12">
@@ -110,6 +120,21 @@
                         console.log(error);
                     }
                 });
+            });
+        });
+    </script>
+
+    <script>
+         $(document).ready(function () {
+            $('#myForm').on('submit', function () {
+                var penduduk = $('#namaSelector').val();
+
+                if (!penduduk) {
+                    // Menampilkan pesan kesalahan jika opsi NIK belum dipilih
+                    alert('Mohon pilih NIK terlebih dahulu.');
+                    return false; // Menahan pengiriman formulir
+                }
+                // Lanjutkan dengan pengiriman formulir
             });
         });
     </script>

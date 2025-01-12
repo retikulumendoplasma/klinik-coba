@@ -39,7 +39,7 @@ class RegisterController extends Controller
         $validatedData['is_admin'] = '0';
         $validatedData['password'] = bcrypt($validatedData['password']);
 
-        dd($validatedData);
+        // dd($validatedData);
         akun_user::create($validatedData);
         $penduduk->update(['status_akun' => 'terdaftar', 'nik' => $penduduk->nik]);
 

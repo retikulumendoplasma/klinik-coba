@@ -12,4 +12,9 @@ class pengaju_surat extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+    public function penduduk()
+    {
+        return $this->belongsTo(penduduk::class, 'nik', 'nik');
+    }
 }
