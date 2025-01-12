@@ -27,7 +27,7 @@ class LoginController extends Controller
 
         if(Auth::guard('akun_user')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/dashboard');
         }
 
         return back()->with('loginError', 'email/nomor hp atau password salah!');
@@ -40,7 +40,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/');
     }
 
 }

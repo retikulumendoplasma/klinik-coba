@@ -47,7 +47,7 @@
                 </div>
                 <button type="submit" class="btn btn-dark text-white btn-block mb-3" >Buat akun</button>
             </form>
-            <small class="d-blok text-right mt-3"><a href="/login">Sudah punya akun</a></small>
+            <small class="d-blok text-right mt-3"><a href="/">Sudah punya akun</a></small>
         </div>
     </div>
 </div>

@@ -17,6 +17,7 @@
   </head>
   <body>
     @include('layouts.navigation')
+    
 
     <div class="main mb-5">
         @yield('main')
