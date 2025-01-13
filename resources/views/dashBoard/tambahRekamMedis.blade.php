@@ -41,6 +41,10 @@
                     <label for="terapi">Terapi</label>
                     <input type="text" class="form-control"  id="terapi" name='terapi' required placeholder="Silahkan Masukkan Terapi" >
                 </div>
+                <div class="form-group pb-3">
+                    <label for="catatan_dokter">Catatan Dokter</label>
+                    <input type="text" class="form-control"  id="catatan_dokter" name='catatan_dokter' required placeholder="Silahkan Masukkan catatan dokter" >
+                </div>
                 <button type="submit" class="btn btn-success text-white btn-block mb-3">Tambah Rekam Medis</button>
             </form>
         </div>

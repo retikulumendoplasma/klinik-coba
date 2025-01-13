@@ -88,6 +88,7 @@ class RekamMedisController extends Controller
         'keluhan' => 'required|string',
         'diagnosa' => 'required|string',
         'terapi' => 'required|string',
+        'catatan_dokter' => 'required|string',
         ]);
 
         // Simpan rekam medis baru
