@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\AdminDataPasienController;
-use App\Http\Controllers\AdminPengurusanSuratController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DataObatController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DataDokterController;
 use App\Http\Controllers\RekamMedisController;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminDataPasienController;
+use App\Http\Controllers\AdminPengurusanSuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +36,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 // ................ ROUTE ADMIN ...............//
 
 // Dashboard Admin
-Route::get('/dashboard', [AdminPengurusanSuratController::class, 'adminhome'])->middleware('auth:akun_user');
+Route::get('/dashboard', [AdminDashboardController::class, 'adminhome'])->middleware('auth:akun_user');
 
 // kelola data pasien
 Route::get('/dataPasien', [AdminDataPasienController::class, 'index'])->middleware('auth:akun_user');
@@ -62,3 +64,11 @@ Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekam
 Route::get('/search-pasien', [RekamMedisController::class, 'searchPasien'])->name('searchPasien');
 Route::delete('/rekamMedis/{mr}', [RekamMedisController::class, 'destroy']);
 Route::delete('/rekamMedisPasien/{mr}', [RekamMedisController::class, 'destroyer']);
+
+// Data Obat
+Route::get('/dataObat', [DataObatController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/obat/{id_obat}', [DataObatController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
+Route::get('/tambahObat', [DataObatController::class, 'formTambahObat'])->middleware('auth:akun_user');
+Route::post('/tambahObat', [DataObatController::class, 'store'])->middleware('auth:akun_user');
+Route::get('/search-obat', [DataObatController::class, 'searchPas'])->name('searchPas');
+Route::delete('/obat/{id_obat}', [DataObatController::class, 'destroy']);

@@ -9,6 +9,7 @@ class medical_reports extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $table = 'medical_reports';
     protected $primaryKey = 'mr';
     public $incrementing = false; // Karena primary key adalah string, bukan auto increment

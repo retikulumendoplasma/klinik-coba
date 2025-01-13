@@ -47,8 +47,6 @@ class DataDokterController extends Controller
     {
         return view('/dashboard.tambahDokter', [
             "title" => "Tambah Dokter/Perawat",
-            //data profil desa sudah tersimpan dalam models berita
-            // "dataTender" => patients::all()
         ]);
     }
 
@@ -61,11 +59,9 @@ class DataDokterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'foto' => 'image|file',
             'nik' => 'required|string',
             'nama' => 'required',
             'alamat' => 'required',
-            // 'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
             'telp_hp' => 'required',
             'role' => 'required'

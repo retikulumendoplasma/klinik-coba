@@ -90,6 +90,7 @@ class RekamMedisController extends Controller
         'terapi' => 'required|string',
         'catatan_dokter' => 'required|string',
         ]);
+        $validated['tanggal_berobat'] = now();
 
         // Simpan rekam medis baru
         medical_reports::create($validated);
