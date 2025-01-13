@@ -38,6 +38,7 @@
     <thead>
       <tr>
         <th scope="col">No</th>
+        <th scope="col">Nomor Rekam Medis</th>
         <th scope="col">Nama</th>
         <th scope="col">Jenis Kelamin</th>
         <th scope="col">Alamat</th>
@@ -48,6 +49,7 @@
       @foreach ($datapasien as $pasien)
           <tr>
             <td>{{ $loop->iteration }}</td>
+            <td>{{ $pasien->nomor_rekam_medis }}</td>
             <td>{{ $pasien->nama }}</td>
             <td>{{ $pasien->jenis_kelamin }}</td>
             <td>{{ $pasien->alamat }}</td>

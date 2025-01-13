@@ -11,9 +11,9 @@ class medical_reports extends Model
 
     public $timestamps = false;
     protected $table = 'medical_reports';
-    protected $primaryKey = 'mr';
-    public $incrementing = false; // Karena primary key adalah string, bukan auto increment
-    protected $keyType = 'string'; // Menentukan tipe primary key sebagai string
+    protected $primaryKey = 'id_rekam_medis';
+    // public $incrementing = false; // Karena primary key adalah string, bukan auto increment
+    // protected $keyType = 'string'; // Menentukan tipe primary key sebagai string
 
     protected $guarded = [];
 
@@ -22,7 +22,7 @@ class medical_reports extends Model
      */
     public function patients()
     {
-        return $this->belongsTo(Patients::class, 'id_pasien', 'id_pasien');
+        return $this->belongsTo(Patients::class, 'nomor_rekam_medis', 'nomor_rekam_medis');
     }
 
     /**

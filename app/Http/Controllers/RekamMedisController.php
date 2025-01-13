@@ -23,7 +23,7 @@ class RekamMedisController extends Controller
             $rekamMedis->where(function ($query) {
                 $query->whereHas('patients', function ($subQuery) {
                     $subQuery->where('nama', 'like', '%' . request('cari') . '%');
-                })->orWhere('mr', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nomor rekam medis
+                })->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nomor rekam medis
             });
         }
 
@@ -41,38 +41,18 @@ class RekamMedisController extends Controller
         $pasien = patients::all();
         $dokter = medical_staff::where('role', 'dokter')->get();
 
-        // Ambil MR terakhir
-        $lastMr = Medical_reports::latest('mr')->first();
-        $newMr = $this->generateNewMr($lastMr ? $lastMr->mr : null);
-
         return view('dashBoard.tambahRekamMedis', [
             "title" => "Tambah Rekam Medis",
             "pasien" => $pasien,
-            "dokter" => $dokter, // Ganti nama variabel dokter
-            "newMr" => $newMr, // Kirim MR baru ke form
+            "dokter" => $dokter,
         ]);
-    }
-
-    private function generateNewMr($lastMr)
-    {
-        $currentYear = date('Y');
-        if ($lastMr && strpos($lastMr, $currentYear) === 0) {
-            // Jika MR tahun ini sudah ada, increment nomor terakhir
-            $lastNumber = (int)substr($lastMr, 5);
-            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
-        } else {
-            // Jika belum ada MR untuk tahun ini, mulai dari 0001
-            $newNumber = '0001';
-        }
-
-        return "{$currentYear}_{$newNumber}";
     }
 
     public function searchPasien(Request $request)
     {
         $search = $request->input('q'); // Ambil query pencarian
         $patients = patients::where('nama', 'LIKE', "%$search%")
-            ->select('id_pasien', 'nama') // Hanya ambil kolom yang dibutuhkan
+            ->select('nomor_rekam_medis', 'nama') // Hanya ambil kolom yang dibutuhkan
             ->limit(10) // Batasi hasil pencarian
             ->get();
 
@@ -82,8 +62,7 @@ class RekamMedisController extends Controller
     public function storeTambahRekamMedis(Request $request)
     {
         $validated = $request->validate([
-        'mr' => 'required|unique:medical_reports,mr|regex:/^\d{4}_\d{4}$/',
-        'id_pasien' => 'required|exists:patients,id_pasien',
+        'nomor_rekam_medis' => 'required',
         'id_dokter' => 'required|exists:medical_staff,id_dokter',
         'keluhan' => 'required|string',
         'diagnosa' => 'required|string',
@@ -98,17 +77,17 @@ class RekamMedisController extends Controller
         return redirect('/rekamMedis')->with('success', 'Rekam Medis berhasil ditambahkan!');
     }
 
-    public function dataRekamMedisPasien($id_pasien)
+    public function dataRekamMedisPasien($nomor_rekam_medis)
     {
         // Ambil query dasar
         $rekamMedisQuery = medical_reports::with(['patients', 'medical_staff'])
-            ->where('id_pasien', $id_pasien);
+            ->where('nomor_rekam_medis', $nomor_rekam_medis);
 
         // Filter pencarian berdasarkan keluhan atau nomor rekam medis (jika ada permintaan pencarian)
         if (request('cari')) {
             $rekamMedisQuery->where(function ($query) {
                 $query->where('keluhan', 'like', '%' . request('cari') . '%')
-                    ->orWhere('mr', 'like', '%' . request('cari') . '%');
+                    ->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%');
             });
         }
 
@@ -116,7 +95,7 @@ class RekamMedisController extends Controller
         $rekamMedis = $rekamMedisQuery->get();
 
         // Ambil data pasien
-        $patient = patients::where('id_pasien', $id_pasien)->first();
+        $patient = patients::where('nomor_rekam_medis', $nomor_rekam_medis)->first();
 
         // Jika tidak ada data pasien atau rekam medis
         if ($rekamMedis->isEmpty() || !$patient) {

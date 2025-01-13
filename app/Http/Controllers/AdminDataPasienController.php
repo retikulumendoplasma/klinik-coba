@@ -40,18 +40,39 @@ class AdminDataPasienController extends Controller
         }
     }
 
+
     public function create()
     {
+        $lastMr = patients::latest('nomor_rekam_medis')->first();
+        $newMr = $this->generateNewMr($lastMr ? $lastMr->nomor_rekam_medis : null);
+        
         return view('dashBoard.tambahPasien', [
             //pengisian berita
-            "title" => "Tambah Pasien"
+            "title" => "Tambah Pasien",
+            "newMr" => $newMr,
         ]);
+    }
+    
+    private function generateNewMr($lastMr)
+    {
+        $currentYear = date('Y');
+        if ($lastMr && strpos($lastMr, $currentYear) === 0) {
+            // Jika MR tahun ini sudah ada, increment nomor terakhir
+            $lastNumber = (int)substr($lastMr, 5);
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            // Jika belum ada MR untuk tahun ini, mulai dari 0001
+            $newNumber = '0001';
+        }
+
+        return "{$currentYear}_{$newNumber}";
     }
 
     public function store(Request $request)
     {
         // dd('Metode Store diakses');
         $request->validate([
+            'nomor_rekam_medis' => 'required|unique:patients,nomor_rekam_medis|regex:/^\d{4}_\d{4}$/',
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',

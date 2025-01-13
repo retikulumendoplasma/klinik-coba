@@ -9,14 +9,10 @@
             </div>
             <form action="/tambahPasien" method="post">
                 @csrf
-                {{-- <div class="form-group pb-3">
-                    <label for="NIK">NIK</label>
-                    <input type="number" class="form-control"  id="NIK" name='nik' required placeholder="Silahkan Masukkan NIK" >
-                </div>
                 <div class="form-group pb-3">
-                    <label for="No_kk">No KK</label>
-                    <input type="text" class="form-control"  id="KK" name='nomor_kk' required placeholder="Silahkan Masukkan No KK" >
-                </div> --}}
+                    <label for="nomor_rekam_medis">Nomor Rekam Medis</label>
+                    <input type="text" class="form-control" id="nomor_rekam_medis" name='nomor_rekam_medis' required value="{{ $newMr }}" >
+                </div>
                 <div class="form-group pb-3">
                     <label for="nama">Nama</label>
                     <input type="text" class="form-control" id="nama" name='nama' required placeholder="Silahkan Masukkan Nama" >

@@ -58,10 +58,10 @@ Route::get('/viewDokter/{id_dokter}', [DataDokterController::class, 'show'])->mi
 
 // Rekam Medis
 Route::get('/rekamMedis', [RekamMedisController::class, 'index'])->middleware('auth:akun_user');
-Route::get('/rekamMedisPasien/{patients:id_pasien}', [RekamMedisController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
 Route::get('/tambahRekamMedis', [RekamMedisController::class, 'formTambahRekamMedis'])->middleware('auth:akun_user');
-Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user');
 Route::get('/search-pasien', [RekamMedisController::class, 'searchPasien'])->name('searchPasien');
+Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user');
+Route::get('/rekamMedisPasien/{patients:nomor_rekam_medis}', [RekamMedisController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
 Route::delete('/rekamMedis/{mr}', [RekamMedisController::class, 'destroy']);
 Route::delete('/rekamMedisPasien/{mr}', [RekamMedisController::class, 'destroyer']);
 

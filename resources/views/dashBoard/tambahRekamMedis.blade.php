@@ -10,13 +10,13 @@
             <form action="/tambahRekamMedis" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group pb-3">
-                    <label for="mr">Nomor Rekam Medis</label>
-                    <input type="text" class="form-control" id="mr" name='mr' required value="{{ $newMr }}" >
+                    <label for="nomor_rekam_medis">Nomor Rekam Medis</label>
+                    <input type="text" class="form-control" id="nomor_rekam_medis" name="nomor_rekam_medis" readonly>
                 </div>
 
                 <div class="form-group pb-3">
                     <label for="pasien">Nama Pasien</label>
-                    <select class="form-select" id="pasien" name="id_pasien" style="width: 100%;">
+                    <select class="form-select" id="pasien" name="nomor_rekam_medis" style="width: 100%;">
                         <option value="">Pilih Pasien</option>
                     </select>
                 </div>
@@ -79,8 +79,8 @@
                     return {
                         results: data.map(function (item) {
                             return {
-                                id: item.id_pasien,
-                                text: item.nama
+                                id: item.nomor_rekam_medis, // Gunakan nomor_rekam_medis sebagai ID
+                                text: item.nama // Tampilkan nama pasien
                             };
                         })
                     };
@@ -88,6 +88,18 @@
                 cache: true
             }
         });
+
+        // Event listener untuk mengisi nomor rekam medis
+        $('#pasien').on('select2:select', function(e) {
+            var selectedData = e.params.data;
+            $('#nomor_rekam_medis').val(selectedData.id); // Isi input dengan nomor rekam medis
+        });
+
+        // Event listener untuk mengosongkan nomor rekam medis jika pilihan dihapus
+        $('#pasien').on('select2:clear', function() {
+            $('#nomor_rekam_medis').val('');
+        });
     });
 </script>
+
 @endsection

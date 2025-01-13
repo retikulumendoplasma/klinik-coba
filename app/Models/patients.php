@@ -10,13 +10,14 @@ class patients extends Model
     use HasFactory;
 
     protected $table = 'patients';
-    protected $primaryKey = 'id_pasien';
-    // public $timestamps = false;
+    protected $primaryKey = 'nomor_rekam_medis';
+    public $incrementing = false; // Karena primary key adalah string, bukan auto increment
+    protected $keyType = 'string'; // Menentukan tipe primary key sebagai string
 
     protected $guarded = [];
 
     public function medical_reports()
     {
-        return $this->hasMany(medical_reports::class, 'id_pasien', 'id_pasien');
+        return $this->hasMany(medical_reports::class, 'nomor_rekam_medis', 'nomor_rekam_medis');
     }
 }
