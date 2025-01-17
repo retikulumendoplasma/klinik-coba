@@ -24,7 +24,7 @@
                 <input type="date" class="form-control"  id="tanggal" name='tanggal_lahir' value="{{ $dokter->tanggal_lahir }}" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group pb-3">
-                <label for="exampleFormControlInput1" class="form-label">Jabatam</label>
+                <label for="exampleFormControlInput1" class="form-label">Jabatan</label>
                 <input class="form-control" type="text" id="role" value="{{ $dokter->role }}" name="role" aria-label="Disabled input example" disabled readonly>
             </div>
             <div class="form-group pb-3">

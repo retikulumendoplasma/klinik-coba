@@ -59,10 +59,6 @@
                     <label for="riwayat_penyakit">Riwayat Penyakit</label>
                     <input type="text" class="form-control"  id="riwayat_penyakit" name='riwayat_penyakit' required placeholder="Riwayat Penyakit" >
                 </div>
-                {{-- <div class="form-group pb-3">
-                    <label for="Status_KK">Status Hubungan Pada KK</label>
-                    <input type="text" class="form-control"  id="status_KK" name='status_hubungan_kk' required placeholder="Status Hubungan Pada KK" >
-                </div> --}}
                 <button type="submit" class="btn btn-dark text-white btn-block mb-3">Tambah Pasien</button>
             </form>
         </div>

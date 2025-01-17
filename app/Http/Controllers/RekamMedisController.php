@@ -110,7 +110,23 @@ class RekamMedisController extends Controller
         ]);
     }
 
+    public function detailRekamMedisPasien($id_rekam_medis)
+    {
+        // Ambil query dasar
+        $rekamMedis = medical_reports::with(['patients', 'medical_staff'])
+            ->where('id_rekam_medis', $id_rekam_medis)
+            ->first();
 
+        // Jika tidak ada data pasien atau rekam medis
+        if (!$rekamMedis) {
+            return redirect('/rekamMedis')->with('error', 'Data rekam medis tidak ditemukan untuk pasien ini.');
+        }
+
+        return view('dashBoard.detailRekamMedisPasien', [
+            'title' => 'Data Rekam Medis Pasien',
+            "rekamMedis" => $rekamMedis,
+        ]);
+    }
 
 
     /**

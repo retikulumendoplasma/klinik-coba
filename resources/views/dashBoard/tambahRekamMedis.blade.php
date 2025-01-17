@@ -29,21 +29,24 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group pb-3">
-                    <label for="keluhan">Keluhan</label>
-                    <input type="text" class="form-control" id="keluhan" name='keluhan' required placeholder="Silahkan Masukkan Keluhan" >
+                <div>
+                    <label for="keluhan">Keluhan:</label>
+                    <textarea id="keluhan" name="keluhan" rows="4" class="form-control">{{ old('keluhan') }}</textarea>
                 </div>
-                <div class="form-group pb-3">
-                    <label for="diagnosa">Diagnosa</label>
-                    <input type="text" class="form-control" id="diagnosa" name='diagnosa' required placeholder="Silahkan Masukkan Diagnosa" >
+            
+                <div>
+                    <label for="diagnosa">Diagnosa:</label>
+                    <textarea id="diagnosa" name="diagnosa" rows="4" class="form-control">{{ old('diagnosa') }}</textarea>
                 </div>
-                <div class="form-group pb-3">
-                    <label for="terapi">Terapi</label>
-                    <input type="text" class="form-control"  id="terapi" name='terapi' required placeholder="Silahkan Masukkan Terapi" >
+            
+                <div>
+                    <label for="terapi">Terapi:</label>
+                    <textarea id="terapi" name="terapi" rows="4" class="form-control">{{ old('terapi') }}</textarea>
                 </div>
-                <div class="form-group pb-3">
-                    <label for="catatan_dokter">Catatan Dokter</label>
-                    <input type="text" class="form-control"  id="catatan_dokter" name='catatan_dokter' required placeholder="Silahkan Masukkan catatan dokter" >
+            
+                <div>
+                    <label for="catatan_dokter">Catatan Dokter:</label>
+                    <textarea id="catatan_dokter" name="catatan_dokter" rows="4" class="form-control">{{ old('catatan_dokter') }}</textarea>
                 </div>
                 <button type="submit" class="btn btn-success text-white btn-block mb-3">Tambah Rekam Medis</button>
             </form>
