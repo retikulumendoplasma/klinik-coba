@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\medical_reports;
 use App\Models\medical_staff;
+use App\Models\medicines;
 use App\Models\patients;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,7 @@ class RekamMedisController extends Controller
         $pasien = patients::all();
         $dokter = medical_staff::where('role', 'dokter')->get();
 
+        // dd($obat);
         return view('dashBoard.tambahRekamMedis', [
             "title" => "Tambah Rekam Medis",
             "pasien" => $pasien,
@@ -62,20 +64,25 @@ class RekamMedisController extends Controller
     public function storeTambahRekamMedis(Request $request)
     {
         $validated = $request->validate([
-        'nomor_rekam_medis' => 'required',
-        'id_dokter' => 'required|exists:medical_staff,id_dokter',
-        'keluhan' => 'required|string',
-        'diagnosa' => 'required|string',
-        'terapi' => 'required|string',
-        'catatan_dokter' => 'required|string',
+            'nomor_rekam_medis' => 'required|exists:patients,nomor_rekam_medis',
+            'id_dokter' => 'required|exists:medical_staff,id_dokter',
+            'keluhan' => 'required|string',
+            'diagnosa' => 'required|string',
+            'terapi' => 'required|string',
+            'catatan_dokter' => 'required|string',
         ]);
+
+        // Tambah tanggal berobat
         $validated['tanggal_berobat'] = now();
 
         // Simpan rekam medis baru
-        medical_reports::create($validated);
+        $rekamMedis = medical_reports::create($validated);
 
-        return redirect('/rekamMedis')->with('success', 'Rekam Medis berhasil ditambahkan!');
+        // Redirect ke formResep dengan ID rekam medis
+        return redirect()->route('formResep', ['id_rekam_medis' => $rekamMedis->id_rekam_medis])
+            ->with('success', 'Rekam Medis berhasil ditambahkan!');
     }
+
 
     public function dataRekamMedisPasien($nomor_rekam_medis)
     {

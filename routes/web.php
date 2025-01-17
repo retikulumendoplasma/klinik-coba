@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ResepController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DataObatController;
 use App\Http\Controllers\RegisterController;
@@ -57,10 +58,13 @@ Route::delete('/kelolaDokter/{id_dokter}', [DataDokterController::class, 'destro
 Route::get('/viewDokter/{id_dokter}', [DataDokterController::class, 'show'])->middleware('auth:akun_user');
 
 // Rekam Medis
-Route::get('/rekamMedis', [RekamMedisController::class, 'index'])->middleware('auth:akun_user');
+Route::get('/rekamMedis', [RekamMedisController::class, 'index'])
+    ->middleware('auth:akun_user')
+    ->name('rekamMedis');
 Route::get('/tambahRekamMedis', [RekamMedisController::class, 'formTambahRekamMedis'])->middleware('auth:akun_user');
 Route::get('/search-pasien', [RekamMedisController::class, 'searchPasien'])->name('searchPasien');
-Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user');
+// Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user');
+Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user')->name('tambahRekamMedis'); // Tambahkan nama route
 Route::get('/rekamMedisPasien/{patients:nomor_rekam_medis}', [RekamMedisController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
 Route::get('/detailRekamMedisPasien/{id_rekam_medis}', [RekamMedisController::class, 'detailRekamMedisPasien'])->middleware('auth:akun_user');
 Route::delete('/rekamMedis/{id_rekam_medis}', [RekamMedisController::class, 'destroy']);
@@ -73,3 +77,8 @@ Route::get('/tambahObat', [DataObatController::class, 'formTambahObat'])->middle
 Route::post('/tambahObat', [DataObatController::class, 'store'])->middleware('auth:akun_user');
 Route::get('/search-obat', [DataObatController::class, 'searchPas'])->name('searchPas');
 Route::delete('/obat/{id_obat}', [DataObatController::class, 'destroy']);
+
+// Resep Obat
+Route::get('/formResep/{id_rekam_medis}', [ResepController::class, 'formResep'])->name('formResep');
+Route::post('/storeResep', [ResepController::class, 'storeResep'])->name('storeResep');
+Route::get('/searchObat', [ResepController::class, 'search'])->name('searchObat');

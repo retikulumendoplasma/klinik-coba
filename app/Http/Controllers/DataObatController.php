@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\medicines;
 use Illuminate\Http\Request;
+use App\Models\medical_reports;
+use App\Models\medical_staff;
+use App\Models\patients;
 
 class DataObatController extends Controller
 {
@@ -61,7 +64,7 @@ class DataObatController extends Controller
             'harga_beli' => 'required',
             'harga_jual' => 'required',
             'stok' => 'required',
-            'keterangan' => 'required'
+            'keterangan' => 'nullable|string'
         ]);
 
         // dd($request->all());
@@ -112,6 +115,7 @@ class DataObatController extends Controller
      */
     public function destroy(medicines $medicines)
     {
-        //
+        
     }
+
 }

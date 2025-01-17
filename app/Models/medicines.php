@@ -13,4 +13,9 @@ class medicines extends Model
     protected $primaryKey = 'id_obat';
 
     protected $guarded = [];
+
+    public function resepObat()
+    {
+        return $this->hasMany(resep_obat::class, 'id_obat');
+    }
 }
