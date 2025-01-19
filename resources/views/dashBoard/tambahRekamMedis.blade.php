@@ -51,36 +51,87 @@
                             @enderror
                         </div>
 
-                        <!-- Keluhan -->
-                        <div class="form-group pb-3">
-                            <label for="keluhan">Keluhan:</label>
-                            <textarea id="keluhan" name="keluhan" rows="4" class="form-control @error('keluhan') is-invalid @enderror">{{ old('keluhan') }}</textarea>
-                            @error('keluhan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Diagnosa -->
-                        <div class="form-group pb-3">
-                            <label for="diagnosa">Diagnosa:</label>
-                            <textarea id="diagnosa" name="diagnosa" rows="4" class="form-control @error('diagnosa') is-invalid @enderror">{{ old('diagnosa') }}</textarea>
-                            @error('diagnosa')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Terapi -->
-                        <div class="form-group pb-3">
-                            <label for="terapi">Terapi:</label>
-                            <textarea id="terapi" name="terapi" rows="4" class="form-control @error('terapi') is-invalid @enderror">{{ old('terapi') }}</textarea>
-                            @error('terapi')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class="card-body">
+                            <!-- Card untuk Subjective -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Subjective</strong>
+                                </div>
+                                <div class="card-body">
+                                    <textarea placeholder="Subjektif / keluhan pasien" id="keluhan" name="keluhan" rows="4" class="form-control @error('keluhan') is-invalid @enderror">{{ old('keluhan') }}</textarea>
+                                    @error('keluhan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                    
+                            <!-- Card untuk Objective -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Objective</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="berat_badan">Berat Badan (kg):</label>
+                                        <input type="number" step="0.1" id="berat_badan" name="berat_badan" placeholder="Masukkan berat badan" class="form-control @error('berat_badan') is-invalid @enderror" value="{{ old('berat_badan') }}">
+                                        @error('berat_badan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tinggi_badan">Tinggi Badan (cm):</label>
+                                        <input type="number" id="tinggi_badan" name="tinggi_badan" placeholder="Masukkan tinggi badan" class="form-control @error('tinggi_badan') is-invalid @enderror" value="{{ old('tinggi_badan') }}">
+                                        @error('tinggi_badan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tensi">Tensi (mmHg):</label>
+                                        <input type="text" id="tensi" name="tensi" placeholder="Masukkan tekanan darah (contoh: 120/80)" class="form-control @error('tensi') is-invalid @enderror" value="{{ old('tensi') }}">
+                                        @error('tensi')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="suhu">Suhu Tubuh (°C):</label>
+                                        <input type="number" step="0.1" id="suhu" name="suhu" placeholder="Masukkan suhu tubuh" class="form-control @error('suhu') is-invalid @enderror" value="{{ old('suhu') }}">
+                                        @error('suhu')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Card untuk Assessment -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Assessment</strong>
+                                </div>
+                                <div class="card-body">
+                                    <textarea id="assesment" name="assesment" rows="4" class="form-control @error('assesment') is-invalid @enderror">{{ old('assesment') }}</textarea>
+                                    @error('assesment')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                    
+                            <!-- Card untuk Plan -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Plan</strong>
+                                </div>
+                                <div class="card-body">
+                                    <textarea id="plan" name="plan" rows="4" class="form-control @error('plan') is-invalid @enderror">{{ old('plan') }}</textarea>
+                                    @error('plan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Catatan Dokter -->
                         <div class="form-group pb-3">
-                            <label for="catatan_dokter">Catatan Dokter:</label>
+                            <label for="catatan_dokter">Catatan Dokter :</label>
                             <textarea id="catatan_dokter" name="catatan_dokter" rows="4" class="form-control @error('catatan_dokter') is-invalid @enderror">{{ old('catatan_dokter') }}</textarea>
                             @error('catatan_dokter')
                                 <div class="invalid-feedback">{{ $message }}</div>

@@ -1,7 +1,7 @@
 @extends('dashBoard.dashboard')
 
 @section('container')
-<h2>Data Dokter/Perawat</h2>
+<h2>Data Dokter/Perawat/Staff</h2>
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}

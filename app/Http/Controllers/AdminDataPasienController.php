@@ -89,10 +89,10 @@ class AdminDataPasienController extends Controller
         return redirect('/dataPasien')->with('success', 'Pasien berhasil ditambahkan');
     }
 
-    public function edit($id_pasien)
+    public function edit($nomor_rekam_medis)
     {
         // Ambil data pasien berdasarkan id_pasien
-        $pasien = patients::find($id_pasien);
+        $pasien = patients::find($nomor_rekam_medis);
 
         // Jika pasien tidak ditemukan, arahkan kembali dengan pesan error
         if (!$pasien) {
@@ -114,7 +114,7 @@ class AdminDataPasienController extends Controller
         ]);
     }
 
-public function update(Request $request, $id_pasien)
+public function update(Request $request, $nomor_rekam_medis)
 {
     // Validasi data yang diterima dari form
     $validatedData = $request->validate([
@@ -128,8 +128,8 @@ public function update(Request $request, $id_pasien)
         'pekerjaan' => 'required|string',
     ]);
 
-    // Cari pasien berdasarkan id_pasien
-    $pasien = patients::find($id_pasien);
+    // Cari pasien berdasarkan nomor_rekam_medis
+    $pasien = patients::find($nomor_rekam_medis);
 
     // Jika pasien tidak ditemukan, redirect dengan pesan error
     if (!$pasien) {

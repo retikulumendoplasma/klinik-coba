@@ -12,6 +12,7 @@ use App\Http\Controllers\RekamMedisController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDataPasienController;
 use App\Http\Controllers\AdminPengurusanSuratController;
+use App\Http\Controllers\TransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +42,12 @@ Route::get('/dashboard', [AdminDashboardController::class, 'adminhome'])->middle
 
 // kelola data pasien
 Route::get('/dataPasien', [AdminDataPasienController::class, 'index'])->middleware('auth:akun_user');
-Route::get('/viewdataPasien/{patients:id_pasien}', [AdminDataPasienController::class, 'show'])->middleware('auth:akun_user');
-Route::delete('/dataPasien/{id_pasien}', [AdminDataPasienController::class, 'destroy']);
+Route::get('/viewdataPasien/{patients:nomor_rekam_medis}', [AdminDataPasienController::class, 'show'])->middleware('auth:akun_user');
+Route::delete('/dataPasien/{nomor_rekam_medis}', [AdminDataPasienController::class, 'destroy']);
 Route::get('/tambahPasien', [AdminDataPasienController::class,'create'])->middleware('auth:akun_user');
 Route::post('/tambahPasien', [AdminDataPasienController::class,'store'])->middleware('auth:akun_user');
-Route::get('/dataPasien/{patients:id_pasien}/editPasien', [AdminDataPasienController::class, 'edit'])->middleware('auth:akun_user');
-Route::put('/editPasien/{patients:id_pasien}', [AdminDataPasienController::class, 'update'])->middleware('auth:akun_user');
+Route::get('/dataPasien/{patients:nomor_rekam_medis}/editPasien', [AdminDataPasienController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/editPasien/{patients:nomor_rekam_medis}', [AdminDataPasienController::class, 'update'])->middleware('auth:akun_user');
 
 // kelola data dokter/perawat
 Route::get('/kelolaDokter', [DataDokterController::class, 'kelolaTampil'])->middleware('auth:akun_user');
@@ -79,6 +80,16 @@ Route::get('/search-obat', [DataObatController::class, 'searchPas'])->name('sear
 Route::delete('/obat/{id_obat}', [DataObatController::class, 'destroy']);
 
 // Resep Obat
-Route::get('/formResep/{id_rekam_medis}', [ResepController::class, 'formResep'])->name('formResep');
-Route::post('/storeResep', [ResepController::class, 'storeResep'])->name('storeResep');
-Route::get('/searchObat', [ResepController::class, 'search'])->name('searchObat');
+Route::get('/resep', [ResepController::class, 'index'])
+    ->middleware('auth:akun_user')
+    ->name('resep');
+// Route::get('/resep/{patients:nomor_rekam_medis}', [ResepController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
+Route::get('/tambahResep', [ResepController::class, 'tambahResep'])->middleware('auth:akun_user')->name('tambahResep');
+Route::get('/formResep/{id_rekam_medis}', [ResepController::class, 'formResep'])->middleware('auth:akun_user')->name('formResep');
+// Route::get('/detailResepPasien/{id_resep}', [ResepController::class, 'detailResepPasien'])->name('detailResepPasien');
+Route::get('/detailResepPasien/{id_resep}', [ResepController::class, 'detailResepPasien'])->middleware('auth:akun_user')->name('detailResepPasien');
+Route::post('/storeResep', [ResepController::class, 'storeResep'])->middleware('auth:akun_user')->name('storeResep');
+Route::get('/searchObat', [ResepController::class, 'search'])->middleware('auth:akun_user')->name('searchObat');
+
+// Transaksi
+Route::get('/formTransaksi', [TransaksiController::class, 'formTransaksi'])->middleware('auth:akun_user')->name('formTransaksi');

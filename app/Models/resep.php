@@ -16,7 +16,7 @@ class resep extends Model
 
     protected $guarded = [];
 
-    public function rekamMedis()
+    public function medical_reports()
     {
         return $this->belongsTo(medical_reports::class, 'id_rekam_medis');
     }

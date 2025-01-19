@@ -69,7 +69,7 @@ class RekamMedisController extends Controller
             'keluhan' => 'required|string',
             'diagnosa' => 'required|string',
             'terapi' => 'required|string',
-            'catatan_dokter' => 'required|string',
+            'catatan_dokter' => 'string',
         ]);
 
         // Tambah tanggal berobat

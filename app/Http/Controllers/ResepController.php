@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\resep_obat;
 use App\Models\medical_reports;
 use App\Models\medicines;
+use App\Models\patients;
 use App\Models\resep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +19,126 @@ class ResepController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id_rekam_medis)
+    public function index()
     {
-        // $rekamMedis = medical_reports::with(['patients', 'medical_staff'])->findOrFail($id_rekam_medis);
+        $resep = resep::query()
+            ->with(['medical_reports.patients']);
 
-        // return view('formResep', [
-        //     'rekamMedis' => $rekamMedis,
-        // ]);
+        if (request('cari')) {
+            $resep->where(function ($query) {
+                $query->whereHas('rekamMedis.patient', function ($subQuery) {
+                    $subQuery->where('nama', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nama pasien
+                })->orWhereHas('rekamMedis', function ($subQuery) {
+                    $subQuery->where('nomor_rekam_medis', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nomor rekam medis
+                });
+            });
+        }
+
+        $carirm = $resep->get();
+
+        return view('dashBoard.viewResep', [
+            "title" => "Data resep",
+            "dataResep" => $carirm
+        ]);
     }
+    
+    public function detailResepPasien($id_resep)
+{
+    $resep = Resep::with(['medical_reports.patients', 'medical_reports.medical_staff'])
+        ->where('id_resep', $id_resep)
+        ->firstOrFail();
+
+    $dataResep = resep_obat::with('medicines')
+        ->where('id_resep', $id_resep)
+        ->get();
+
+    return view('dashBoard.detailResepPasien', [
+        'resep' => $resep,
+        'dataResep' => $dataResep,
+    ]);
+}
+
+
+    // public function detailResepPasien($id_resep)
+    // {
+    //     $resep = Resep::with(['medicalReports.patients', 'medicalReports.medicalStaff', 'resepObat.medicines'])
+    //                 ->findOrFail($id_resep);
+
+    //     return view('dashBoard.detailResepPasien', [
+    //         'title' => 'Detail Resep',
+    //         'rekamMedis' => $resep->medicalReports,
+    //         'dataResep' => $resep->resepObat, // Relasi ke tabel pivot resep_obat
+    //     ]);
+    // }
+
+
+    // public function index()
+    // {
+    //     $resep = resep::with(['medical_reports.patients'])->get();
+
+    //     // Debugging: Cek apakah data relasi ada
+    //     dd($resep);
+
+    //     return view('dashBoard.viewResep', [
+    //         "title" => "Data resep",
+    //         "dataResep" => $resep
+    //     ]);
+    // }
+    
+    public function tambahResep()
+    {
+        $rekamMedis = medical_reports::query()
+            ->with(['patients', 'medical_staff']) // Relasi pasien dan staf medis
+            ->whereDoesntHave('resep'); // Hanya ambil data yang tidak memiliki resep
+
+        if (request('cari')) {
+            $rekamMedis->where(function ($query) {
+                $query->whereHas('patients', function ($subQuery) {
+                    $subQuery->where('nama', 'like', '%' . request('cari') . '%');
+                })->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%');
+            });
+        }
+
+        $carirm = $rekamMedis->get();
+
+        return view('dashBoard.tambahResep', [
+            "title" => "Data resep",
+            "dataRekamMedis" => $carirm
+        ]);
+    }
+
+    // public function dataRekamMedisPasien($nomor_rekam_medis)
+    // {
+    //     // Ambil query dasar
+    //     $rekamMedisQuery = medical_reports::with(['patients', 'medical_staff'])
+    //         ->where('nomor_rekam_medis', $nomor_rekam_medis);
+
+    //     // Filter pencarian berdasarkan keluhan atau nomor rekam medis (jika ada permintaan pencarian)
+    //     if (request('cari')) {
+    //         $rekamMedisQuery->where(function ($query) {
+    //             $query->where('keluhan', 'like', '%' . request('cari') . '%')
+    //                 ->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%');
+    //         });
+    //     }
+
+    //     // Ambil data rekam medis berdasarkan query
+    //     $rekamMedis = $rekamMedisQuery->get();
+
+    //     // Ambil data pasien
+    //     $patient = patients::where('nomor_rekam_medis', $nomor_rekam_medis)->first();
+
+    //     // Jika tidak ada data pasien atau rekam medis
+    //     if ($rekamMedis->isEmpty() || !$patient) {
+    //         return redirect('/rekamMedis')->with('error', 'Data rekam medis tidak ditemukan untuk pasien ini.');
+    //     }
+
+    //     // Kirim data ke view
+    //     return view('dashBoard.resep', [
+    //         'title' => 'Data Rekam Medis Pasien',
+    //         'dataRekamMedis' => $rekamMedis,
+    //         'pasien' => $patient, // Kirim data pasien ke view
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -123,7 +236,7 @@ class ResepController extends Controller
         $medicines = medicines::whereIn('id_obat', $request->obat)->get()->keyBy('id_obat');
 
         // Validasi stok obat sebelum transaksi
-        foreach ($request->obat as $index => $obat_id) {
+        foreach ($request->obat as $obat_id) {
             $jumlah = $request->jumlah[$obat_id] ?? 0;
 
             if (!isset($medicines[$obat_id]) || $medicines[$obat_id]->stok < $jumlah) {
@@ -143,8 +256,14 @@ class ResepController extends Controller
             $resep->save();
 
             // Menyimpan data obat yang dipilih ke tabel 'resep_obat'
-            foreach ($request->obat as $index => $obat_id) {
+            foreach ($request->obat as $obat_id) {
                 $jumlah = $request->jumlah[$obat_id];
+
+                // Cek jika entri sudah ada dalam `resep_obat`
+                if (resep_obat::where('id_resep', $resep->id_resep)
+                    ->where('id_obat', $obat_id)->exists()) {
+                    continue; // Lewati jika data sudah ada
+                }
 
                 // Insert ke tabel resep_obat
                 $resepObat = new resep_obat();
@@ -153,7 +272,7 @@ class ResepController extends Controller
                 $resepObat->jumlah = $jumlah;
                 $resepObat->save();
 
-                // Update stok obat di tabel medicines
+                // Update stok obat
                 $medicine = $medicines[$obat_id];
                 $medicine->stok -= $jumlah;
                 $medicine->save();
@@ -174,10 +293,13 @@ class ResepController extends Controller
             Log::error('Error saat menyimpan resep: ' . $e->getMessage());
 
             return redirect()
-                ->route('rekamMedis')
+                ->route('resep')
                 ->with('error', 'Terjadi kesalahan saat menyimpan resep: ' . $e->getMessage());
         }
     }
+
+
+
 
 
 
