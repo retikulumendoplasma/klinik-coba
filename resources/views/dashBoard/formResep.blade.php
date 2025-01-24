@@ -37,31 +37,31 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Detail Rekam Medis</h5>
 
-                    <!-- Keluhan -->
+                    <!-- subjective -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Keluhan</h6>
-                        <p class="text-muted">{!! nl2br(e($rekamMedis->keluhan)) !!}</p>
+                        <h6 class="fw-semibold">Subjective</h6>
+                        <p class="text-muted">{!! nl2br(e($rekamMedis->subjective)) !!}</p>
                         <hr class="my-3">
                     </div>
 
-                    <!-- Diagnosa -->
+                    <!-- objective -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Diagnosa</h6>
-                        <p class="text-muted">{!! nl2br(e($rekamMedis->diagnosa)) !!}</p>
+                        <h6 class="fw-semibold">Objective</h6>
+                        <p class="text-muted">{!! nl2br(e($rekamMedis->objective)) !!}</p>
                         <hr class="my-3">
                     </div>
 
-                    <!-- Terapi -->
+                    <!-- assesment -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Terapi</h6>
-                        <p class="text-muted">{!! nl2br(e($rekamMedis->terapi)) !!}</p>
+                        <h6 class="fw-semibold">Assesment</h6>
+                        <p class="text-muted">{!! nl2br(e($rekamMedis->assesment)) !!}</p>
                         <hr class="my-3">
                     </div>
 
-                    <!-- Catatan Dokter -->
+                    <!-- planning -->
                     <div>
-                        <h6 class="fw-semibold">Catatan Dokter</h6>
-                        <p class="text-muted">{!! nl2br(e($rekamMedis->catatan_dokter)) !!}</p>
+                        <h6 class="fw-semibold">Planning</h6>
+                        <p class="text-muted">{!! nl2br(e($rekamMedis->planning)) !!}</p>
                     </div>
                 </div>
             </div>

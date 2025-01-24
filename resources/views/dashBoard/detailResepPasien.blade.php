@@ -36,23 +36,23 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Detail Rekam Medis</h5>
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Keluhan</h6>
-                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->keluhan)) !!}</p>
+                        <h6 class="fw-semibold">Subjective</h6>
+                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->subjective)) !!}</p>
                         <hr class="my-3">
                     </div>
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Diagnosa</h6>
-                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->diagnosa)) !!}</p>
+                        <h6 class="fw-semibold">Objective</h6>
+                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->objective)) !!}</p>
                         <hr class="my-3">
                     </div>
                     <div class="mb-3">
-                        <h6 class="fw-semibold">Terapi</h6>
-                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->terapi)) !!}</p>
+                        <h6 class="fw-semibold">Assesment</h6>
+                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->assesment)) !!}</p>
                         <hr class="my-3">
                     </div>
                     <div>
-                        <h6 class="fw-semibold">Catatan Dokter</h6>
-                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->catatan_dokter)) !!}</p>
+                        <h6 class="fw-semibold">Planning</h6>
+                        <p class="text-muted">{!! nl2br(e($resep->medical_reports->planning)) !!}</p>
                     </div>
                 </div>
             </div>
@@ -61,24 +61,40 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Detail Resep</h5>
-                    <table class="table table-striped">
-                        <thead>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Nama Obat</th>
                                 <th>Jumlah</th>
+                                <th>Harga Satuan</th>
+                                <th>Total Harga</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php $grandTotal = 0; @endphp <!-- Variabel untuk menghitung total -->
                             @foreach ($dataResep as $resepObat)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $resepObat->medicines->nama_obat }}</td>
-                                <td>{{ $resepObat->jumlah }}</td>
-                            </tr>
+                                @php
+                                    $totalHarga = $resepObat->medicines->harga_jual * $resepObat->jumlah;
+                                    $grandTotal += $totalHarga;
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $resepObat->medicines->nama_obat }}</td>
+                                    <td>{{ $resepObat->jumlah }}</td>
+                                    <td>Rp{{ number_format($resepObat->medicines->harga_jual, 0, ',', '.') }}</td>
+                                    <td>Rp{{ number_format($totalHarga, 0, ',', '.') }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" class="text-right">Grand Total</th>
+                                <th>Rp{{ number_format($grandTotal, 0, ',', '.') }}</th>
+                            </tr>
+                        </tfoot>
                     </table>
+                    
                 </div>
             </div>
 

@@ -19,7 +19,7 @@
                     @enderror
                 </div>
                 <div class="form-group pb-3">
-                    <label for="email">Email/No HP</label>
+                    <label for="email">No HP</label>
                     <input type="text" class="form-control @error('email/nomor_hp') is-invalid @enderror" id="email/nomor_hp" name="email/nomor_hp" required placeholder="Silahkan Masukkan Email atau No HP" required value="{{ old('email/nomor_hp') }}">
                     @error('email/nomor_hp')
                         <div class="invalid-feedback">

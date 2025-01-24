@@ -18,20 +18,12 @@
 
 <div class="table-responsive col-lg-8" style="max-height: unset; overflow-x: hidden;">
     <div class="row">
-        <form action="/dataObat"  class="d-inline">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Cari nama obat atau jenis obat" aria-label="Recipient's username" name='cari'>
-                <input type="date" class="form-control" name="tanggal_pengajuan" placeholder="Pilih Tanggal Pengajuan">
-                <select class="form-select" name="jenis_surat">
-                    <option value="">Pilih Jenis Surat</option>
-                    <option value="Surat keterangan tidak mampu">Surat Keterangan Tidak Mampu</option>
-                    <option value="Surat keterangan meninggal dunia">Surat Keterangan Meninggal Dunia</option>
-                    <option value="Surat keterangan domisili">Surat Keterangan Domisili</option>
-                    <option value="Surat keterangan belum/sudah menikah">Surat Keterangan Belum/Sudah Menikah</option>
-                </select>
-              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
-            </div>
-        </form>
+      <form action="/dataObat" method="get">
+        <div class="input-group">
+            <input type="text" name="cari" class="form-control" placeholder="Cari nama pasien atau nomor rekam medis" value="{{ request('cari') }}">
+            <button type="submit" class="btn btn-primary">Cari</button>
+        </div>
+    </form>
         <div class="col-4">
             <button type="submit" onclick="window.location.href='/tambahObat'" class="nav-link px-3 bg-success border-0 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">

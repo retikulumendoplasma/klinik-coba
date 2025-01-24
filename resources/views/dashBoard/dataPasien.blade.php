@@ -34,7 +34,7 @@
             </button>
         </div>
     </div>
-  <table class="table table-striped table-sm">
+  <table class="table table-striped table-sm table-bordered">
     <thead>
       <tr>
         <th scope="col">No</th>

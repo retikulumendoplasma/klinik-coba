@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 17, 2025 at 03:14 AM
+-- Generation Time: Jan 21, 2025 at 10:21 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -73,46 +73,38 @@ CREATE TABLE `dokter_view` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jasa`
---
-
-CREATE TABLE `jasa` (
-  `id_jasa` bigint NOT NULL,
-  `nama_jasa` varchar(100) NOT NULL,
-  `harga_jasa` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `medical_reports`
 --
 
 CREATE TABLE `medical_reports` (
   `id_rekam_medis` bigint NOT NULL,
+  `tanggal_berobat` timestamp NOT NULL,
   `nomor_rekam_medis` varchar(225) NOT NULL,
   `id_dokter` bigint NOT NULL,
-  `keluhan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `tanggal_berobat` timestamp NOT NULL,
-  `diagnosa` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `terapi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `catatan_dokter` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+  `subjective` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `objective` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `assesment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `planning` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `medical_reports`
 --
 
-INSERT INTO `medical_reports` (`id_rekam_medis`, `nomor_rekam_medis`, `id_dokter`, `keluhan`, `tanggal_berobat`, `diagnosa`, `terapi`, `catatan_dokter`) VALUES
-(1, '2025_0003', 1, 'kaki nyeri', '2025-01-08 18:32:10', 'patah tulang', 'dukun patah', 'istirahat'),
-(2, '2025_0003', 1, 'pusing', '2025-01-11 18:32:25', 'migran', 'bodrex', 'jangan main hp'),
-(3, '2025_0003', 6, 'mual', '2025-01-13 18:32:49', 'masuk angin', 'minum tolak angin', 'jangan main air'),
-(4, '2025_0001', 1, 'pilek', '2025-01-13 18:33:55', 'alergi', 'operasi', 'jangan main kucing'),
-(5, '2025_0002', 1, 'kaki nyeri', '2025-01-14 14:41:54', 'patah tulang', 'dukun patah', 'jangan loncat loncat'),
-(6, '2025_0002', 6, 'mencret', '2025-01-16 10:48:53', 'masuk angin', 'minum tolak angin', 'jangan main air'),
-(7, '2025_0004', 6, 'pusing', '2025-01-16 10:50:07', 'alergi', 'minum tolak angin', 'jangan main hp'),
-(8, '2025_0004', 5, 'kaki nyeri', '2025-01-16 10:50:28', 'patah tulang', 'dukun patah', 'jangan loncat loncat'),
-(9, '2025_0003', 6, 'pusing\r\npuyeng\r\nmual', '2025-01-16 18:35:27', 'masuk angin\r\nenter wind', 'minum tolak angin \r\natau obat cyna', 'jagan minum es\r\njangan makan gorengan');
+INSERT INTO `medical_reports` (`id_rekam_medis`, `tanggal_berobat`, `nomor_rekam_medis`, `id_dokter`, `subjective`, `objective`, `assesment`, `planning`) VALUES
+(1, '2025-01-08 18:32:10', '2025_0003', 1, 'kaki nyeri', 'patah tulang', 'dukun patah', 'istirahat'),
+(2, '2025-01-11 18:32:25', '2025_0003', 1, 'pusing', 'migran', 'bodrex', 'jangan main hp'),
+(3, '2025-01-13 18:32:49', '2025_0003', 6, 'mual', 'masuk angin', 'minum tolak angin', 'jangan main air'),
+(4, '2025-01-13 18:33:55', '2025_0001', 1, 'pilek', 'alergi', 'operasi', 'jangan main kucing'),
+(5, '2025-01-14 14:41:54', '2025_0002', 1, 'kaki nyeri', 'patah tulang', 'dukun patah', 'jangan loncat loncat'),
+(6, '2025-01-16 10:48:53', '2025_0002', 6, 'mencret', 'masuk angin', 'minum tolak angin', 'jangan main air'),
+(7, '2025-01-16 10:50:07', '2025_0004', 6, 'pusing', 'alergi', 'minum tolak angin', 'jangan main hp'),
+(8, '2025-01-16 10:50:28', '2025_0004', 5, 'kaki nyeri', 'patah tulang', 'dukun patah', 'jangan loncat loncat'),
+(9, '2025-01-16 18:35:27', '2025_0003', 6, 'pusing\r\npuyeng\r\nmual', 'masuk angin\r\nenter wind', 'minum tolak angin \r\natau obat cyna', 'jagan minum es\r\njangan makan gorengan'),
+(28, '2025-01-18 00:36:56', '2025_0001', 1, 'asd', 'asd', 'asd', 'asd'),
+(29, '2025-01-18 05:58:02', '2025_0004', 1, 'asdasd', 'asdasd', 'asdasd', 'asdasd'),
+(30, '2025-01-18 10:05:50', '2025_0002', 5, 'rabun l', '12', 'ops', 'secepatnya'),
+(32, '2025-01-21 08:43:47', '2025_0005', 1, 'telinga tidak dengar', 'LT: Kotoran (+)', 'Diagnosa keperawatan : ICD', 'obat');
 
 -- --------------------------------------------------------
 
@@ -166,7 +158,9 @@ CREATE TABLE `medicines` (
 --
 
 INSERT INTO `medicines` (`id_obat`, `nama_obat`, `jenis_obat`, `supplier`, `harga_beli`, `harga_jual`, `stok`, `keterangan`, `created_at`, `updated_at`) VALUES
-(1, 'Amocilin', 'Antibiotik', 'kimia', 2000, 3000, 100, 'gaada', '2025-01-13 08:12:01', '2025-01-13 08:12:01');
+(1, 'Amocilin', 'Antibiotik', 'kimia', 2000, 3000, 32, 'gaada', '2025-01-13 08:12:01', '2025-01-21 09:26:29'),
+(2, 'bodrex', 'obat sakit kepala', 'kimia', 5000, 8000, 66, NULL, '2025-01-17 08:28:54', '2025-01-21 09:26:29'),
+(3, 'paracetamol', 'obat demam', 'kimia', 5000, 7000, 51, NULL, '2025-01-17 12:21:25', '2025-01-21 09:26:29');
 
 -- --------------------------------------------------------
 
@@ -223,7 +217,32 @@ INSERT INTO `patients` (`nomor_rekam_medis`, `nama`, `jenis_kelamin`, `tempat_la
 ('2025_0001', 'Sudarianto', 'Pria', 'goa', '2025-01-01', 'Tani', 'Belum Menikah', 'bumi', '098123098123', 'gula', '2025-01-13 17:40:10', '2025-01-13 17:40:10'),
 ('2025_0002', 'Defz', 'Wanita', 'Pabrik', '2025-01-02', 'Pelajar', 'Belum Menikah', 'Jatirejo', '12325123123', 'tbc', '2025-01-13 17:55:28', '2025-01-13 17:55:28'),
 ('2025_0003', 'Pranata', 'Pria', 'jakarta', '2001-06-07', 'Mahasiswa', 'Belum Menikah', 'Medan', '098123098123', 'tbc', '2025-01-13 18:22:08', '2025-01-13 18:22:08'),
-('2025_0004', 'Darto', 'Pria', 'Selokan', '2024-01-16', 'Tani', 'Menikah', 'bumi', '098123098123', 'tumor', '2025-01-16 10:49:47', '2025-01-16 10:49:47');
+('2025_0004', 'Darto', 'Pria', 'Selokan', '2024-01-16', 'Tani', 'Menikah', 'bumi', '098123098123', 'tumor', '2025-01-16 10:49:47', '2025-01-16 10:49:47'),
+('2025_0005', 'Adi', 'Pria', 'medan', '2025-01-02', 'Pelajar', 'Belum Menikah', 'medan', '098123098123', 'batuk', '2025-01-18 11:05:24', '2025-01-18 11:05:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resep`
+--
+
+CREATE TABLE `resep` (
+  `id_resep` bigint NOT NULL,
+  `id_rekam_medis` bigint NOT NULL,
+  `tanggal_resep` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `resep`
+--
+
+INSERT INTO `resep` (`id_resep`, `id_rekam_medis`, `tanggal_resep`) VALUES
+(6, 28, '2025-01-18 00:37:03'),
+(7, 5, '2025-01-18 01:04:09'),
+(8, 29, '2025-01-18 05:58:09'),
+(9, 9, '2025-01-18 07:20:07'),
+(10, 30, '2025-01-18 10:06:37'),
+(12, 32, '2025-01-21 09:26:29');
 
 -- --------------------------------------------------------
 
@@ -232,10 +251,52 @@ INSERT INTO `patients` (`nomor_rekam_medis`, `nama`, `jenis_kelamin`, `tempat_la
 --
 
 CREATE TABLE `resep_obat` (
+  `id_resep_obat` bigint NOT NULL,
   `id_resep` bigint NOT NULL,
-  `mr` varchar(225) NOT NULL,
-  `id_obat` bigint NOT NULL
+  `id_obat` bigint NOT NULL,
+  `jumlah` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `resep_obat`
+--
+
+INSERT INTO `resep_obat` (`id_resep_obat`, `id_resep`, `id_obat`, `jumlah`) VALUES
+(13, 6, 1, 2),
+(14, 7, 1, 5),
+(15, 7, 2, 10),
+(16, 7, 3, 15),
+(17, 8, 1, 5),
+(18, 9, 3, 20),
+(19, 10, 2, 12),
+(20, 10, 3, 12),
+(23, 12, 1, 2),
+(24, 12, 3, 2),
+(25, 12, 2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tindakan`
+--
+
+CREATE TABLE `tindakan` (
+  `id_tindakan` bigint NOT NULL,
+  `nama_tindakan` varchar(100) NOT NULL,
+  `harga_tindakan` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tindakan`
+--
+
+INSERT INTO `tindakan` (`id_tindakan`, `nama_tindakan`, `harga_tindakan`) VALUES
+(1, 'Thympanoplasty', 8500000),
+(2, 'Fistel', 5500000),
+(3, 'Amande(TE)', 7500000),
+(4, 'Couter', 3500000),
+(5, 'Sirkum', 1000000),
+(6, 'Fistel Kanan Kiri', 7500000);
 
 -- --------------------------------------------------------
 
@@ -296,12 +357,6 @@ ALTER TABLE `billing_report`
   ADD KEY `FK_id_dokter_BR` (`id_dokter`);
 
 --
--- Indexes for table `jasa`
---
-ALTER TABLE `jasa`
-  ADD PRIMARY KEY (`id_jasa`);
-
---
 -- Indexes for table `medical_reports`
 --
 ALTER TABLE `medical_reports`
@@ -334,10 +389,24 @@ ALTER TABLE `patients`
   ADD PRIMARY KEY (`nomor_rekam_medis`);
 
 --
+-- Indexes for table `resep`
+--
+ALTER TABLE `resep`
+  ADD PRIMARY KEY (`id_resep`),
+  ADD KEY `FK_id_rekam_medis_R` (`id_rekam_medis`);
+
+--
 -- Indexes for table `resep_obat`
 --
 ALTER TABLE `resep_obat`
-  ADD PRIMARY KEY (`id_resep`);
+  ADD PRIMARY KEY (`id_resep_obat`),
+  ADD KEY `FK_id_resep_RO` (`id_resep`);
+
+--
+-- Indexes for table `tindakan`
+--
+ALTER TABLE `tindakan`
+  ADD PRIMARY KEY (`id_tindakan`);
 
 --
 -- Indexes for table `transaksi_stok_obat`
@@ -370,16 +439,10 @@ ALTER TABLE `billing_report`
   MODIFY `id_billing` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `jasa`
---
-ALTER TABLE `jasa`
-  MODIFY `id_jasa` bigint NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `medical_reports`
 --
 ALTER TABLE `medical_reports`
-  MODIFY `id_rekam_medis` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_rekam_medis` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `medical_staff`
@@ -391,7 +454,7 @@ ALTER TABLE `medical_staff`
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `id_obat` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_obat` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -400,10 +463,22 @@ ALTER TABLE `migrations`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `resep`
+--
+ALTER TABLE `resep`
+  MODIFY `id_resep` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `resep_obat`
 --
 ALTER TABLE `resep_obat`
-  MODIFY `id_resep` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `id_resep_obat` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `tindakan`
+--
+ALTER TABLE `tindakan`
+  MODIFY `id_tindakan` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -427,6 +502,18 @@ ALTER TABLE `billing_report`
 ALTER TABLE `medical_reports`
   ADD CONSTRAINT `FK_id_dokter_MR` FOREIGN KEY (`id_dokter`) REFERENCES `medical_staff` (`id_dokter`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_nomor_rekam_medis_MR` FOREIGN KEY (`nomor_rekam_medis`) REFERENCES `patients` (`nomor_rekam_medis`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `resep`
+--
+ALTER TABLE `resep`
+  ADD CONSTRAINT `FK_id_rekam_medis_R` FOREIGN KEY (`id_rekam_medis`) REFERENCES `medical_reports` (`id_rekam_medis`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `resep_obat`
+--
+ALTER TABLE `resep_obat`
+  ADD CONSTRAINT `FK_id_resep_RO` FOREIGN KEY (`id_resep`) REFERENCES `resep` (`id_resep`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transaksi_stok_obat`

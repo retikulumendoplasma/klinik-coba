@@ -38,7 +38,7 @@
 
 <!-- Tabel Data -->
 <div class="table-responsive">
-  <table class="table table-striped">
+  <table class="table table-striped table-bordered">
       <thead>
           <tr>
               <th>No</th>
@@ -56,7 +56,7 @@
             <td>{{ $resep->medical_reports->nomor_rekam_medis }}</td> <!-- Nomor Rekam Medis -->
             <td>{{ $resep->medical_reports->patients->nama }}</td> <!-- Nama Pasien -->
             <td>
-                <a href="/detailResepPasien/{{ $resep->id_resep }}" class="badge bg-info">Lihat Detail</a>
+                <a href="/detailResepPasien/{{ $resep->id_resep }}" class="btn btn-sm btn-primary">Lihat Detail</a>
             </td>
         </tr>
     @endforeach

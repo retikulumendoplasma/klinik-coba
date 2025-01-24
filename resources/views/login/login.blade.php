@@ -20,8 +20,8 @@
             @endif
 
             <div class="text-center">
-                <img src="../img/Logo Nagan Raya.jpg" alt="Logo Situs Anda" width="250" height="250">
-                <h1>Desa Jatirejo</h1>
+                <img src="../img/logo2.png" alt="Logo Situs Anda" width="250" height="250">
+                <h1>Tamtama Medical Center</h1>
             </div>
         </div>
         <div class="col-md-4">
@@ -32,7 +32,7 @@
             <form action="/login" method="post">
                 @csrf
                 <div class="form-group pb-2">
-                    <label for="email">Email/No HP</label>
+                    <label for="email">No HP</label>
                     <input type="text" name="email/nomor_hp" class="form-control @error('email/nomor_hp') is-invalid @enderror" id="email/nomor_hp"  placeholder="Masukkan email atau no HP" required>
                     @error('email/nomor_hp')
                         <div class="invalid-feedback">

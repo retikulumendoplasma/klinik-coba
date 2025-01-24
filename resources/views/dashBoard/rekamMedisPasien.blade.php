@@ -46,8 +46,6 @@
               <th>Nama Dokter</th>
               <th>Tanggal Berobat</th>
               <th>Keluhan</th>
-              <th>Diagnosa</th>
-              <th>Terapi</th>
               <th>Action</th>
           </tr>
       </thead>
@@ -58,9 +56,7 @@
                   <td>{{ $rekamMedis->nomor_rekam_medis }}</td> 
                   <td>{{ $rekamMedis->medical_staff->nama }}</td> 
                   <td>{{ \Carbon\Carbon::parse($rekamMedis->tanggal_berobat)->translatedFormat('l d - F - Y') }}</td>
-                  <td>{{ $rekamMedis->keluhan }}</td>
-                  <td>{{ $rekamMedis->diagnosa }}</td>
-                  <td>{{ $rekamMedis->terapi }}</td>
+                  <td>{{ $rekamMedis->subjective }}</td>
                   <td>
                     <a href="/detailRekamMedisPasien/{{ $rekamMedis->id_rekam_medis }}" class="badge bg-info">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">

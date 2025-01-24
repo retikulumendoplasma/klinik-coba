@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="../../dashboard.css" rel="stylesheet">
+    <link href="{{ asset('dashboard.css') }}" rel="stylesheet">
 
     {{-- <!-- Muat jQuery terlebih dahulu -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -31,7 +31,7 @@
     <div class="row">
         @include('dashBoard.layouts.sidebar')
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
           @yield('container')
         </main>
     </div>

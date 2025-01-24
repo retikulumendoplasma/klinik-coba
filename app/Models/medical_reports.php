@@ -32,9 +32,19 @@ class medical_reports extends Model
     {
         return $this->belongsTo(medical_staff::class, 'id_dokter', 'id_dokter');
     }
+    
+    public function tindakan()
+    {
+        return $this->hasMany(tindakan::class, 'id_rekam_medis', 'id_rekam_medis');
+    }
 
     public function resep()
     {
         return $this->hasMany(resep::class, 'id_rekam_medis');
+    }
+
+    public function transaksi()
+    {
+        return $this->hasOne(transaksi::class, 'id_rekam_medis', 'id_rekam_medis');
     }
 }

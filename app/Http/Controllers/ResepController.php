@@ -43,20 +43,20 @@ class ResepController extends Controller
     }
     
     public function detailResepPasien($id_resep)
-{
-    $resep = Resep::with(['medical_reports.patients', 'medical_reports.medical_staff'])
-        ->where('id_resep', $id_resep)
-        ->firstOrFail();
+    {
+        $resep = Resep::with(['medical_reports.patients', 'medical_reports.medical_staff'])
+            ->where('id_resep', $id_resep)
+            ->firstOrFail();
 
-    $dataResep = resep_obat::with('medicines')
-        ->where('id_resep', $id_resep)
-        ->get();
+        $dataResep = resep_obat::with('medicines')
+            ->where('id_resep', $id_resep)
+            ->get();
 
-    return view('dashBoard.detailResepPasien', [
-        'resep' => $resep,
-        'dataResep' => $dataResep,
-    ]);
-}
+        return view('dashBoard.detailResepPasien', [
+            'resep' => $resep,
+            'dataResep' => $dataResep,
+        ]);
+    }
 
 
     // public function detailResepPasien($id_resep)
@@ -241,7 +241,7 @@ class ResepController extends Controller
 
             if (!isset($medicines[$obat_id]) || $medicines[$obat_id]->stok < $jumlah) {
                 return redirect()
-                    ->route('rekamMedis')
+                    ->back()
                     ->with('error', "Stok obat {$medicines[$obat_id]->nama_obat} tidak mencukupi.");
             }
         }
@@ -283,7 +283,7 @@ class ResepController extends Controller
 
             // Redirect dengan pesan sukses
             return redirect()
-                ->route('rekamMedis')
+                ->route('detailResepPasien', [$resep->id_resep])
                 ->with('success', 'Resep berhasil disimpan!');
         } catch (\Exception $e) {
             // Rollback transaksi jika ada kesalahan
@@ -293,7 +293,7 @@ class ResepController extends Controller
             Log::error('Error saat menyimpan resep: ' . $e->getMessage());
 
             return redirect()
-                ->route('resep')
+                ->back()
                 ->with('error', 'Terjadi kesalahan saat menyimpan resep: ' . $e->getMessage());
         }
     }

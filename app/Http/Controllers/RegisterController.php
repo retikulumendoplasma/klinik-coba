@@ -25,24 +25,16 @@ class RegisterController extends Controller
         $validatedData = $request->validate([
             'username' => 'required',
             'email/nomor_hp' => 'required',
-            'nik' => [
-                'required',
-                Rule::exists('penduduk','nik')->where(function($query) {
-                    $query->where('status_akun', '=', 'belum_terdaftar');
-                }),
-            ],
+            'nik' => 'string',
             'password' => 'required|min:6'
         ]);
-
-        $penduduk = penduduk::where('nik', $request->nik)->first();
 
         $validatedData['is_admin'] = '0';
         $validatedData['password'] = bcrypt($validatedData['password']);
 
         // dd($validatedData);
         akun_user::create($validatedData);
-        $penduduk->update(['status_akun' => 'terdaftar', 'nik' => $penduduk->nik]);
 
-        return redirect('/login')->with('success', 'Registrasi Berhasil');
+        return redirect('/')->with('success', 'Registrasi Berhasil');
     }
 }

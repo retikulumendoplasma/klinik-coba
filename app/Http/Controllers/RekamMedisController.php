@@ -7,6 +7,7 @@ use App\Models\medical_staff;
 use App\Models\medicines;
 use App\Models\patients;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RekamMedisController extends Controller
 {
@@ -17,24 +18,47 @@ class RekamMedisController extends Controller
      */
     public function index()
     {
+        // Subquery untuk mendapatkan data unik
+        $subquery = medical_reports::query()
+            ->selectRaw('
+                nomor_rekam_medis,
+                MAX(id_rekam_medis) AS id_rekam_medis
+            ')
+            ->groupBy('nomor_rekam_medis');
+    
+        // Gabungkan subquery dengan tabel patients menggunakan Eloquent
         $rekamMedis = medical_reports::query()
-            ->with(['patients', 'medical_staff']); // Gunakan relasi 'patients' dan 'medical_staff'
-
+            ->fromSub($subquery, 'subquery') // Alias untuk subquery
+            ->join('patients', 'subquery.nomor_rekam_medis', '=', 'patients.nomor_rekam_medis')
+            ->select(
+                'subquery.nomor_rekam_medis',
+                'subquery.id_rekam_medis',
+                'patients.nama AS nama_pasien',
+                'patients.alamat AS alamat_pasien', // Tambahkan kolom alamat
+                'patients.nomor_hp AS nomor_hp_pasien' // Tambahkan kolom nomor HP
+            );
+    
+        // Filter pencarian
         if (request('cari')) {
             $rekamMedis->where(function ($query) {
-                $query->whereHas('patients', function ($subQuery) {
-                    $subQuery->where('nama', 'like', '%' . request('cari') . '%');
-                })->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nomor rekam medis
+                $query->where('patients.nama', 'like', '%' . request('cari') . '%')
+                      ->orWhere('subquery.nomor_rekam_medis', 'like', '%' . request('cari') . '%');
             });
         }
-
-        $carirm = $rekamMedis->get();
-
+    
+        // Eksekusi query dan ambil data
+        $dataRekamMedis = $rekamMedis->get();
+    
         return view('dashBoard.rekamMedis', [
             "title" => "Data Rekam Medis",
-            "dataRekamMedis" => $carirm
+            "dataRekamMedis" => $dataRekamMedis
         ]);
     }
+    
+    
+    
+    
+    
     
     public function formTambahRekamMedis()
     {
@@ -66,10 +90,10 @@ class RekamMedisController extends Controller
         $validated = $request->validate([
             'nomor_rekam_medis' => 'required|exists:patients,nomor_rekam_medis',
             'id_dokter' => 'required|exists:medical_staff,id_dokter',
-            'keluhan' => 'required|string',
-            'diagnosa' => 'required|string',
-            'terapi' => 'required|string',
-            'catatan_dokter' => 'string',
+            'subjective' => 'string',
+            'objective' => 'string',
+            'assesment' => 'string',
+            'planning' => 'string',
         ]);
 
         // Tambah tanggal berobat
@@ -90,10 +114,10 @@ class RekamMedisController extends Controller
         $rekamMedisQuery = medical_reports::with(['patients', 'medical_staff'])
             ->where('nomor_rekam_medis', $nomor_rekam_medis);
 
-        // Filter pencarian berdasarkan keluhan atau nomor rekam medis (jika ada permintaan pencarian)
+        // Filter pencarian berdasarkan subjective atau nomor rekam medis (jika ada permintaan pencarian)
         if (request('cari')) {
             $rekamMedisQuery->where(function ($query) {
-                $query->where('keluhan', 'like', '%' . request('cari') . '%')
+                $query->where('subjective', 'like', '%' . request('cari') . '%')
                     ->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%');
             });
         }
@@ -184,9 +208,17 @@ class RekamMedisController extends Controller
      * @param  \App\Models\rekam_medis  $rekam_medis
      * @return \Illuminate\Http\Response
      */
-    public function edit(medical_reports $rekam_medis)
+    public function edit($id_rekam_medis)
     {
-        //
+        $rekam_medis = medical_reports::with(['patients', 'medical_staff'])
+            ->where('id_rekam_medis', $id_rekam_medis)
+            ->first();
+
+        return view('dashBoard.editRekamMedisPasien', [
+            "title" => "Edit rekam medis",
+            "rekamMedis" => $rekam_medis,
+            // 'jabatan_options' => $jabatan_options
+        ]);
     }
 
     /**
@@ -196,21 +228,45 @@ class RekamMedisController extends Controller
      * @param  \App\Models\medical_reports  $rekam_medis
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, medical_reports $rekam_medis)
+    public function update(Request $request, $id_rekam_medis)
     {
-        //
+        // Validasi input
+        $validatedData = $request->validate([
+            'subjective' => 'nullable|string',
+            'objective' => 'nullable|string',
+            'assesment' => 'nullable|string',
+            'planning' => 'nullable|string',
+        ]);
+    
+        // Cari data rekam medis
+        $rekam_medis = medical_reports::with(['patients', 'medical_staff'])
+            ->where('id_rekam_medis', $id_rekam_medis)
+            ->first();
+    
+        // Jika data tidak ditemukan
+        if (!$rekam_medis) {
+            return redirect('/rekamMedis')->with('error', 'Data Rekam Medis tidak ditemukan');
+        }
+    
+        // Update data rekam medis
+        $rekam_medis->update($validatedData);
+    
+        // Redirect ke halaman pasien berdasarkan nomor rekam medis
+        return redirect()->route('rekamMedisPasien', ['nomor_rekam_medis' => $rekam_medis->patients->nomor_rekam_medis])
+            ->with('success', 'Data Rekam Medis berhasil diperbaharui');
     }
-
+    
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\medical_reports  $rekam_medis
      * @return \Illuminate\Http\Response
      */
-    public function destroy($mr)
+    public function destroy($id_rekam_medis)
     {
-        // Cari data berdasarkan kolom 'mr'
-        $rekamMedis = medical_reports::where('mr', $mr)->first();
+        // Cari data berdasarkan kolom 'id_rekam_medis'
+        $rekamMedis = medical_reports::where('id_rekam_medis', $id_rekam_medis)->first();
 
         if ($rekamMedis) {
             $rekamMedis->delete(); // Hapus data
@@ -220,10 +276,10 @@ class RekamMedisController extends Controller
         }
     }
 
-    public function destroyer($mr)
+    public function destroyer($id_rekam_medis)
     {
-        // Cari data berdasarkan kolom 'mr'
-        $rekamMedis = medical_reports::where('mr', $mr)->first();
+        // Cari data berdasarkan kolom 'id_rekam_medis'
+        $rekamMedis = medical_reports::where('id_rekam_medis', $id_rekam_medis)->first();
 
         if ($rekamMedis) {
             $idPasien = $rekamMedis->id_pasien; // Ambil id pasien sebelum data dihapus

@@ -15,13 +15,9 @@ body {
 .sidebar {
   position: fixed;
   top: 0;
-  /* rtl:raw:
-  right: 0;
-  */
-  bottom: 0;
-  /* rtl:remove */
   left: 0;
-  z-index: 100; /* Behind the navbar */
+  width: 250px;
+  height: 100%;
   padding: 48px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
@@ -29,6 +25,62 @@ body {
 @media (max-width: 767.98px) {
   .sidebar {
     top: 5rem;
+  }
+}
+/* Tambahkan margin untuk konten utama agar tidak tertutup sidebar */
+.main-content {
+  margin-left: 320px; /* sesuaikan dengan lebar sidebar */
+}
+
+/* Agar konten utama tidak tersembunyi jika sidebar terlipat */
+@media (max-width: 768px) {
+  .main-content {
+      margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+      margin-left: 0;
+      padding-left: 15px; /* Sesuaikan padding jika diperlukan */
+  }
+}
+/* Mengatur sidebar agar responsif di tablet */
+@media (max-width: 991px) {
+  #sidebarMenu {
+      position: absolute;
+      top: 0;
+      left: -320px; /* Menggeser sidebar keluar layar */
+      height: 100vh;
+      transition: left 0.3s ease-in-out;
+  }
+
+  #sidebarMenu.show {
+      left: 0; /* Menampilkan sidebar ketika toggle */
+  }
+
+  main {
+      margin-left: 0;
+      transition: margin-left 0.3s ease-in-out;
+  }
+
+  .container-fluid {
+      padding-left: 0;
+  }
+
+  .navbar-toggler {
+      display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  #sidebarMenu {
+      position: static;
+      width: 320px;
+  }
+
+  main {
+      margin-left: 320px;
   }
 }
 
