@@ -90,9 +90,19 @@ class DataObatController extends Controller
      * @param  \App\Models\medicines  $medicines
      * @return \Illuminate\Http\Response
      */
-    public function edit(medicines $medicines)
+    public function edit($id_obat)
     {
-        //
+        $obat = medicines::find($id_obat);
+
+        if (!$obat) {
+            return redirect('/dataobat')->with('error', 'obat/Perawat tidak ditemukan');
+        };
+
+        return view('dashBoard.editObat', [
+            "title" => "Edit Obat",
+            "obat" => $obat,
+            // 'jabatan_options' => $jabatan_options
+        ]);
     }
 
     /**
@@ -102,9 +112,26 @@ class DataObatController extends Controller
      * @param  \App\Models\medicines  $medicines
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, medicines $medicines)
+    public function update(Request $request, $id_obat)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_obat' => 'required',
+            'jenis_obat' => 'required|string',
+            'supplier' => 'required',
+            'harga_beli' => 'required',
+            'harga_jual' => 'required',
+            'stok' => 'required',
+            'keterangan' => 'nullable|string'
+        ]);
+
+        $obat = medicines::find($id_obat);
+        if (!$obat) {
+            return redirect('/dataObat')->with('error', 'Data obat tidak ditemukan');
+        }
+        // dd($request->all());
+        $obat->update($validatedData);
+
+        return redirect('/dataObat')->with('success', 'Data obat berhasil diperbaharui');
     }
 
     /**
@@ -113,9 +140,17 @@ class DataObatController extends Controller
      * @param  \App\Models\medicines  $medicines
      * @return \Illuminate\Http\Response
      */
-    public function destroy(medicines $medicines)
+    public function destroy($id_obat)
     {
-        
+        $obat = medicines::find($id_obat);
+
+        // Hapus penduduk jika ditemukan
+        if ($obat) {
+            $obat->delete();
+            return redirect('/dataObat')->with('success', 'Data obat berhasil dihapus.');
+        } else {
+            return redirect('/dataObat')->with('error', 'Berita tidak ditemukan.');
+        }
     }
 
 }

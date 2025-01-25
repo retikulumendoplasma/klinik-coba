@@ -56,7 +56,14 @@
             <td>{{ $resep->medical_reports->nomor_rekam_medis }}</td> <!-- Nomor Rekam Medis -->
             <td>{{ $resep->medical_reports->patients->nama }}</td> <!-- Nama Pasien -->
             <td>
-                <a href="/detailResepPasien/{{ $resep->id_resep }}" class="btn btn-sm btn-primary">Lihat Detail</a>
+                <a href="/detailResepPasien/{{ $resep->id_resep }}" class="btn btn-sm btn-primary">Lihat resep</a>
+                <form action="{{ route('resep.destroy', $resep->id_resep) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin ingin menghapus data resep ini?')">
+                        Hapus resep
+                    </button>
+                </form>       
             </td>
         </tr>
     @endforeach

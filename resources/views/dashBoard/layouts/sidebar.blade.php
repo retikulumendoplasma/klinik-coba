@@ -19,6 +19,8 @@
                     Data Pasien
                 </a>
             </li>
+            @can('admin')
+                
             <li class="nav-item" style="margin-bottom: 10px;">
                 <a class="nav-link {{ Request::is('rekamMedis') ? 'active' : '' }}" href="/rekamMedis" style="padding: 15px 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-journal-medical" viewBox="0 0 16 16" style="margin-right: 10px; color: grey;">
@@ -64,6 +66,9 @@
                     Tindakan
                 </a>
             </li>
+
+            @endcan
+            
             <li class="nav-item" style="margin-bottom: 10px;">
                 <a class="nav-link {{ Request::is('viewTransaksi') ? 'active' : '' }}" href="/viewTransaksi" style="padding: 15px 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16" style="margin-right: 10px; color: grey;">

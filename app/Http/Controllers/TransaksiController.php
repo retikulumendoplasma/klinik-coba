@@ -68,6 +68,8 @@ class TransaksiController extends Controller
         // Ambil daftar obat yang terkait dengan resep, jika ada
         $dataResep = collect(); // Koleksi kosong
         $totalBiayaObat = 0; // Total biaya obat
+        $uang = 0; // Total biaya obat
+        $kembalian = 0; // Total biaya obat
         if ($resep) {
             $dataResep = resep_obat::with('medicines')
                 ->where('id_resep', $resep->id_resep)
@@ -107,6 +109,8 @@ class TransaksiController extends Controller
             'totalBiayaTindakan' => $totalBiayaTindakan, // Total biaya tindakan
             'totalBiayaObat' => $totalBiayaObat, // Total biaya obat
             'totalBiaya' => $totalBiaya, // Total biaya keseluruhan (tindakan + obat)
+            'uangPasien' => $uang, 
+            'kembalianPasien' => $kembalian, 
         ]);
     }
 
@@ -166,17 +170,18 @@ class TransaksiController extends Controller
         ]);
 
         try {
-            // Simpan transaksi ke database
-            DB::table('transaksi')->insert([
+            // Simpan transaksi ke database dan ambil ID transaksi yang baru
+            $id_transaksi = DB::table('transaksi')->insertGetId([
                 'id_rekam_medis' => $request->id_rekam_medis,
                 'total_biaya_obat' => $request->total_biaya_obat,
                 'total_biaya_tindakan' => $request->total_biaya_tindakan,
                 'grand_total' => $request->grand_total,
                 'tanggal_transaksi' => now(),
             ]);
-
-            // Redirect dengan pesan sukses
-            return redirect('/index')->with('success', 'Transaksi berhasil disimpan.');
+    
+            // Redirect ke halaman cetak struk dengan ID transaksi
+            return redirect()->route('cetakBayar', ['idTransaksi' => $id_transaksi])
+                ->with('success', 'Transaksi berhasil disimpan.');
         } catch (\Exception $e) {
             // Tangani error
             return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
@@ -310,6 +315,82 @@ class TransaksiController extends Controller
         
             // Setelah pencetakan selesai, tampilkan struk di browser dan tutup tab setelah pencetakan
             return view('cetak-struk', compact('transaksi'));
+        } else {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan!');
+        }
+    }
+
+    public function cetakBayar($id_transaksi)
+    {
+        $transaksi = Transaksi::with('medical_reports.patients')->find($id_transaksi);
+
+        if ($transaksi) {
+            // Setup printer
+            $profile = CapabilityProfile::load("simple");
+            $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
+            $printer = new Printer($connector, $profile);
+
+            // Cetak header
+            $printer->setEmphasis(true);
+            $printer->text("           KLINIK THT\n");
+            $printer->text("    TAMTAMA MEDICAL CENTER\n");
+            $printer->setEmphasis(false);
+            $printer->text("\n");
+            $printer->text("Jl. TAMTAMA 10, BINJAI\n");
+            $printer->text("Telp: (061)8823303 / 08126024237\n");
+
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
+            // Teks Transaksi
+            $printer->setEmphasis(true);
+            $printer->text("TRANSAKSI\n");
+            $printer->setEmphasis(false);
+
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
+            // Detail Transaksi
+            $printer->text("Nama Pasien      : " . $transaksi->medical_reports->patients->nama . "\n");
+            $printer->text("Tanggal Berobat  : " . Carbon::parse($transaksi->medical_reports->tanggal_berobat)->format('d-m-Y') . "\n");
+            $printer->text("Nomor Rekam Medis: " . $transaksi->medical_reports->patients->nomor_rekam_medis . "\n");
+
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
+            $printer->text("Total Biaya Obat\n");
+            $printer->text("              : Rp " . number_format($transaksi->total_biaya_obat, 0, ',', '.') . "\n");
+            if ($transaksi->total_biaya_tindakan < 1) {
+                $printer->text("Total Biaya Tindakan\n");
+                $printer->text("              : GRATIS\n");
+            }
+            else {
+                $printer->text("Total Biaya Tindakan\n");
+                $printer->text("              : Rp " . number_format($transaksi->total_biaya_tindakan, 0, ',', '.') . "\n");
+            }
+            
+
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
+            // Grand Total
+            $printer->setEmphasis(true);
+            $printer->text("GRAND TOTAL\n");
+            $printer->text("              : Rp " . number_format($transaksi->grand_total, 0, ',', '.') . "\n");
+            $printer->setEmphasis(false);
+
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
+            // Pesan Terima Kasih
+            $printer->text("Terima kasih semoga lekas sembuh\n");
+                                         
+            // Potong struk
+            $printer->cut();
+            $printer->close();
+        
+            // Setelah pencetakan selesai, tampilkan struk di browser dan tutup tab setelah pencetakan
+            return redirect('/index');
         } else {
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan!');
         }

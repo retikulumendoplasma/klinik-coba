@@ -82,7 +82,9 @@ Route::get('/obat/{id_obat}', [DataObatController::class, 'dataRekamMedisPasien'
 Route::get('/tambahObat', [DataObatController::class, 'formTambahObat'])->middleware('auth:akun_user');
 Route::post('/tambahObat', [DataObatController::class, 'store'])->middleware('auth:akun_user');
 Route::get('/search-obat', [DataObatController::class, 'searchPas'])->name('searchPas');
-Route::delete('/obat/{id_obat}', [DataObatController::class, 'destroy']);
+Route::get('/dataObat/{medicines:id_obat}/editObat', [DataObatController::class, 'edit'])->middleware('auth:akun_user');
+Route::put('/editObat/{medicines:id_obat}', [DataObatController::class, 'update'])->middleware('auth:akun_user');
+Route::delete('/dataObat/{id_obat}', [DataObatController::class, 'destroy'])->middleware('auth:akun_user');
 
 // Resep Obat
 Route::get('/resep', [ResepController::class, 'index'])
@@ -91,10 +93,11 @@ Route::get('/resep', [ResepController::class, 'index'])
 // Route::get('/resep/{patients:nomor_rekam_medis}', [ResepController::class, 'dataRekamMedisPasien'])->middleware('auth:akun_user');
 Route::get('/tambahResep', [ResepController::class, 'tambahResep'])->middleware('auth:akun_user')->name('tambahResep');
 Route::get('/formResep/{id_rekam_medis}', [ResepController::class, 'formResep'])->middleware('auth:akun_user')->name('formResep');
-// Route::get('/detailResepPasien/{id_resep}', [ResepController::class, 'detailResepPasien'])->name('detailResepPasien');
 Route::get('/detailResepPasien/{id_resep}', [ResepController::class, 'detailResepPasien'])->middleware('auth:akun_user')->name('detailResepPasien');
 Route::post('/storeResep', [ResepController::class, 'storeResep'])->middleware('auth:akun_user')->name('storeResep');
 Route::get('/searchObat', [ResepController::class, 'search'])->middleware('auth:akun_user')->name('searchObat');
+Route::delete('/hapusResep/{id_resep}', [ResepController::class, 'destroy'])->middleware('auth:akun_user')->name('resep.destroy');
+
 
 // Tindakan
 Route::get('/viewTindakan', [TindakanController::class, 'viewTindakan'])->middleware('auth:akun_user')->name('viewTindakan');
@@ -102,6 +105,7 @@ Route::get('/formTindakan/{id_rekam_medis}', [TindakanController::class, 'formTi
 Route::post('/storeTindakan', [TindakanController::class, 'storeTindakan'])->middleware('auth:akun_user')->name('storeTindakan');
 Route::get('/search-tindakan', [TindakanController::class, 'searchTindakan'])->middleware('auth:akun_user')->name('searchTindakan');
 Route::get('/detailTindakanPasien/{id_rekam_medis}', [TindakanController::class, 'detailTindakanPasien'])->middleware('auth:akun_user')->name('detailTindakanPasien');
+Route::delete('/hapusTindakan/{id_tindakan}', [TindakanController::class, 'destroy'])->middleware('auth:akun_user')->name('tindakan.destroy');
 
 //Transaksi
 Route::get('/index', [TransaksiController::class, 'index'])->middleware('auth:akun_user')->name('index');
@@ -113,4 +117,5 @@ Route::put('/transaksi/update/{id}', [TransaksiController::class, 'update'])->na
 //struk
 Route::get('/transaksi/print/{id}', [TransaksiController::class, 'printStruk'])->name('transaksi.print');
 Route::get('/transaksi/cetak/{idTransaksi}', [TransaksiController::class, 'cetakStruk'])->name('cetakStruk');
+Route::get('/transaksi/cetakBayar/{idTransaksi}', [TransaksiController::class, 'cetakBayar'])->name('cetakBayar');
 // Route::get('/cetak-struk', [TransaksiController::class, 'cetakStruk']);

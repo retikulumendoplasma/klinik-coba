@@ -10,7 +10,7 @@
             <form action="/register" method="post">
                 @csrf
                 <div class="form-group pb-3">
-                    <label for="username">Username</label>
+                    <label for="username">Nama Lengkap</label>
                     <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" required placeholder="Silahkan Masukkan Username" required value="{{ old('username') }}">
                     @error('username')
                         <div class="invalid-feedback">
@@ -19,7 +19,7 @@
                     @enderror
                 </div>
                 <div class="form-group pb-3">
-                    <label for="email">No HP</label>
+                    <label for="email">Username</label>
                     <input type="text" class="form-control @error('email/nomor_hp') is-invalid @enderror" id="email/nomor_hp" name="email/nomor_hp" required placeholder="Silahkan Masukkan Email atau No HP" required value="{{ old('email/nomor_hp') }}">
                     @error('email/nomor_hp')
                         <div class="invalid-feedback">
@@ -27,7 +27,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="form-group pb-3">
+                {{-- <div class="form-group pb-3">
                     <label for="nik">NIK</label>
                     <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" required placeholder="Silahkan Isikan NIK" required value="{{ old('nik') }}">
                     @error('nik')
@@ -35,7 +35,7 @@
                             {{ $message }}
                         </div>
                     @enderror
-                </div>
+                </div> --}}
                 <div class="form-group pb-3">
                     <label for="password">Password</label>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Masukkan Password">

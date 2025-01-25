@@ -99,14 +99,7 @@ class DataDokterController extends Controller
 
         if (!$dokter) {
             return redirect('/dataDokter')->with('error', 'Dokter/Perawat tidak ditemukan');
-        }
-        // Opsi status perkawinan
-        // $jabatan_options = [
-        //     '1' => 'Belum Menikah',
-        //     '2' => 'Menikah',
-        //     // Tambahkan opsi lainnya jika diperlukan
-        // ]
-        ;
+        };
 
         return view('dashBoard.editDokter', [
             "title" => "Edit Dokter",

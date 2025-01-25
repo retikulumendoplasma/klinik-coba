@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group pb-3">
                     <label for="NoHP">No HP</label>
-                    <input type="tel" class="form-control"  id="phoneInput" name='nomor_hp' maxlength="12" pattern="[0-9]+" placeholder="Silahkan Masukkan No HP" >
+                    <input type="number" class="form-control"  id="phoneInput" name='nomor_hp' maxlength="12" pattern="[0-9]+" placeholder="Silahkan Masukkan No HP" >
                 </div>
                 <div class="form-group pb-3">
                     <label for="exampleFormControlInput1" class="form-label">Status Perkawinan</label>

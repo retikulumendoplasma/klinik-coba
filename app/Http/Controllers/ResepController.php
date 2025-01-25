@@ -26,9 +26,9 @@ class ResepController extends Controller
 
         if (request('cari')) {
             $resep->where(function ($query) {
-                $query->whereHas('rekamMedis.patient', function ($subQuery) {
+                $query->whereHas('medical_reports.patients', function ($subQuery) {
                     $subQuery->where('nama', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nama pasien
-                })->orWhereHas('rekamMedis', function ($subQuery) {
+                })->orWhereHas('medical_reports', function ($subQuery) {
                     $subQuery->where('nomor_rekam_medis', 'like', '%' . request('cari') . '%'); // Cari berdasarkan nomor rekam medis
                 });
             });
@@ -201,9 +201,17 @@ class ResepController extends Controller
      * @param  \App\Models\resep_obat  $resep_obat
      * @return \Illuminate\Http\Response
      */
-    public function destroy(resep_obat $resep_obat)
+    public function destroy($id_resep)
     {
-        //
+        $resep = resep::find($id_resep);
+
+        // Hapus data jika ditemukan
+        if ($resep) {
+            $resep->delete();
+            return redirect('/Resep')->with('success', 'Data Resep berhasil dihapus.');
+        } else {
+            return redirect('/Resep')->with('error', 'Resep tidak ditemukan.');
+        }
     }
 
     public function formResep($id_rekam_medis)

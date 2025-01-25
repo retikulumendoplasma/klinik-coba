@@ -32,7 +32,7 @@
             <form action="/login" method="post">
                 @csrf
                 <div class="form-group pb-2">
-                    <label for="email">No HP</label>
+                    <label for="email">Nickname</label>
                     <input type="text" name="email/nomor_hp" class="form-control @error('email/nomor_hp') is-invalid @enderror" id="email/nomor_hp"  placeholder="Masukkan email atau no HP" required>
                     @error('email/nomor_hp')
                         <div class="invalid-feedback">

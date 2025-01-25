@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Edit Data Pasien </h1>
             </div>
-            <form action="/editPasien/{{ $patients->id_pasien }}" method="post">
+            <form action="/editPasien/{{ $patients->nomor_rekam_medis }}" method="post">
                 @method('put')
                 @csrf
                 {{-- <div class="form-group pb-3">

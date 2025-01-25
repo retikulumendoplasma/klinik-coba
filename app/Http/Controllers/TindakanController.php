@@ -93,39 +93,39 @@ class TindakanController extends Controller
     }
 
     public function storeTindakan(Request $request)
-{
-    // Validasi request
-    $request->validate([
-        'id_rekam_medis' => 'required|exists:medical_reports,id_rekam_medis', // Sesuaikan dengan nama tabel
-        'id_jenis_tindakan' => 'required|array',
-        'id_jenis_tindakan.*' => 'exists:jenis_tindakan,id_jenis_tindakan',
-        'harga_tindakan' => 'required|array',
-        'harga_tindakan.*' => 'numeric|min:0', // Pastikan harga_tindakan berupa angka
-    ]);
-
-    // Mengambil input dari request
-    $idRekamMedis = $request->input('id_rekam_medis');
-    $idJenisTindakan = $request->input('id_jenis_tindakan');
-    $hargaTindakan = $request->input('harga_tindakan');
-
-    // Pastikan harga_tindakan hanya berisi angka yang valid
-    foreach ($hargaTindakan as $index => $harga) {
-        // Hapus titik dan pastikan menjadi integer
-        $hargaTindakan[$index] = (int) str_replace('.', '', $harga);
-    }
-
-    // Menyimpan data tindakan
-    foreach ($idJenisTindakan as $index => $idJenis) {
-        Tindakan::create([
-            'id_rekam_medis' => $idRekamMedis,
-            'id_jenis_tindakan' => $idJenis,
-            'harga_tindakan' => $hargaTindakan[$index],
-            'tanggal_tindakan' => now(), // Isi otomatis dengan tanggal sekarang
+    {
+        // Validasi request
+        $request->validate([
+            'id_rekam_medis' => 'required|exists:medical_reports,id_rekam_medis', // Sesuaikan dengan nama tabel
+            'id_jenis_tindakan' => 'required|array',
+            'id_jenis_tindakan.*' => 'exists:jenis_tindakan,id_jenis_tindakan',
+            'harga_tindakan' => 'required|array',
+            'harga_tindakan.*' => 'numeric|min:0', // Pastikan harga_tindakan berupa angka
         ]);
-    }
 
-    return redirect()->back()->with('success', 'Tindakan berhasil disimpan!');
-}
+        // Mengambil input dari request
+        $idRekamMedis = $request->input('id_rekam_medis');
+        $idJenisTindakan = $request->input('id_jenis_tindakan');
+        $hargaTindakan = $request->input('harga_tindakan');
+
+        // Pastikan harga_tindakan hanya berisi angka yang valid
+        foreach ($hargaTindakan as $index => $harga) {
+            // Hapus titik dan pastikan menjadi integer
+            $hargaTindakan[$index] = (int) str_replace('.', '', $harga);
+        }
+
+        // Menyimpan data tindakan
+        foreach ($idJenisTindakan as $index => $idJenis) {
+            Tindakan::create([
+                'id_rekam_medis' => $idRekamMedis,
+                'id_jenis_tindakan' => $idJenis,
+                'harga_tindakan' => $hargaTindakan[$index],
+                'tanggal_tindakan' => now(), // Isi otomatis dengan tanggal sekarang
+            ]);
+        }
+
+        return redirect('/viewTindakan')->with('success', 'Tindakan berhasil disimpan!');
+    }
 
 
 
@@ -239,9 +239,9 @@ class TindakanController extends Controller
      * @param  \App\Models\tindakan  $tindakan
      * @return \Illuminate\Http\Response
      */
-    public function edit(tindakan $tindakan)
+    public function edit($id_tindakan)
     {
-        //
+        
     }
 
     /**
@@ -251,9 +251,9 @@ class TindakanController extends Controller
      * @param  \App\Models\tindakan  $tindakan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tindakan $tindakan)
+    public function update(Request $request, $id_tindakan)
     {
-        //
+        
     }
 
     /**
@@ -262,8 +262,16 @@ class TindakanController extends Controller
      * @param  \App\Models\tindakan  $tindakan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tindakan $tindakan)
+    public function destroy($id_tindakan)
     {
-        //
+        $tindakan = tindakan::find($id_tindakan);
+
+        // Hapus data jika ditemukan
+        if ($tindakan) {
+            $tindakan->delete();
+            return redirect('/viewTindakan')->with('success', 'Data Tindakan berhasil dihapus.');
+        } else {
+            return redirect('/viewTindakan')->with('error', 'Tindakan tidak ditemukan.');
+        }
     }
 }

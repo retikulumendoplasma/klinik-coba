@@ -147,92 +147,107 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <script>
-    $(document).ready(function () {
-        // Inisialisasi Select2 untuk mencari tindakan
-        $('#tindakan').select2({
-            placeholder: "Cari tindakan...",
-            ajax: {
-                url: "{{ route('searchTindakan') }}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return { q: params.term };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data.map(function (item) {
-                            return {
-                                id: item.id_jenis_tindakan,
-                                text: item.nama_tindakan,
-                                harga_tindakan: item.harga_tindakan
-                            };
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
-
-        // Event listener untuk menambahkan tindakan yang dipilih
-        $('#tindakan').on('select2:select', function (e) {
-            const selectedData = e.params.data;
-
-            if ($('#selected-tindakan').find(`[data-id="${selectedData.id}"]`).length === 0) {
-                $('#selected-tindakan').append(`
-                    <div class="d-flex align-items-center mb-3" data-id="${selectedData.id}">
-                        <input type="hidden" name="id_jenis_tindakan[]" value="${selectedData.id}">
-                        <div style="flex-grow: 1;">${selectedData.text}</div>
-                        <input type="text" class="form-control input-currency" name="harga_tindakan[]" value="${formatCurrency(selectedData.harga_tindakan)}" style="width: 120px;" required>
-                        <button type="button" class="btn btn-danger ms-2 btn-remove">Hapus</button>
-                    </div>
-                `);
-
-                applyCurrencyFormatListeners(); // Mengaktifkan listener input untuk format currency
-            }
-        });
-
-        // Fungsi untuk memformat angka menjadi format currency dengan titik
-        function formatCurrency(value) {
-            return parseInt(value, 10).toLocaleString('id-ID');
+$(document).ready(function () {
+    // Inisialisasi Select2 untuk mencari tindakan
+    $('#tindakan').select2({
+        placeholder: "Cari tindakan...",
+        ajax: {
+            url: "{{ route('searchTindakan') }}",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(function (item) {
+                        return {
+                            id: item.id_jenis_tindakan,
+                            text: item.nama_tindakan,
+                            harga_tindakan: item.harga_tindakan
+                        };
+                    })
+                };
+            },
+            cache: true
         }
-
-        // Fungsi untuk menambahkan event listener ke input currency
-        function applyCurrencyFormatListeners() {
-            $('.input-currency').off('input blur').on('input', function () {
-                // Menghapus titik pemisah ribuan untuk diproses kembali
-                const rawValue = this.value.replace(/\./g, '');
-                if (!isNaN(rawValue)) {
-                    this.value = formatCurrency(rawValue);
-                }
-            }).on('blur', function () {
-                // Menghapus titik saat validasi input untuk memastikan format yang benar
-                const rawValue = this.value.replace(/\./g, '');
-                if (!isNaN(rawValue) && rawValue !== '') {
-                    this.value = formatCurrency(rawValue);
-                }
-            });
-        }
-
-        // Event listener untuk menghapus tindakan dari daftar
-        $('#selected-tindakan').on('click', '.btn-remove', function () {
-            $(this).parent().remove();
-        });
-
-        // Validasi sebelum submit
-        $('#formTindakan').on('submit', function (e) {
-            // Menghapus titik sebelum submit
-            $('input[name="harga_tindakan[]"]').each(function () {
-                // Menghapus titik sebelum mengirimkan data
-                this.value = this.value.replace(/\./g, '');
-            });
-
-            // Memastikan minimal satu tindakan dipilih
-            if ($('#selected-tindakan').children().length === 0) {
-                e.preventDefault();
-                alert('Pilih minimal satu tindakan untuk disimpan.');
-            }
-        });
     });
+
+    // Event listener untuk menambahkan tindakan yang dipilih
+    $('#tindakan').on('select2:select', function (e) {
+        const selectedData = e.params.data;
+
+        if ($('#selected-tindakan').find(`[data-id="${selectedData.id}"]`).length === 0) {
+            $('#selected-tindakan').append(`
+                <div class="d-flex align-items-center mb-3" data-id="${selectedData.id}">
+                    <input type="hidden" name="id_jenis_tindakan[]" value="${selectedData.id}">
+                    <div style="flex-grow: 1;">${selectedData.text}</div>
+                    <input type="text" class="form-control input-currency" name="harga_tindakan[]" value="${formatCurrency(selectedData.harga_tindakan)}" style="width: 120px;" required>
+                    <button type="button" class="btn btn-danger ms-2 btn-remove">Hapus</button>
+                </div>
+            `);
+
+            applyCurrencyFormatListeners(); // Mengaktifkan listener input untuk format currency
+        }
+    });
+
+    // Fungsi untuk memformat angka menjadi format currency dengan titik
+    function formatCurrency(value) {
+        if (!value || isNaN(value)) return ''; // Jika value kosong atau NaN, kembalikan string kosong
+        return parseInt(value, 10).toLocaleString('id-ID');
+    }
+
+    // Fungsi untuk menambahkan event listener ke input currency
+    function applyCurrencyFormatListeners() {
+        $('.input-currency')
+            .off('keypress input blur')
+            .on('keypress', function (e) {
+                // Mencegah input selain angka
+                const charCode = e.which ? e.which : e.keyCode;
+                if (charCode < 48 || charCode > 57) {
+                    e.preventDefault();
+                }
+            })
+            .on('input', function () {
+                // Menghapus titik pemisah ribuan untuk diproses kembali
+                let rawValue = this.value.replace(/\./g, '');
+                if (!rawValue) {
+                    this.value = ''; // Kosongkan jika input kosong
+                } else if (!isNaN(rawValue)) {
+                    this.value = formatCurrency(rawValue);
+                }
+            })
+            .on('blur', function () {
+                // Menghapus titik saat validasi input untuk memastikan format yang benar
+                let rawValue = this.value.replace(/\./g, '');
+                if (!rawValue || isNaN(rawValue)) {
+                    this.value = ''; // Kosongkan jika input tidak valid
+                } else {
+                    this.value = formatCurrency(rawValue);
+                }
+            });
+    }
+
+    // Event listener untuk menghapus tindakan dari daftar
+    $('#selected-tindakan').on('click', '.btn-remove', function () {
+        $(this).parent().remove();
+    });
+
+    // Validasi sebelum submit
+    $('#formTindakan').on('submit', function (e) {
+        // Menghapus titik sebelum submit
+        $('input[name="harga_tindakan[]"]').each(function () {
+            // Menghapus titik sebelum mengirimkan data
+            this.value = this.value.replace(/\./g, '');
+        });
+
+        // Memastikan minimal satu tindakan dipilih
+        if ($('#selected-tindakan').children().length === 0) {
+            e.preventDefault();
+            alert('Pilih minimal satu tindakan untuk disimpan.');
+        }
+    });
+});
 </script>
 
 

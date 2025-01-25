@@ -87,6 +87,7 @@
                             </thead>
                             <tbody>
                                 @php $grandTotalTindakan = 0; @endphp
+                                @php $uangPasien = 0; @endphp
                                 @foreach ($listTindakan as $tindakanPasien)
                                     @php
                                         $biaya = $tindakanPasien['biaya']; // Akses array
@@ -149,7 +150,7 @@
                                             id="total_biaya_tindakan"
                                             name="total_biaya_tindakan" 
                                             class="form-control format-currency" 
-                                            value="{{ number_format($totalBiayaTindakan, 0, ',', '.') }}">
+                                            value="{{ number_format($totalBiayaTindakan, 0, ',', '.') }}" readonly>
                                     </td>
                                 </tr>
                             </tbody>
@@ -166,12 +167,36 @@
                                             readonly>
                                     </th>
                                 </tr>
+                                <tr>
+                                    <th colspan="2" class="text-right">Bayar</th>
+                                    <th>
+                                        <input 
+                                            type="text" 
+                                            id="bayar"
+                                            name="bayar" 
+                                            class="form-control format-currency font-weight-bold" 
+                                            value="{{ number_format($uangPasien, 0, ',', '.') }}">
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="text-right">Kembalian</th>
+                                    <th>
+                                        <input 
+                                            type="text" 
+                                            id="kembalian"
+                                            name="kembalian" 
+                                            class="form-control format-currency font-weight-bold" 
+                                            value="{{ number_format($kembalianPasien, 0, ',', '.') }}"
+                                            readonly>
+                                    </th>
+                                </tr>
                             </tfoot>
                         </table>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+                            <button type="submit" class="btn btn-primary">Bayar & Print</button>
                         </div>
                     </form>
+                    <p style="color: red; margin-top: 10px;">*Tombol diatas fungsi untuk menyimpan data dan melakukan print struk</p  >
                 </div>
             </div>
             
@@ -182,32 +207,53 @@
                         value = value.replace(/\./g, ''); // Hilangkan titik
                         return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Tambahkan titik setiap 3 digit
                     }
-
+            
                     function parseCurrency(value) {
                         return parseInt(value.replace(/\./g, ''), 10) || 0; // Konversi string ke angka
                     }
-
+            
                     function updateGrandTotal() {
                         const biayaObat = parseCurrency(document.getElementById('total_biaya_obat').value);
                         const biayaTindakan = parseCurrency(document.getElementById('total_biaya_tindakan').value);
                         const grandTotal = biayaObat + biayaTindakan;
-
+            
                         document.getElementById('grand_total').value = formatCurrency(grandTotal.toString());
                     }
-
-                    // Tambahkan event listener untuk input biaya obat dan tindakan
+                    
+                    function updateKembalian() {
+                        const grandTotal = parseCurrency(document.getElementById('grand_total').value);
+                        const uangPasien = parseCurrency(document.getElementById('bayar').value);
+                        const kembalian = uangPasien - grandTotal;
+            
+                        document.getElementById('kembalian').value = formatCurrency(kembalian.toString());
+                    }
+            
+                    // Tambahkan validasi angka saja saat mengetik
                     document.querySelectorAll('.format-currency').forEach(function (input) {
+                        input.addEventListener('keydown', function (e) {
+                            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
+                            const isNumber = /^[0-9]$/.test(e.key);
+            
+                            if (!isNumber && !allowedKeys.includes(e.key)) {
+                                e.preventDefault(); // Cegah input yang tidak diinginkan
+                            }
+                        });
+            
                         input.addEventListener('input', function () {
                             const cursorPosition = this.selectionStart;
-                            const formattedValue = formatCurrency(this.value);
+                            const formattedValue = formatCurrency(this.value.replace(/[^\d]/g, '')); // Hanya angka
                             this.value = formattedValue;
                             this.setSelectionRange(cursorPosition, cursorPosition);
-
-                            // Update grand total
-                            updateGrandTotal();
+            
+                            // Update grand total atau kembalian
+                            if (this.id === 'bayar') {
+                                updateKembalian();
+                            } else {
+                                updateGrandTotal();
+                            }
                         });
                     });
-
+            
                     // Pada saat submit, ubah semua input currency ke angka mentah (tanpa titik)
                     document.querySelector('form').addEventListener('submit', function () {
                         document.querySelectorAll('.format-currency').forEach(function (input) {
@@ -216,6 +262,7 @@
                     });
                 });
             </script>
+            
 
 
         </div>

@@ -35,7 +35,7 @@ class medical_reports extends Model
     
     public function tindakan()
     {
-        return $this->hasMany(tindakan::class, 'id_rekam_medis', 'id_rekam_medis');
+        return $this->hasOne(tindakan::class, 'id_rekam_medis', 'id_rekam_medis');
     }
 
     public function resep()

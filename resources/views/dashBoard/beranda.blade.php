@@ -8,13 +8,14 @@
     </div>
 
     <div class="row p-5">
+        
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/dataPasien" class="text-reset text-decoration-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor" class="bi bi-file-earmark-person" viewBox="0 0 16 16" style="color: green;">
                         <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                         <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5z"/>
-                      </svg>
+                    </svg>
                     {{-- @if ($proposalmasuk)
                     <span class="position-absolute top-0 end-75 translate-middle badge rounded-pill bg-danger p-3">
                         {{ $proposalmasuk }}
@@ -25,6 +26,7 @@
                 </a>
             </div>
         </div>
+        @can('admin')
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/rekamMedis" class="text-reset text-decoration-none">
@@ -115,6 +117,7 @@
                 </a>
             </div>
         </div>
+        @endcan
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/viewTransaksi" class="text-reset text-decoration-none">
