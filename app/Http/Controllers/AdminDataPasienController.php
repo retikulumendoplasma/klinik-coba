@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\HapusPasien;
+use App\Events\PasienBaruDitambahkan;
 use Illuminate\Validation\Rule;
 use App\Models\patients;
 use Illuminate\Http\Request;
@@ -26,14 +28,18 @@ class AdminDataPasienController extends Controller
         ]);
     }
 
-    public function destroy($nik)
+    public function destroy($nomor_rekam_medis)
     {
-        // Cari berita berdasarkan nik$nik
-        $pasien = patients::find($nik);
+        // Cari pasien berdasarkan nomor_rekam_medis
+        $pasien = patients::find($nomor_rekam_medis);
 
-        // Hapus pasien jika ditemukan
         if ($pasien) {
+            // Broadcast event untuk hapus pasien dengan data lengkap
+            broadcast(new HapusPasien($pasien)); 
+
+            // Hapus pasien
             $pasien->delete();
+
             return redirect('/dataPasien')->with('success', 'Data Pasien berhasil dihapus.');
         } else {
             return redirect('/dataPasien')->with('error', 'Data Pasien tidak ditemukan.');
@@ -84,7 +90,8 @@ class AdminDataPasienController extends Controller
         ]);
 
         // dd($request->all());
-        patients::create($request->all());
+        $pasien = patients::create($request->all());
+        PasienBaruDitambahkan::dispatch($pasien);
 
         return redirect('/dataPasien')->with('success', 'Pasien berhasil ditambahkan');
     }

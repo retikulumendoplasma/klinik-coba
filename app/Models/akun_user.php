@@ -23,9 +23,5 @@ class akun_user extends Model implements Authenticatable
      */
     protected $guarded = [];
 
-    public function penduduk()
-    {
-        return $this->belongsTo(penduduk::class, 'nik','nik');
-    }
 
 }

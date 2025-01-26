@@ -22,6 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script> --}}
 
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
 
   </head>
   <body>
@@ -43,6 +44,8 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
     
     <script src="../../dashboard.js"></script>
+
+    {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 
   </body>
 </html>
