@@ -55,20 +55,36 @@ class RekamMedisController extends Controller
         ]);
     }
     
-    
-    
-    
-    
-    
+
     public function formTambahRekamMedis()
     {
         // Ambil data pasien dan dokter
         $pasien = patients::all();
         $dokter = medical_staff::where('role', 'dokter')->get();
-
+        
         // dd($obat);
         return view('dashBoard.tambahRekamMedis', [
             "title" => "Tambah Rekam Medis",
+            "pasien" => $pasien,
+            "dokter" => $dokter,
+        ]);
+    }
+    
+    public function formTambahRekamMedisPasienTertuju($nomor_rekam_medis)
+    {
+        // Ambil data pasien dan dokter
+        $pasien = patients::where('nomor_rekam_medis', $nomor_rekam_medis)->first();
+
+        // Jika pasien tidak ditemukan, redirect kembali dengan pesan error
+        if (!$pasien) {
+            return redirect()->back()->with('error', 'Pasien tidak ditemukan.');
+        }
+
+        $dokter = medical_staff::where('role', 'dokter')->get();
+
+        // dd($obat);
+        return view('dashBoard.tambahRekamMedisPasienTertuju', [
+            "title" => "Tambah Rekam Medis " . e($pasien->nama),
             "pasien" => $pasien,
             "dokter" => $dokter,
         ]);

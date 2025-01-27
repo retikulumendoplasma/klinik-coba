@@ -205,6 +205,7 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     function formatCurrency(value) {
                         value = value.replace(/\./g, ''); // Hilangkan titik
+                        value = value.replace(/^0+(?!$)/, '');
                         return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Tambahkan titik setiap 3 digit
                     }
             
@@ -221,9 +222,10 @@
                     }
                     
                     function updateKembalian() {
-                        const grandTotal = parseCurrency(document.getElementById('grand_total').value);
+                        const biayaObat = parseCurrency(document.getElementById('total_biaya_obat').value);
+                        const biayaTindakan = parseCurrency(document.getElementById('total_biaya_tindakan').value);
                         const uangPasien = parseCurrency(document.getElementById('bayar').value);
-                        const kembalian = uangPasien - grandTotal;
+                        const kembalian = uangPasien - biayaObat - biayaTindakan;
             
                         document.getElementById('kembalian').value = formatCurrency(kembalian.toString());
                     }
@@ -240,16 +242,24 @@
                         });
             
                         input.addEventListener('input', function () {
-                            const cursorPosition = this.selectionStart;
-                            const formattedValue = formatCurrency(this.value.replace(/[^\d]/g, '')); // Hanya angka
+                            const rawValue = this.value.replace(/[^\d]/g, ''); // Hapus karakter non-digit
+                            const cursorPosition = this.selectionStart; // Simpan posisi kursor
+                            const beforeCursorValue = rawValue.slice(0, cursorPosition); // Nilai sebelum kursor
+                            const formattedValue = formatCurrency(rawValue); // Format nilai
+
+                            // Hitung posisi kursor baru berdasarkan panjang string sebelum dan sesudah format
+                            const diffLength = formattedValue.length - rawValue.length;
+                            const newCursorPosition = beforeCursorValue.length + diffLength;
+
                             this.value = formattedValue;
-                            this.setSelectionRange(cursorPosition, cursorPosition);
+                            this.setSelectionRange(newCursorPosition, newCursorPosition); // Atur posisi kursor baru
             
                             // Update grand total atau kembalian
                             if (this.id === 'bayar') {
                                 updateKembalian();
-                            } else {
+                            } else if (this.id === 'total_biaya_obat') {
                                 updateGrandTotal();
+                                updateKembalian(); // Update kembalian juga jika grand total berubah
                             }
                         });
                     });

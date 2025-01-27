@@ -73,7 +73,7 @@ body {
   }
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   #sidebarMenu {
       position: static;
       width: 320px;
@@ -82,7 +82,7 @@ body {
   main {
       margin-left: 320px;
   }
-}
+} */
 
 .sidebar-sticky {
   position: relative;

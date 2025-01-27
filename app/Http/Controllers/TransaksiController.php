@@ -244,7 +244,7 @@ class TransaksiController extends Controller
         return view('dashBoard.struk', compact('transaksi'));
     }
 
-    public function cetakStruk($id_transaksi)
+    public function cetakStruk(Request $request, $id_transaksi)
     {
         $transaksi = Transaksi::with('medical_reports.patients')->find($id_transaksi);
 
@@ -253,6 +253,17 @@ class TransaksiController extends Controller
             $profile = CapabilityProfile::load("simple");
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
+
+            // Ambil nilai "Bayar" dan "Kembalian" dari request
+            $bayar = $request->input('bayar');
+            $kembalian = $request->input('kembalian');
+
+            // **Tambahkan Logo**
+            $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
+            if (file_exists($logoPath)) {
+                $logo = EscposImage::load($logoPath, false);
+                $printer->bitImage($logo); // Cetak logo
+            }
 
             // Cetak header
             $printer->setEmphasis(true);
@@ -299,8 +310,16 @@ class TransaksiController extends Controller
 
             // Grand Total
             $printer->setEmphasis(true);
-            $printer->text("GRAND TOTAL\n");
+            $printer->text("Grand Total\n");
             $printer->text("              : Rp " . number_format($transaksi->grand_total, 0, ',', '.') . "\n");
+            $printer->setEmphasis(false);
+
+            $printer->text("Bayar\n");
+            $printer->text("              : Rp " . number_format($bayar, 0, ',', '.') . "\n");
+
+            $printer->setEmphasis(true);
+            $printer->text("Kembalian\n");
+            $printer->text("              : Rp " . number_format($kembalian, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
             // Garis pemisah
@@ -320,7 +339,7 @@ class TransaksiController extends Controller
         }
     }
 
-    public function cetakBayar($id_transaksi)
+    public function cetakBayar(Request $request,$id_transaksi)
     {
         $transaksi = Transaksi::with('medical_reports.patients')->find($id_transaksi);
 
@@ -329,6 +348,17 @@ class TransaksiController extends Controller
             $profile = CapabilityProfile::load("simple");
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
+
+            // Ambil nilai "Bayar" dan "Kembalian" dari request
+            $bayar = $request->input('bayar');
+            $kembalian = $request->input('kembalian');
+
+            // **Tambahkan Logo**
+            $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
+            if (file_exists($logoPath)) {
+                $logo = EscposImage::load($logoPath, false);
+                $printer->bitImage($logo); // Cetak logo
+            }
 
             // Cetak header
             $printer->setEmphasis(true);
@@ -375,9 +405,18 @@ class TransaksiController extends Controller
 
             // Grand Total
             $printer->setEmphasis(true);
-            $printer->text("GRAND TOTAL\n");
+            $printer->text("Grand Total\n");
             $printer->text("              : Rp " . number_format($transaksi->grand_total, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
+
+            $printer->text("Bayar\n");
+            $printer->text("              : Rp " . number_format($bayar, 0, ',', '.') . "\n");
+
+            $printer->setEmphasis(true);
+            $printer->text("Kembalian\n");
+            $printer->text("              : Rp " . number_format($kembalian, 0, ',', '.') . "\n");
+            $printer->setEmphasis(false);
+
 
             // Garis pemisah
             $printer->text("--------------------------------\n");
@@ -390,7 +429,7 @@ class TransaksiController extends Controller
             $printer->close();
         
             // Setelah pencetakan selesai, tampilkan struk di browser dan tutup tab setelah pencetakan
-            return redirect('/index');
+            return redirect('/listTransaksi');
         } else {
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan!');
         }
