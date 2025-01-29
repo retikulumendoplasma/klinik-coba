@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransaksiBaru;
 use App\Models\jenis_tindakan;
 use App\Models\medical_reports;
 use App\Models\resep;
@@ -27,8 +28,9 @@ class TindakanController extends Controller
     {
         // Query untuk pasien yang belum mendapatkan tindakan
         $rekamMedisBelumTindakan = medical_reports::query()
-            ->with(['patients', 'medical_staff']) // Memuat relasi pasien dan staf medis
-            ->whereDoesntHave('tindakan'); // Memilih data yang tidak memiliki tindakan
+            ->with(['patients', 'medical_staff', 'transaksi']) // Memuat relasi pasien dan staf medis
+            ->whereDoesntHave('tindakan')   // Memilih data yang tidak memiliki tindakan
+            ->whereDoesntHave('transaksi'); // Memilih data yang tidak memiliki transaksi
     
         // Query untuk pasien yang sudah mendapatkan tindakan
         $rekamMedisSudahTindakan = medical_reports::query()
@@ -123,8 +125,25 @@ class TindakanController extends Controller
                 'tanggal_tindakan' => now(), // Isi otomatis dengan tanggal sekarang
             ]);
         }
+            // Kirim event ke Pusher
+            // Ambil data medical_report yang belum ada transaksi
+            if ($medicalReport = medical_reports::with(['patients', 'medical_staff'])
+            ->whereDoesntHave('resep')
+            ->findOrFail($request->id_rekam_medis)) {
+                TransaksiBaru::dispatch([
+                    'nomor_rekam_medis' => $medicalReport?->nomor_rekam_medis,
+                    'nama_pasien' => $medicalReport->patients?->nama,
+                    'nomor_hp' => $medicalReport->patients?->nomor_hp,
+                    'nama_dokter' => $medicalReport->medical_staff?->nama,
+                    'id_rekam_medis' => $request?->id_rekam_medis,
+                ]);
 
-        return redirect('/viewTindakan')->with('success', 'Tindakan berhasil disimpan!');
+                return redirect('/viewTindakan')->with('success', 'Tindakan berhasil disimpan!');
+
+            } else {
+                return redirect('/viewTindakan')->with('success', 'Tindakan berhasil disimpan!');
+            }
+
     }
 
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\RekamMedisController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDataPasienController;
 use App\Http\Controllers\AdminPengurusanSuratController;
+use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\TindakanController;
 use App\Http\Controllers\TransaksiController;
@@ -52,6 +53,14 @@ Route::post('/tambahPasien', [AdminDataPasienController::class,'store'])->middle
 Route::get('/dataPasien/{patients:nomor_rekam_medis}/editPasien', [AdminDataPasienController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/editPasien/{patients:nomor_rekam_medis}', [AdminDataPasienController::class, 'update'])->middleware('auth:akun_user');
 
+//antrian
+Route::get('/viewAntrian', [AntrianController::class, 'index'])
+    ->middleware('auth:akun_user')
+    ->name('viewAntrian');
+Route::get('/api/patients/search', [AntrianController::class, 'search'])->name('api.patients.search');
+Route::post('/antrian/store', [AntrianController::class, 'store'])->name('antrian.store');
+
+
 // kelola data dokter/perawat
 Route::get('/kelolaDokter', [DataDokterController::class, 'kelolaTampil'])->middleware('auth:akun_user');
 Route::get('/tambahDokter', [DataDokterController::class, 'create'])->middleware('auth:akun_user');
@@ -62,7 +71,7 @@ Route::delete('/kelolaDokter/{id_dokter}', [DataDokterController::class, 'destro
 Route::get('/viewDokter/{id_dokter}', [DataDokterController::class, 'show'])->middleware('auth:akun_user');
 
 // Rekam Medis
-Route::get('/rekamMedis', [RekamMedisController::class, 'index'])
+Route::get('/rekamMedis', [RekamMedisController::class, 'indexV2'])
     ->middleware('auth:akun_user')
     ->name('rekamMedis');
 Route::get('/tambahRekamMedis', [RekamMedisController::class, 'formTambahRekamMedis'])->middleware('auth:akun_user');
@@ -72,7 +81,7 @@ Route::post('/generate-plan', [RekamMedisController::class, 'generatePlan'])->na
 Route::get('/search-pasien', [RekamMedisController::class, 'searchPasien'])->name('searchPasien');
 // Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user');
 Route::post('/tambahRekamMedis', [RekamMedisController::class, 'storeTambahRekamMedis'])->middleware('auth:akun_user')->name('tambahRekamMedis'); // Tambahkan nama route
-Route::get('/detailRekamMedisPasien/{id_rekam_medis}', [RekamMedisController::class, 'detailRekamMedisPasien'])->middleware('auth:akun_user');
+Route::get('/detailRekamMedisPasien/{id_rekam_medis}', [RekamMedisController::class, 'detailRekamMedisPasien'])->middleware('auth:akun_user')->name('detailRekamMedisPasien');
 Route::get('/editRekamMedis/{id_rekam_medis}/editRekamMedis', [RekamMedisController::class, 'edit'])->middleware('auth:akun_user');
 Route::put('/editRekamMedis/{id_rekam_medis}', [RekamMedisController::class, 'update'])->middleware('auth:akun_user');
 Route::delete('/rekamMedis/{id_rekam_medis}', [RekamMedisController::class, 'destroy']);
@@ -119,7 +128,7 @@ Route::put('/transaksi/update/{id}', [TransaksiController::class, 'update'])->mi
 //struk
 Route::get('/transaksi/print/{id}', [TransaksiController::class, 'printStruk'])->name('transaksi.print');
 Route::get('/transaksi/cetak/{idTransaksi}', [TransaksiController::class, 'cetakStruk'])->name('cetakStruk');
-Route::get('/transaksi/cetakBayar/{idTransaksi}', [TransaksiController::class, 'cetakBayar'])->name('cetakBayar');
+Route::get('/transaksi/cetakBayar/{id_transaksi}', [TransaksiController::class, 'cetakBayar'])->name('cetakBayar');
 // Route::get('/cetak-struk', [TransaksiController::class, 'cetakStruk']);
 
 //laporan

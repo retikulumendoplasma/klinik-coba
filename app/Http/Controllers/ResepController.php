@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransaksiBaru;
 use App\Models\resep_obat;
 use App\Models\medical_reports;
 use App\Models\medicines;
@@ -88,8 +89,9 @@ class ResepController extends Controller
     public function tambahResep()
     {
         $rekamMedis = medical_reports::query()
-            ->with(['patients', 'medical_staff']) // Relasi pasien dan staf medis
-            ->whereDoesntHave('resep'); // Hanya ambil data yang tidak memiliki resep
+            ->with(['patients', 'medical_staff', 'transaksi']) // Relasi pasien dan staf medis
+            ->whereDoesntHave('resep')
+            ->WhereDoesntHave('transaksi'); // Hanya ambil data yang tidak memiliki resep dan transaksi
 
         if (request('cari')) {
             $rekamMedis->where(function ($query) {
@@ -289,9 +291,24 @@ class ResepController extends Controller
             // Commit transaksi jika semua berhasil
             DB::commit();
 
+            // Kirim event ke Pusher
+            // Ambil data medical_report yang belum ada transaksi
+            $medicalReport = medical_reports::with(['patients', 'medical_staff'])
+            ->whereDoesntHave('tindakan') // Pastikan tidak ada tindakan
+            ->findOrFail($request->id_rekam_medis); // Ambil data berdasarkan id_rekam_medis
+
+            // Kirim event hanya jika medical_report ditemukan dan tidak ada transaksi
+            TransaksiBaru::dispatch([
+                'nomor_rekam_medis' => $medicalReport->nomor_rekam_medis,
+                'nama_pasien' => $medicalReport->patients?->nama,
+                'nomor_hp' => $medicalReport->patients?->nomor_hp,
+                'nama_dokter' => $medicalReport->medical_staff?->nama,
+                'id_rekam_medis' => $request->id_rekam_medis,
+            ]);
+
             // Redirect dengan pesan sukses
             return redirect()
-                ->route('detailResepPasien', [$resep->id_resep])
+                ->route('formTindakan', [$request->id_rekam_medis])
                 ->with('success', 'Resep berhasil disimpan!');
         } catch (\Exception $e) {
             // Rollback transaksi jika ada kesalahan

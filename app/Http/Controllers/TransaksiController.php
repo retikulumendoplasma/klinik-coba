@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransaksiBaru;
 use App\Models\billing_report;
 use App\Models\medical_reports;
 use App\Models\resep;
@@ -178,13 +179,16 @@ class TransaksiController extends Controller
                 'grand_total' => $request->grand_total,
                 'tanggal_transaksi' => now(),
             ]);
-    
+            $bayar = $request->bayar;
+            $kembalian = $request->kembalian;
+            session(['bayar' => $bayar, 'kembalian' => $kembalian]);
+
             // Redirect ke halaman cetak struk dengan ID transaksi
-            return redirect()->route('cetakBayar', ['idTransaksi' => $id_transaksi])
+            return redirect()->route('cetakBayar', ['id_transaksi' => $id_transaksi])
                 ->with('success', 'Transaksi berhasil disimpan.');
         } catch (\Exception $e) {
             // Tangani error
-            return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            return redirect('/')->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
 
@@ -250,13 +254,13 @@ class TransaksiController extends Controller
 
         if ($transaksi) {
             // Setup printer
-            $profile = CapabilityProfile::load("simple");
+            $profile = CapabilityProfile::load("RP326");
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
 
             // Ambil nilai "Bayar" dan "Kembalian" dari request
-            $bayar = $request->input('bayar');
-            $kembalian = $request->input('kembalian');
+            $bayar = (int) str_replace('.', '', $request->input('bayar')); // Convert ke angka tanpa titik
+            $kembalian = (int) str_replace('.', '', $request->input('kembalian')); // Convert ke angka tanpa titik
 
             // **Tambahkan Logo**
             $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
@@ -345,13 +349,12 @@ class TransaksiController extends Controller
 
         if ($transaksi) {
             // Setup printer
-            $profile = CapabilityProfile::load("simple");
+            $profile = CapabilityProfile::load("RP326");
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
 
-            // Ambil nilai "Bayar" dan "Kembalian" dari request
-            $bayar = $request->input('bayar');
-            $kembalian = $request->input('kembalian');
+            $bayar = session('bayar');
+            $kembalian = session('kembalian');
 
             // **Tambahkan Logo**
             $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
@@ -431,7 +434,7 @@ class TransaksiController extends Controller
             // Setelah pencetakan selesai, tampilkan struk di browser dan tutup tab setelah pencetakan
             return redirect('/listTransaksi');
         } else {
-            return redirect()->back()->with('error', 'Transaksi tidak ditemukan!');
+            return redirect('/')->with('error', 'Gagal cetak struk, silakan cetak ulang struk');
         }
     }
 

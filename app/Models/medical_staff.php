@@ -18,4 +18,9 @@ class medical_staff extends Model
     {
         return $this->hasMany(medical_reports::class, 'id_dokter', 'id_dokter');
     }
+    
+    public function akun_user()
+    {
+        return $this->hasOne(akun_user::class, 'id_dokter', 'id_dokter');
+    }
 }

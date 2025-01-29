@@ -23,5 +23,10 @@ class akun_user extends Model implements Authenticatable
      */
     protected $guarded = [];
 
+    public function medical_staff()
+    {
+        return $this->belongsTo(medical_staff::class, 'id_dokter', 'id_dokter');
+    }
+
 
 }

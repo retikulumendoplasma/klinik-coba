@@ -23,22 +23,13 @@
                             <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="{{ $pasien->nama ?? '' }}" readonly>
                         </div>
 
-                        <!-- Pilihan Dokter -->
-                        <div class="form-group pb-3">
-                            <label for="dokter">Nama Dokter</label>
-                            <select class="form-select @error('id_dokter') is-invalid @enderror" 
-                                name="id_dokter" aria-label="Default select example">
-                                <option value="">Pilih Dokter</option>
-                                @foreach ($dokter as $d)
-                                    <option value="{{ $d->id_dokter }}" 
-                                        {{ old('id_dokter') == $d->id_dokter ? 'selected' : '' }}>
-                                        {{ $d->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('id_dokter')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <!-- Nama Dokter -->
+                        <div class="mb-3">
+                            <label for="id_dokter" class="form-label">Nama Dokter</label>
+                            <!-- Menampilkan nama dokter -->
+                            <input type="text" class="form-control" id="nama_dokter" value="{{ auth()->user()->medical_staff->nama ?? '' }}" readonly>
+                            <!-- Menyimpan ID dokter -->
+                            <input type="hidden" id="id_dokter" name="id_dokter" value="{{ auth()->user()->medical_staff->id_dokter ?? '' }}">
                         </div>
 
                         <!-- Subjective -->

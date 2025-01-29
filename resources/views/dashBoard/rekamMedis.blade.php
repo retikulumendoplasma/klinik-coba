@@ -38,7 +38,7 @@
 
 <!-- Tabel Data -->
 <div class="table-responsive">
-  <table class="table table-striped table-bordered">
+  <table class="table table-striped table-bordered" id="tabel-pasien">
       <thead>
           <tr>
               <th>No</th>
@@ -54,9 +54,9 @@
               <tr data-url="/rekamMedisPasien/{{ $rekamMedis->nomor_rekam_medis }}" style="cursor: pointer;">
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $rekamMedis->nomor_rekam_medis }}</td> <!-- Menampilkan nomor rekam medis -->
-                  <td>{{ $rekamMedis->nama_pasien }}</td> <!-- Nama Pasien -->
-                  <td>{{ $rekamMedis->alamat_pasien }}</td> <!-- Menampilkan ID Rekam Medis -->
-                  <td>{{ $rekamMedis->nomor_hp_pasien }}</td> <!-- Nama Dokter (opsional) -->
+                  <td>{{ $rekamMedis->nama }}</td> <!-- Nama Pasien -->
+                  <td>{{ $rekamMedis->alamat }}</td> <!-- Menampilkan ID Rekam Medis -->
+                  <td>{{ $rekamMedis->nomor_hp }}</td> <!-- Nama Dokter (opsional) -->
                   <td>
                     <a href="/rekamMedisPasien/{{ $rekamMedis->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Lihat Detail</a>
                   </td>
@@ -81,5 +81,57 @@
           });
       });
   });
+</script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
+    // Konfigurasi Pusher
+    const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+        cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+        encrypted: true
+    });
+
+    // Subscribe ke channel 'pasien-baru'
+    const channel = pusher.subscribe('pasien-baru');
+
+    // Dengarkan event 'PasienBaruDitambahkan'
+    channel.bind('PasienBaruDitambahkan', function(data) {
+        console.log('Data pasien baru diterima:', data);
+
+        // Cari tbody dari tabel pasien
+        const tableBody = document.querySelector('#tabel-pasien tbody');
+
+        // Tambahkan baris baru ke tabel
+        const row = `
+            <tr data-url="/rekamMedisPasien/{{ $rekamMedis->nomor_rekam_medis }}" style="cursor: pointer;">
+                <td>${tableBody.children.length + 1}</td>
+                <td>${data.pasien.nomor_rekam_medis}</td>
+                <td>${data.pasien.nama}</td>
+                <td>${data.pasien.alamat}</td>
+                <td>${data.pasien.nomor_hp}</td>
+                <td>
+                    <a href="/rekamMedisPasien/{{ $rekamMedis->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Lihat Detail</a>
+                  </td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
+
+    channel.bind('HapusPasien', function(data) {
+        console.log('Data pasien dihapus:', data);
+
+        // Cari tabel pasien
+        const tableBody = document.querySelector('#tabel-pasien tbody');
+
+        // Cari baris yang akan dihapus berdasarkan nomor rekam medis
+        const rows = tableBody.getElementsByTagName('tr');
+        for (let row of rows) {
+            const nomorRekamMedisCell = row.cells[1];
+            if (nomorRekamMedisCell && nomorRekamMedisCell.textContent === data.pasien.nomor_rekam_medis) {
+                row.remove(); // Hapus baris
+                break;
+            }
+        }
+    });
+
 </script>
 @endsection

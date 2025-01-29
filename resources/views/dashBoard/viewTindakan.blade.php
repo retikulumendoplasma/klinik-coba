@@ -1,7 +1,6 @@
 @extends('dashBoard.dashboard')
 
 @section('container')
-<h2>Pasien Yang Belum Mendapatkan Tindakan</h2>
 
 <!-- Alert Sukses/Error -->
 @if (session('success'))
@@ -21,7 +20,7 @@
 <!-- Form Pencarian -->
 <div class="row mb-3">
     <form action="/viewTindakan" method="get">
-        <div class="input-group">
+        <div class="input-group mt-3">
             <input type="text" name="cari" class="form-control" placeholder="Cari nama pasien atau nomor rekam medis" value="{{ request('cari') }}">
             <button type="submit" class="btn btn-primary">Cari</button>
         </div>

@@ -55,6 +55,27 @@ class RekamMedisController extends Controller
         ]);
     }
     
+    public function indexV2()
+    {
+        $rekamMedis = patients::query(); // Menggunakan query builder
+
+        // Filter pencarian
+        if (request('cari')) {
+            $rekamMedis->where(function ($query) {
+                $query->where('nama', 'like', '%' . request('cari') . '%')
+                    ->orWhere('nomor_rekam_medis', 'like', '%' . request('cari') . '%');
+            });
+        }
+
+        $dataRekamMedis = $rekamMedis->get(); // Eksekusi query dan ambil hasilnya
+
+    
+        return view('dashBoard.rekamMedis', [
+            "title" => "Data Rekam Medis",
+            "dataRekamMedis" => $dataRekamMedis
+        ]);
+    }
+    
 
     public function formTambahRekamMedis()
     {
@@ -119,7 +140,8 @@ class RekamMedisController extends Controller
         $rekamMedis = medical_reports::create($validated);
 
         // Redirect ke formResep dengan ID rekam medis
-        return redirect()->route('formResep', ['id_rekam_medis' => $rekamMedis->id_rekam_medis])
+
+        return redirect()->route('detailRekamMedisPasien', ['id_rekam_medis' => $rekamMedis->id_rekam_medis])
             ->with('success', 'Rekam Medis berhasil ditambahkan!');
     }
 
@@ -143,11 +165,6 @@ class RekamMedisController extends Controller
 
         // Ambil data pasien
         $patient = patients::where('nomor_rekam_medis', $nomor_rekam_medis)->first();
-
-        // Jika tidak ada data pasien atau rekam medis
-        if ($rekamMedis->isEmpty() || !$patient) {
-            return redirect('/rekamMedis')->with('error', 'Data rekam medis tidak ditemukan untuk pasien ini.');
-        }
 
         // Kirim data ke view
         return view('dashBoard.rekamMedisPasien', [
@@ -208,9 +225,9 @@ class RekamMedisController extends Controller
         $rm = medical_reports::find($mr);
 
         // Jika pasien tidak ditemukan, bisa mengarahkan atau menampilkan pesan error
-        if (!$rm) {
-            return redirect('/rekamMedis')->with('error', 'Rekam Medis tidak ditemukan');
-        }
+        // if (!$rm) {
+        //     return redirect('/rekamMedis')->with('error', 'Rekam Medis tidak ditemukan');
+        // }
 
         return view('dashBoard.rekamMedis', [
             'title' => 'Rekam Medis',

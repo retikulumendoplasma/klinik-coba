@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\HapusPasien;
 use App\Events\PasienBaruDitambahkan;
+use App\Models\antrian;
 use Illuminate\Validation\Rule;
 use App\Models\patients;
 use Illuminate\Http\Request;
@@ -91,6 +92,12 @@ class AdminDataPasienController extends Controller
 
         // dd($request->all());
         $pasien = patients::create($request->all());
+        antrian::create([
+            'nomor_rekam_medis' => $request->nomor_rekam_medis,
+            'status' => 'Antri',
+            'jam_kedatangan' => now(),
+        ]);
+    
         PasienBaruDitambahkan::dispatch($pasien);
 
         return redirect('/dataPasien')->with('success', 'Pasien berhasil ditambahkan');

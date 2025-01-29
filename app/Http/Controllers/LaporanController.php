@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\KunjunganPasienBulanan;
 use App\Models\laporan;
 use App\Models\medical_reports;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -13,41 +15,29 @@ class LaporanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(KunjunganPasienBulanan $chart)
     {
-        $subquery = medical_reports::query()
-            ->selectRaw('
-                nomor_rekam_medis,
-                MAX(id_rekam_medis) AS id_rekam_medis
-            ')
-            ->groupBy('nomor_rekam_medis');
+        $dataKunjunganPasien = $chart->build();
     
-        // Gabungkan subquery dengan tabel patients menggunakan Eloquent
-        $rekamMedis = medical_reports::query()
-            ->fromSub($subquery, 'subquery') // Alias untuk subquery
-            ->join('patients', 'subquery.nomor_rekam_medis', '=', 'patients.nomor_rekam_medis')
+        $dataLaporan = DB::table('tindakan')
             ->select(
-                'subquery.nomor_rekam_medis',
-                'subquery.id_rekam_medis',
-                'patients.nama AS nama_pasien',
-                'patients.alamat AS alamat_pasien', // Tambahkan kolom alamat
-                'patients.nomor_hp AS nomor_hp_pasien' // Tambahkan kolom nomor HP
-            );
-    
-        // Filter pencarian
-        if (request('cari')) {
-            $rekamMedis->where(function ($query) {
-                $query->where('patients.nama', 'like', '%' . request('cari') . '%')
-                      ->orWhere('subquery.nomor_rekam_medis', 'like', '%' . request('cari') . '%');
-            });
-        }
-    
-        // Eksekusi query dan ambil data
-        $dataRekamMedis = $rekamMedis->get();
+                DB::raw('DATE(tindakan.tanggal_tindakan) as tanggal'),
+                DB::raw('COUNT(DISTINCT medical_reports.nomor_rekam_medis) as total_kunjungan'), // Total kunjungan pasien
+                DB::raw('COUNT(tindakan.id_tindakan) as total_tindakan'), // Total tindakan
+                DB::raw('SUM(jenis_tindakan.harga_tindakan) as total_harga_tindakan'), // Total harga tindakan
+                DB::raw('SUM(transaksi.grand_total) as total_transaksi') // Total transaksi
+            )
+            ->leftJoin('jenis_tindakan', 'tindakan.id_jenis_tindakan', '=', 'jenis_tindakan.id_jenis_tindakan') // Join tabel jenis_tindakan
+            ->leftJoin('medical_reports', 'tindakan.id_rekam_medis', '=', 'medical_reports.id_rekam_medis') // Join tabel rekam medis
+            ->leftJoin('transaksi', 'medical_reports.id_rekam_medis', '=', 'transaksi.id_rekam_medis') // Join tabel transaksi
+            ->groupBy('tanggal') // Kelompokkan berdasarkan tanggal
+            ->orderBy('tanggal', 'ASC') // Urutkan berdasarkan tanggal
+            ->get();
     
         return view('dashBoard.viewLaporan', [
-            "title" => "Data Rekam Medis",
-            "dataRekamMedis" => $dataRekamMedis
+            "title" => "Data Laporan",
+            "chart" => $dataKunjunganPasien,
+            'dataLaporan' => $dataLaporan,
         ]);
     }
 

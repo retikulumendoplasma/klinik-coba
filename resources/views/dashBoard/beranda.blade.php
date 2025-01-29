@@ -8,7 +8,7 @@
     </div>
 
     <div class="row p-5">
-        
+    
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/dataPasien" class="text-reset text-decoration-none">
@@ -26,6 +26,25 @@
                 </a>
             </div>
         </div>
+        
+        <div class="col-md-4 py-3">
+            <div class="text-center position-relative py-2">
+                <a href="/viewAntrian" class="text-reset text-decoration-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor" class="bi bi-journal-medical" viewBox="0 0 16 16" style="color: green;">
+                        <path d="M10 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                        <path d="M2 1a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zM1 3a1 1 0 0 1 1-1h2v2H1zm4 10V2h9a1 1 0 0 1 1 1v9c0 .285-.12.543-.31.725C14.15 11.494 12.822 10 10 10c-3.037 0-4.345 1.73-4.798 3zm-4-2h3v2H2a1 1 0 0 1-1-1zm3-1H1V8h3zm0-3H1V5h3z"/>
+                      </svg>
+                    {{-- @if ($proposalmasuk)
+                    <span class="position-absolute top-0 end-75 translate-middle badge rounded-pill bg-danger p-3">
+                        {{ $proposalmasuk }}
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                    @endif --}}
+                    <h6 style="margin-top: 10px;">Antrian</h6>
+                </a>
+            </div>
+        </div>
+        
         @can('admin')
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
