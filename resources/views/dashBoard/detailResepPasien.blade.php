@@ -66,35 +66,25 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Obat</th>
+                                <th>Satuan</th>
                                 <th>Jumlah</th>
-                                <th>Harga Satuan</th>
-                                <th>Total Harga</th>
+                                <th>Cara Minum</th>
+                                <th>Cara Pemberian</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php $grandTotal = 0; @endphp <!-- Variabel untuk menghitung total -->
                             @foreach ($dataResep as $resepObat)
-                                @php
-                                    $totalHarga = $resepObat->medicines->harga_jual * $resepObat->jumlah;
-                                    $grandTotal += $totalHarga;
-                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $resepObat->medicines->nama_obat }}</td>
+                                    <td>{{ $resepObat->satuan }}</td>
                                     <td>{{ $resepObat->jumlah }}</td>
-                                    <td>Rp{{ number_format($resepObat->medicines->harga_jual, 0, ',', '.') }}</td>
-                                    <td>Rp{{ number_format($totalHarga, 0, ',', '.') }}</td>
+                                    <td>{{ $resepObat->cara_minum }}</td>
+                                    <td>{{ $resepObat->cara_pakai }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="4" class="text-right">Grand Total</th>
-                                <th>Rp{{ number_format($grandTotal, 0, ',', '.') }}</th>
-                            </tr>
-                        </tfoot>
                     </table>
-                    
                 </div>
             </div>
             <a href="/resep" class="badge btn-primary" style="text-decoration: none;">

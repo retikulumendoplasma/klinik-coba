@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\HapusPasien;
+use App\Events\PasienBaruDitambahkan;
+use App\Models\antrian;
 use App\Models\medical_reports;
 use App\Models\medical_staff;
 use App\Models\medicines;
 use App\Models\patients;
+use App\Models\resep;
+use App\Models\resep_obat;
+use App\Models\tindakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -67,7 +73,7 @@ class RekamMedisController extends Controller
             });
         }
 
-        $dataRekamMedis = $rekamMedis->get(); // Eksekusi query dan ambil hasilnya
+        $dataRekamMedis = $rekamMedis->paginate(10); // Eksekusi query dan ambil hasilnya
 
     
         return view('dashBoard.rekamMedis', [
@@ -124,6 +130,7 @@ class RekamMedisController extends Controller
     
     public function storeTambahRekamMedis(Request $request)
     {
+        // Validasi input dari form
         $validated = $request->validate([
             'nomor_rekam_medis' => 'required|exists:patients,nomor_rekam_medis',
             'id_dokter' => 'required|exists:medical_staff,id_dokter',
@@ -132,24 +139,47 @@ class RekamMedisController extends Controller
             'assesment' => 'string',
             'planning' => 'string',
         ]);
-
-        // Tambah tanggal berobat
+    
+        // Menambahkan tanggal berobat ke data validasi
         $validated['tanggal_berobat'] = now();
-
-        // Simpan rekam medis baru
+    
+        // Mengambil data pasien berdasarkan nomor rekam medis
+        $patient = Patients::where('nomor_rekam_medis', $validated['nomor_rekam_medis'])->first();
+    
+        // Pastikan pasien ditemukan
+        if (!$patient) {
+            return redirect()->back()->with('error', 'Pasien tidak ditemukan.');
+        }
+    
+        // Mencari antrian berdasarkan nomor rekam medis
+        $antrian = DB::table('antrian')->where('nomor_rekam_medis', $validated['nomor_rekam_medis'])->first();
+    
+        // Pastikan antrian ditemukan
+        if (!$antrian) {
+            return redirect()->back()->with('error', 'Antrian tidak ditemukan.');
+        }
+    
+        // Perbarui status antrian menjadi "Sedang dilayani"
+        DB::table('antrian')->where('id_antrian', $antrian->id_antrian) // Gunakan id_antrian
+        ->update(['status' => 'Sedang dilayani']); // Update status menjadi "Sedang dilayani"
+    
+        // Menyimpan rekam medis baru
         $rekamMedis = medical_reports::create($validated);
-
-        // Redirect ke formResep dengan ID rekam medis
-
+    
+        // Redirect ke halaman detail rekam medis pasien
         return redirect()->route('detailRekamMedisPasien', ['id_rekam_medis' => $rekamMedis->id_rekam_medis])
             ->with('success', 'Rekam Medis berhasil ditambahkan!');
     }
+    
+    
+    
+    
 
 
     public function dataRekamMedisPasien($nomor_rekam_medis)
     {
         // Ambil query dasar
-        $rekamMedisQuery = medical_reports::with(['patients', 'medical_staff'])
+        $rekamMedisQuery = medical_reports::with(['patients', 'medical_staff', 'transaksi'])
             ->where('nomor_rekam_medis', $nomor_rekam_medis);
 
         // Filter pencarian berdasarkan subjective atau nomor rekam medis (jika ada permintaan pencarian)
@@ -176,21 +206,59 @@ class RekamMedisController extends Controller
 
     public function detailRekamMedisPasien($id_rekam_medis)
     {
-        // Ambil query dasar
+        // Ambil data rekam medis dengan relasi terkait
         $rekamMedis = medical_reports::with(['patients', 'medical_staff'])
             ->where('id_rekam_medis', $id_rekam_medis)
             ->first();
 
-        // Jika tidak ada data pasien atau rekam medis
+        // Jika data tidak ditemukan
         if (!$rekamMedis) {
             return redirect('/rekamMedis')->with('error', 'Data rekam medis tidak ditemukan untuk pasien ini.');
         }
 
+        // Pastikan data pasien terkait ada
+        if (!$rekamMedis->patients) {
+            return redirect('/rekamMedis')->with('error', 'Data pasien tidak ditemukan untuk rekam medis ini.');
+        }
+
+        // Ambil data resep terkait rekam medis
+        $resep = resep::with('resep_obat.medicines')
+            ->where('id_rekam_medis', $id_rekam_medis)
+            ->first();
+
+        // Ambil daftar obat yang terkait dengan resep, jika ada
+        $dataResep = collect(); // Koleksi kosong
+        if ($resep) {
+            $dataResep = resep_obat::with('medicines')
+                ->where('id_resep', $resep->id_resep)
+                ->get();
+        }
+
+        // Ambil data tindakan terkait rekam medis
+        $dataTindakan = tindakan::with('jenis_tindakan')
+            ->where('id_rekam_medis', $id_rekam_medis)
+            ->get();
+    
+        // Buat koleksi data tindakan dengan nama tindakan
+        $listTindakan = $dataTindakan->map(function ($tindakan) {
+            return [
+                'id_tindakan' => $tindakan->id_tindakan,
+                'nama_tindakan' => $tindakan->jenis_tindakan->nama_tindakan ?? '-', // Nama tindakan
+            ];
+        });
+
+        // Kirim data ke view
         return view('dashBoard.detailRekamMedisPasien', [
             'title' => 'Data Rekam Medis Pasien',
-            "rekamMedis" => $rekamMedis,
+            'rekamMedis' => $rekamMedis,
+            'dataResep' => $dataResep,
+            'listTindakan' => $listTindakan,
+            'hasResep' => $rekamMedis->resep ? true : false, // Tambahan untuk cek resep
+            'hasTindakan' => $rekamMedis->tindakan ? true : false, // Tambahan untuk cek tindakan
+            'hasTransaksi' => $rekamMedis->transaksi ? true : false, // Tambahan untuk cek transaksi
         ]);
     }
+
 
 
     /**
@@ -315,7 +383,7 @@ class RekamMedisController extends Controller
         $rekamMedis = medical_reports::where('id_rekam_medis', $id_rekam_medis)->first();
 
         if ($rekamMedis) {
-            $idPasien = $rekamMedis->id_pasien; // Ambil id pasien sebelum data dihapus
+            $idPasien = $rekamMedis->nomor_rekam_medis; // Ambil id pasien sebelum data dihapus
             $rekamMedis->delete(); // Hapus data
 
             // Redirect ke halaman rekam medis pasien yang sesuai

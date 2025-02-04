@@ -34,8 +34,10 @@ class TindakanController extends Controller
     
         // Query untuk pasien yang sudah mendapatkan tindakan
         $rekamMedisSudahTindakan = medical_reports::query()
-            ->with(['patients', 'medical_staff']) // Memuat relasi pasien dan staf medis
-            ->whereHas('tindakan'); // Memilih data yang memiliki tindakan
+            ->with(['patients', 'medical_staff', 'tindakan']) // Memuat relasi pasien dan staf medis
+            ->whereHas('tindakan') // Memilih data yang memiliki tindakan
+            ->join('tindakan', 'tindakan.id_rekam_medis', '=', 'medical_reports.id_rekam_medis') // Gabungkan dengan tabel tindakan
+            ->orderByDesc('tindakan.tanggal_tindakan'); // Mengurutkan berdasarkan tanggal tindakan yang terbaru
     
         // Jika ada pencarian, filter berdasarkan nama pasien atau nomor rekam medis
         if (request('cari')) {
@@ -127,16 +129,7 @@ class TindakanController extends Controller
         }
             // Kirim event ke Pusher
             // Ambil data medical_report yang belum ada transaksi
-            if ($medicalReport = medical_reports::with(['patients', 'medical_staff'])
-            ->whereDoesntHave('resep')
-            ->findOrFail($request->id_rekam_medis)) {
-                TransaksiBaru::dispatch([
-                    'nomor_rekam_medis' => $medicalReport?->nomor_rekam_medis,
-                    'nama_pasien' => $medicalReport->patients?->nama,
-                    'nomor_hp' => $medicalReport->patients?->nomor_hp,
-                    'nama_dokter' => $medicalReport->medical_staff?->nama,
-                    'id_rekam_medis' => $request?->id_rekam_medis,
-                ]);
+            if ($medicalReport = medical_reports::with(['patients', 'medical_staff'])->findOrFail($request->id_rekam_medis)) {
 
                 return redirect('/viewTindakan')->with('success', 'Tindakan berhasil disimpan!');
 
@@ -161,16 +154,20 @@ class TindakanController extends Controller
             ->first();
     
         // Ambil daftar obat yang terkait dengan resep, jika ada
-        $dataResep = collect(); // Koleksi kosong
         $totalBiayaObat = 0; // Total biaya obat
+        $dataResep = collect(); // Koleksi kosong
         if ($resep) {
             $dataResep = resep_obat::with('medicines')
                 ->where('id_resep', $resep->id_resep)
                 ->get();
     
-            // Hitung total biaya obat (misalkan ada kolom harga di tabel medicines)
+            // Hitung total biaya obat dengan logika satuan
             $totalBiayaObat = $dataResep->sum(function ($item) {
-                return $item->medicines->harga_jual * $item->jumlah; // Harga * jumlah
+                $hargaJual = $item->medicines->harga_jual ?? 0; // Harga jual obat
+                if ($item->satuan === 'papan') {
+                    $hargaJual *= 10; // Kalikan harga jika satuan adalah 'papan'
+                }
+                return $hargaJual * $item->jumlah; // Harga jual (sudah disesuaikan) * jumlah
             });
         }
     

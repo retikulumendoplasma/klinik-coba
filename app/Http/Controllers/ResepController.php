@@ -23,7 +23,8 @@ class ResepController extends Controller
     public function index()
     {
         $resep = resep::query()
-            ->with(['medical_reports.patients']);
+            ->with(['medical_reports.patients'])
+            ->orderBy('tanggal_resep', 'desc'); // Urutkan dari yang terbaru berdasarkan created_at
 
         if (request('cari')) {
             $resep->where(function ($query) {
@@ -35,7 +36,7 @@ class ResepController extends Controller
             });
         }
 
-        $carirm = $resep->get();
+        $carirm = $resep->paginate(10);
 
         return view('dashBoard.viewResep', [
             "title" => "Data resep",
@@ -240,7 +241,15 @@ class ResepController extends Controller
             'obat.*' => 'required|exists:medicines,id_obat', // Pastikan ID obat valid
             'jumlah' => 'required|array',
             'jumlah.*' => 'required|integer|min:1', // Pastikan jumlah obat valid
+            'cara_minum' => 'required|array',
+            'cara_minum.*' => 'required|in:1 x 1,2 x 1,3 x 1,3 x ½,2 x ½,1 x ½', // Validasi enum
+            'cara_pakai' => 'required|array',
+            'cara_pakai.*' => 'required|string|max:255', // Validasi teks
+            'satuan' => 'required|array',
+            'satuan.*' => 'required|in:kaplet,papan,botol', // Validasi enum
         ]);
+
+        // dd($request->all());
 
         // Ambil data obat sekaligus untuk efisiensi
         $medicines = medicines::whereIn('id_obat', $request->obat)->get()->keyBy('id_obat');
@@ -268,6 +277,9 @@ class ResepController extends Controller
             // Menyimpan data obat yang dipilih ke tabel 'resep_obat'
             foreach ($request->obat as $obat_id) {
                 $jumlah = $request->jumlah[$obat_id];
+                $caraMinum = $request->cara_minum[$obat_id];
+                $caraPakai = $request->cara_pakai[$obat_id];
+                $satuan = $request->satuan[$obat_id];
 
                 // Cek jika entri sudah ada dalam `resep_obat`
                 if (resep_obat::where('id_resep', $resep->id_resep)
@@ -280,6 +292,9 @@ class ResepController extends Controller
                 $resepObat->id_resep = $resep->id_resep;
                 $resepObat->id_obat = $obat_id;
                 $resepObat->jumlah = $jumlah;
+                $resepObat->cara_minum = $caraMinum;
+                $resepObat->cara_pakai = $caraPakai;
+                $resepObat->satuan = $satuan;
                 $resepObat->save();
 
                 // Update stok obat
@@ -290,21 +305,6 @@ class ResepController extends Controller
 
             // Commit transaksi jika semua berhasil
             DB::commit();
-
-            // Kirim event ke Pusher
-            // Ambil data medical_report yang belum ada transaksi
-            $medicalReport = medical_reports::with(['patients', 'medical_staff'])
-            ->whereDoesntHave('tindakan') // Pastikan tidak ada tindakan
-            ->findOrFail($request->id_rekam_medis); // Ambil data berdasarkan id_rekam_medis
-
-            // Kirim event hanya jika medical_report ditemukan dan tidak ada transaksi
-            TransaksiBaru::dispatch([
-                'nomor_rekam_medis' => $medicalReport->nomor_rekam_medis,
-                'nama_pasien' => $medicalReport->patients?->nama,
-                'nomor_hp' => $medicalReport->patients?->nomor_hp,
-                'nama_dokter' => $medicalReport->medical_staff?->nama,
-                'id_rekam_medis' => $request->id_rekam_medis,
-            ]);
 
             // Redirect dengan pesan sukses
             return redirect()
@@ -322,6 +322,7 @@ class ResepController extends Controller
                 ->with('error', 'Terjadi kesalahan saat menyimpan resep: ' . $e->getMessage());
         }
     }
+
 
 
 

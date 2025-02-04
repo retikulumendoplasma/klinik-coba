@@ -25,16 +25,18 @@
             <button type="submit" class="btn btn-primary">Cari</button>
         </div>
     </form>
-    <div class="col-4 mt-3">
-      <button type="submit" onclick="window.location.href='/tambahResep'" class="nav-link px-3 bg-success border-0 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-        </svg>
-        Tambah Resep
-      </button>
-  </div>
-</div>
+    @can('admin')
+        <div class="col-4 mt-3">
+            <button type="submit" onclick="window.location.href='/tambahResep'" class="nav-link px-3 bg-success border-0 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+                Tambah Resep
+            </button>
+        </div>
+    @endcan
+    </div>
 
 <!-- Tabel Data -->
 <div class="table-responsive">
@@ -57,19 +59,25 @@
             <td>{{ $resep->medical_reports->patients->nama }}</td> <!-- Nama Pasien -->
             <td>
                 <a href="/detailResepPasien/{{ $resep->id_resep }}" class="btn btn-sm btn-primary">Lihat resep</a>
-                <form action="{{ route('resep.destroy', $resep->id_resep) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin ingin menghapus data resep ini?')">
-                        Hapus resep
-                    </button>
-                </form>       
+                @can('admin')
+                    <form action="{{ route('resep.destroy', $resep->id_resep) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin ingin menghapus data resep ini?')">
+                            Hapus resep
+                        </button>
+                    </form>
+                @endcan
             </td>
         </tr>
     @endforeach
     
       </tbody>
   </table>
+    <!-- Link Pagination -->
+    <div class="pagination">
+        {{ $dataResep->links('vendor.pagination.custom') }}
+    </div>
 </div>
 
 {{-- script agar tabel dapat di click --}}

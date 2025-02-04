@@ -69,6 +69,10 @@
     
       </tbody>
   </table>
+    <!-- Link Pagination -->
+    <div class="pagination">
+        {{ $dataRekamMedis->links('vendor.pagination.custom') }}
+    </div>
 </div>
 
 {{-- script agar tabel dapat di click --}}

@@ -17,17 +17,11 @@ class medical_reports extends Model
 
     protected $guarded = [];
 
-    /**
-     * Relasi ke tabel patients (belongs-to)
-     */
     public function patients()
     {
         return $this->belongsTo(Patients::class, 'nomor_rekam_medis', 'nomor_rekam_medis');
     }
 
-    /**
-     * Relasi ke tabel medical_staff (belongs-to)
-     */
     public function medical_staff()
     {
         return $this->belongsTo(medical_staff::class, 'id_dokter', 'id_dokter');
@@ -40,7 +34,7 @@ class medical_reports extends Model
 
     public function resep()
     {
-        return $this->hasMany(resep::class, 'id_rekam_medis');
+        return $this->hasOne(resep::class, 'id_rekam_medis', 'id_rekam_medis');
     }
 
     public function transaksi()

@@ -17,7 +17,7 @@ class AntrianController extends Controller
      */
     public function index()
     {
-        $antrianHariIni = Antrian::whereDate('jam_kedatangan', Carbon::today())
+        $antrianHariIni = antrian::whereDate('jam_kedatangan', Carbon::today())
         ->with('patients') // Lazy loading relasi ke tabel patients
         ->get();
 
@@ -74,6 +74,7 @@ class AntrianController extends Controller
             'nama' => $pasien->nama,
             'alamat' => $pasien->alamat,
             'nomor_hp' => $pasien->nomor_hp,
+            'status' => 'Antri',
         ]));
     
         return redirect()->back()->with('success', 'Pasien berhasil ditambahkan ke antrian.');
@@ -85,9 +86,13 @@ class AntrianController extends Controller
      * @param  \App\Models\antrian  $antrian
      * @return \Illuminate\Http\Response
      */
-    public function show(antrian $antrian)
+    public function show()
     {
-        //
+        // Ambil nomor antrian dari database atau logika yang Anda buat
+        $antrianHariIni = antrian::whereDate('jam_kedatangan', Carbon::today())->get();
+        $nomorAntrian = 'A01';  // Bisa diganti dengan data dinamis
+
+        return view('dashBoard.antrian', ['nomorAntrian' => $nomorAntrian]);
     }
 
     /**

@@ -67,18 +67,22 @@ class TransaksiController extends Controller
             ->first();
     
         // Ambil daftar obat yang terkait dengan resep, jika ada
-        $dataResep = collect(); // Koleksi kosong
         $totalBiayaObat = 0; // Total biaya obat
         $uang = 0; // Total biaya obat
         $kembalian = 0; // Total biaya obat
+        $dataResep = collect(); // Koleksi kosong
         if ($resep) {
             $dataResep = resep_obat::with('medicines')
                 ->where('id_resep', $resep->id_resep)
                 ->get();
     
-            // Hitung total biaya obat (misalkan ada kolom harga di tabel medicines)
+            // Hitung total biaya obat dengan logika satuan
             $totalBiayaObat = $dataResep->sum(function ($item) {
-                return $item->medicines->harga_jual * $item->jumlah; // Harga * jumlah
+                $hargaJual = $item->medicines->harga_jual ?? 0; // Harga jual obat
+                if ($item->satuan === 'papan') {
+                    $hargaJual *= 10; // Kalikan harga jika satuan adalah 'papan'
+                }
+                return $hargaJual * $item->jumlah; // Harga jual (sudah disesuaikan) * jumlah
             });
         }
     
@@ -153,36 +157,64 @@ class TransaksiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function storeTransaksi(Request $request)
     {
         // Format dan ubah input
         $request->merge([
             'total_biaya_obat' => (int) str_replace('.', '', $request->total_biaya_obat),
             'total_biaya_tindakan' => (int) str_replace('.', '', $request->total_biaya_tindakan),
+            'bayar' => (int) str_replace('.', '', $request->bayar),
+            'kembalian' => (int) str_replace('.', '', $request->kembalian),
             'grand_total' => (int) str_replace('.', '', $request->grand_total),
         ]);
-
+    
         // Validasi input
         $request->validate([
             'id_rekam_medis' => 'required|exists:medical_reports,id_rekam_medis',
             'total_biaya_obat' => 'required|integer',
             'total_biaya_tindakan' => 'required|integer',
+            'bayar' => 'required|integer',
+            'kembalian' => 'required|integer',
             'grand_total' => 'required|integer',
         ]);
-
+    
         try {
             // Simpan transaksi ke database dan ambil ID transaksi yang baru
             $id_transaksi = DB::table('transaksi')->insertGetId([
                 'id_rekam_medis' => $request->id_rekam_medis,
                 'total_biaya_obat' => $request->total_biaya_obat,
                 'total_biaya_tindakan' => $request->total_biaya_tindakan,
+                'bayar' => $request->bayar,
+                'kembalian' => $request->kembalian,
                 'grand_total' => $request->grand_total,
                 'tanggal_transaksi' => now(),
             ]);
-            $bayar = $request->bayar;
-            $kembalian = $request->kembalian;
-            session(['bayar' => $bayar, 'kembalian' => $kembalian]);
-
+    
+            // Cari nomor rekam medis dari medical_reports
+            $medicalReport = DB::table('medical_reports')
+                ->where('id_rekam_medis', $request->id_rekam_medis)
+                ->first();
+    
+            if (!$medicalReport) {
+                return redirect('/')->withErrors(['error' => 'Rekam medis tidak ditemukan.']);
+            }
+    
+            // Cari antrian berdasarkan nomor rekam medis (dari tabel patients yang memiliki nomor_rekam_medis)
+            $antrian = DB::table('antrian')
+                ->where('nomor_rekam_medis', $medicalReport->nomor_rekam_medis)
+                ->first();
+    
+            if ($antrian) {
+                // Update status antrian menjadi 'Selesai'
+                DB::table('antrian')
+                    ->where('nomor_rekam_medis', $medicalReport->nomor_rekam_medis)
+                    ->update(['status' => 'Selesai']);
+            } else {
+                // Jika antrian tidak ditemukan
+                return redirect('/')->withErrors(['error' => 'Nomor rekam medis tidak ditemukan dalam antrian.']);
+            }
+    
             // Redirect ke halaman cetak struk dengan ID transaksi
             return redirect()->route('cetakBayar', ['id_transaksi' => $id_transaksi])
                 ->with('success', 'Transaksi berhasil disimpan.');
@@ -191,6 +223,7 @@ class TransaksiController extends Controller
             return redirect('/')->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
+    
 
     
 
@@ -258,10 +291,6 @@ class TransaksiController extends Controller
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
 
-            // Ambil nilai "Bayar" dan "Kembalian" dari request
-            $bayar = (int) str_replace('.', '', $request->input('bayar')); // Convert ke angka tanpa titik
-            $kembalian = (int) str_replace('.', '', $request->input('kembalian')); // Convert ke angka tanpa titik
-
             // **Tambahkan Logo**
             $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
             if (file_exists($logoPath)) {
@@ -318,12 +347,15 @@ class TransaksiController extends Controller
             $printer->text("              : Rp " . number_format($transaksi->grand_total, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
+            // Garis pemisah
+            $printer->text("--------------------------------\n");
+
             $printer->text("Bayar\n");
-            $printer->text("              : Rp " . number_format($bayar, 0, ',', '.') . "\n");
+            $printer->text("              : Rp " . number_format($transaksi->bayar, 0, ',', '.') . "\n");
 
             $printer->setEmphasis(true);
             $printer->text("Kembalian\n");
-            $printer->text("              : Rp " . number_format($kembalian, 0, ',', '.') . "\n");
+            $printer->text("              : Rp " . number_format($transaksi->kembalian, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
             // Garis pemisah
@@ -353,9 +385,6 @@ class TransaksiController extends Controller
             $connector = new WindowsPrintConnector("POS-58"); // Ganti dengan nama printer Anda
             $printer = new Printer($connector, $profile);
 
-            $bayar = session('bayar');
-            $kembalian = session('kembalian');
-
             // **Tambahkan Logo**
             $logoPath = public_path('public\img\logo2.2.png'); // Path ke file logo
             if (file_exists($logoPath)) {
@@ -412,12 +441,14 @@ class TransaksiController extends Controller
             $printer->text("              : Rp " . number_format($transaksi->grand_total, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
+            $printer->text("--------------------------------\n");
+
             $printer->text("Bayar\n");
-            $printer->text("              : Rp " . number_format($bayar, 0, ',', '.') . "\n");
+            $printer->text("              : Rp " . number_format($transaksi->bayar, 0, ',', '.') . "\n");
 
             $printer->setEmphasis(true);
             $printer->text("Kembalian\n");
-            $printer->text("              : Rp " . number_format($kembalian, 0, ',', '.') . "\n");
+            $printer->text("              : Rp " . number_format($transaksi->kembalian, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
 

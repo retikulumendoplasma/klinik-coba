@@ -10,25 +10,29 @@
 
             <!-- Tombol Kembali -->
             <div class="text-center">
-                <a href="{{ url()->previous() }}" class="btn btn-primary">
+                <a href="/rekamMedisPasien/{{ $rekamMedis->patients->nomor_rekam_medis }}" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
                         <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
                     </svg>
                     Kembali
                 </a>
-                <a href="/formResep/{{ $rekamMedis->id_rekam_medis }}" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-prescription" viewBox="0 0 16 16">
-                        <path d="M5.5 6a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V9h.293l2 2-1.147 1.146a.5.5 0 0 0 .708.708L9 11.707l1.146 1.147a.5.5 0 0 0 .708-.708L9.707 11l1.147-1.146a.5.5 0 0 0-.708-.708L9 10.293 7.695 8.987A1.5 1.5 0 0 0 7.5 6zM6 7h1.5a.5.5 0 0 1 0 1H6z"/>
-                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v10.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 14.5V4a1 1 0 0 1-1-1zm2 3v10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V4zM3 3h10V1H3z"/>
-                      </svg>
-                    RX
-                </a>
-                <a href="/formTindakan/{{ $rekamMedis->id_rekam_medis }}" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z"/>
-                      </svg>
-                    Tindakan
-                </a>
+                @if (!$hasResep && !$hasTransaksi)    
+                    <a href="/formResep/{{ $rekamMedis->id_rekam_medis }}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-prescription" viewBox="0 0 16 16">
+                            <path d="M5.5 6a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V9h.293l2 2-1.147 1.146a.5.5 0 0 0 .708.708L9 11.707l1.146 1.147a.5.5 0 0 0 .708-.708L9.707 11l1.147-1.146a.5.5 0 0 0-.708-.708L9 10.293 7.695 8.987A1.5 1.5 0 0 0 7.5 6zM6 7h1.5a.5.5 0 0 1 0 1H6z"/>
+                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v10.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 14.5V4a1 1 0 0 1-1-1zm2 3v10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V4zM3 3h10V1H3z"/>
+                        </svg>
+                        RX
+                    </a>
+                @endif
+                @if (!$hasTindakan && !$hasTransaksi)
+                    <a href="/formTindakan/{{ $rekamMedis->id_rekam_medis }}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z"/>
+                        </svg>
+                        Tindakan
+                    </a>
+                @endif
             </div>
 
 
@@ -87,6 +91,68 @@
                         <h6 class="fw-semibold">Planning</h6>
                         <p class="text-muted">{!! nl2br(e($rekamMedis->planning)) !!}</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Detail Resep Obat -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Resep Obat yang Diberikan</h5>
+                    @if($dataResep->isNotEmpty())
+                            <table class="table table-striped table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Obat</th>
+                                        <th>Satuan</th>
+                                        <th>Jumlah</th>
+                                        <th>Cara Minum</th>
+                                        <th>Cara Pemberian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dataResep as $resepObat)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $resepObat->medicines->nama_obat }}</td>
+                                            <td>{{ $resepObat->satuan }}</td>
+                                            <td>{{ $resepObat->jumlah }}</td>
+                                            <td>{{ $resepObat->cara_minum }}</td>
+                                            <td>{{ $resepObat->cara_pakai }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                    @else
+                        <p class="text-muted">Tidak ada resep yang ditambahkan.</p>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Detail Tindakan -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Tindakan yang Diberikan</h5>
+                    @if($listTindakan->isNotEmpty())
+                        <table class="table table-striped table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($listTindakan as $tindakanPasien)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $tindakanPasien['nama_tindakan'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-muted">Tidak ada tindakan yang diterapkan.</p>
+                    @endif
                 </div>
             </div>
 

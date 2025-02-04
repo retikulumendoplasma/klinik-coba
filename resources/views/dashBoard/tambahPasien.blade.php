@@ -57,9 +57,9 @@
                 </div>
                 <div class="form-group pb-3">
                     <label for="riwayat_penyakit">Riwayat Penyakit</label>
-                    <input type="text" class="form-control"  id="riwayat_penyakit" name='riwayat_penyakit' required placeholder="Riwayat Penyakit" >
+                    <input type="text" class="form-control"  id="riwayat_penyakit" name='riwayat_penyakit' placeholder="Riwayat Penyakit" >
                 </div>
-                <button type="submit" class="btn btn-dark text-white btn-block mb-3">Tambah Pasien</button>
+                <button type="submit" class="nav-link px-3 bg-success border-0 text-white">Tambah Pasien</button>
             </form>
         </div>
     </div>

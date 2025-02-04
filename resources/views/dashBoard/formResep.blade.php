@@ -67,17 +67,17 @@
             </div>
 
               <!-- Form Tambah Resep -->
-              <div class="card mb-4 shadow-sm">
+            <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Tambah Resep</h5>
                     <form action="{{ route('storeResep') }}" method="POST" id="formResep">
                         @csrf
                         <input type="hidden" name="id_rekam_medis" value="{{ $rekamMedis->id_rekam_medis }}">
-                    
+
                         <!-- Select2 untuk mencari obat -->
                         <div class="form-group">
                             <label for="obat" class="fw-semibold">Cari Obat</label>
-                            <select id="obat" class="form-control" name="obat[]" multiple="multiple" style="width: 100%;">
+                            <select id="obat" class="form-control" multiple="multiple" style="width: 100%;">
                                 <!-- Select2 akan memuat opsi obat melalui AJAX -->
                             </select>
                         </div>
@@ -87,13 +87,18 @@
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     
-                        <!-- Daftar obat yang dipilih dengan jumlah -->
+                        <!-- Daftar obat yang dipilih dengan jumlah, cara minum, cara pakai, dan satuan -->
                         <div id="selected-obat" class="mt-4">
-                            <!-- Area untuk menampilkan obat yang dipilih dengan jumlah -->
+                            <!-- Area untuk menampilkan obat yang dipilih -->
                         </div>
-                    
+
                         <button type="submit" class="btn btn-primary mt-3" id="submitResep">Simpan Resep</button>
                     </form>
+                    @if(session('error'))
+                        <div class="text-danger mt-2">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </div>
             </div>
             <a href="/tambahResep" class="badge btn-primary" style="text-decoration: none;">
@@ -150,11 +155,48 @@
             // Tambahkan obat ke daftar hanya jika belum ada
             if ($('#selected-obat').find(`[data-id="${selectedData.id}"]`).length === 0) {
                 $('#selected-obat').append(`
-                    <div class="d-flex align-items-center mb-3" data-id="${selectedData.id}">
+                    <div class="card p-3 mb-3" data-id="${selectedData.id}">
                         <input type="hidden" name="obat[]" value="${selectedData.id}">
-                        <div style="flex-grow: 1;">${selectedData.text}</div>
-                        <input type="number" class="form-control" name="jumlah[${selectedData.id}]" placeholder="Jumlah" min="1" style="width: 80px;" required>
-                        <button type="button" class="btn btn-danger ms-2 btn-remove">Hapus</button>
+                        <h6 class="fw-bold">${selectedData.text}</h6>
+                        
+                        <div class="row">
+                            <!-- Input Jumlah -->
+                            <div class="col-md-3 mb-2">
+                                <label for="jumlah-${selectedData.id}" class="form-label">Jumlah</label>
+                                <input type="number" id="jumlah-${selectedData.id}" class="form-control" name="jumlah[${selectedData.id}]" placeholder="Jumlah" min="1" required>
+                            </div>
+                            
+                            <!-- Input Cara Minum -->
+                            <div class="col-md-3 mb-2">
+                                <label for="cara-minum-${selectedData.id}" class="form-label">Cara Minum</label>
+                                <select id="cara-minum-${selectedData.id}" class="form-control" name="cara_minum[${selectedData.id}]" required>
+                                    <option value="1 x 1">1 x 1</option>
+                                    <option value="2 x 1">2 x 1</option>
+                                    <option value="3 x 1">3 x 1</option>
+                                    <option value="3 x ½">3 x ½</option>
+                                    <option value="2 x ½">2 x ½</option>
+                                    <option value="1 x ½">1 x ½</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Input Cara Pakai -->
+                            <div class="col-md-3 mb-2">
+                                <label for="cara-pakai-${selectedData.id}" class="form-label">Cara Pemberian</label>
+                                <input type="text" id="cara_pakai-${selectedData.id}" class="form-control" name="cara_pakai[${selectedData.id}]" placeholder="Cara Pakai" required>
+                            </div>
+                            
+                            <!-- Input Satuan -->
+                            <div class="col-md-3 mb-2">
+                                <label for="satuan-${selectedData.id}" class="form-label">Satuan</label>
+                                <select id="satuan-${selectedData.id}" class="form-control" name="satuan[${selectedData.id}]" required>
+                                    <option value="kaplet">Kaplet</option>
+                                    <option value="papan">Papan</option>
+                                    <option value="botol">Botol</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-danger mt-2 btn-remove">Hapus</button>
                     </div>
                 `);
             }
@@ -162,7 +204,7 @@
 
         // Event listener untuk menghapus obat dari daftar
         $('#selected-obat').on('click', '.btn-remove', function () {
-            $(this).parent().remove();
+            $(this).closest('.card').remove();
         });
 
         // Validasi sebelum submit

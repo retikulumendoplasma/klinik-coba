@@ -23,6 +23,7 @@ class patients extends Model
     
     public function antrian()
     {
-        return $this->hasMany(antrian::class, 'nomor_rekam_medis', 'nomor_rekam_medis');
+        return $this->hasOne(antrian::class, 'nomor_rekam_medis');
     }
+
 }

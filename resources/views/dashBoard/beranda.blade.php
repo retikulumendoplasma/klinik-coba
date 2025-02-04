@@ -100,6 +100,9 @@
                 </a>
             </div>
         </div>
+
+        @endcan
+
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/resep" class="text-reset text-decoration-none">
@@ -118,6 +121,9 @@
                 </a>
             </div>
         </div>
+
+        @can('admin')
+
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/viewTindakan" class="text-reset text-decoration-none">
@@ -137,7 +143,9 @@
                 </a>
             </div>
         </div>
+
         @endcan
+
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/viewTransaksi" class="text-reset text-decoration-none">
@@ -157,7 +165,6 @@
             </div>
         </div>
         
-        @can('admin')
         <div class="col-md-4 py-3">
             <div class="text-center position-relative py-2">
                 <a href="/viewLaporan" class="text-reset text-decoration-none">
@@ -176,7 +183,6 @@
                 </a>
             </div>
         </div>
-        @endcan
 
     </div>
 </div>

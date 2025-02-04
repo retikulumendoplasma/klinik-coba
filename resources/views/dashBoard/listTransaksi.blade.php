@@ -10,6 +10,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>No</th>
+                            <th>Tanggal Pembayaran</th>
                             <th>Nomor Rekam Medis</th>
                             <th>Nama Pasien</th>
                             <th>Nomor Hp</th>
@@ -21,6 +22,7 @@
                         @foreach ($transaksiList as $transaksi)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $transaksi->tanggal_transaksi }}</td>
                                 <td>{{ $transaksi->medical_reports->patients->nomor_rekam_medis }}</td>
                                 <td>{{ $transaksi->medical_reports->patients->nama }}</td>
                                 <td>{{ $transaksi->medical_reports->patients->nomor_hp }}</td>

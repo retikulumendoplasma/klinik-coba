@@ -68,7 +68,7 @@
                 </div>
             </form>
         </div>
-        <table class="table table-striped table-bordered" id="tabel-pasien">
+        <table class="table table-striped table-bordered" id="tabel-antrian">
             <thead>
           <tr>
               <th>No</th>
@@ -76,117 +76,60 @@
               <th>Nama Pasien</th>
               <th>Alamat</th>
               <th>Nomor Hp</th>
+              <th>Status</th>
               @can('admin')
               <th>Action</th>
               @endcan
           </tr>
       </thead>
       <tbody>
+        @php
+            $nomorA = 0;
+        @endphp
         @forelse ($dataAntrian as $antrian)
-            @if ($antrian->status == 'Antri')
-                <tr @can('admin') data-url="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" style="cursor: pointer;"@endcan>
-                    <td>{{ $loop->iteration }}</td>
+                <tr @can('admin') 
+                    @if ($antrian->status == 'Sedang dilayani' || $antrian->status == 'Selesai')
+                        data-url="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" style="cursor: pointer;"
+                    @else
+                        data-url="/tambahRekamMedis/{{ $antrian->nomor_rekam_medis }}" style="cursor: pointer;"
+                    @endif
+                    @endcan>
+                    <td>{{ ++$nomorA }}</td>
                     <td>{{ $antrian->nomor_rekam_medis }}</td> 
                     <td>{{ $antrian->patients->nama }}</td> 
                     <td>{{ $antrian->patients->alamat }}</td> 
                     <td>{{ $antrian->patients->nomor_hp }}</td> 
+                    <td>
+                        <span class="
+                            @if ($antrian->status == 'Antri') btn btn-sm btn-primary
+                            @elseif ($antrian->status == 'Sedang dilayani') btn btn-sm btn-warning
+                            @elseif ($antrian->status == 'Selesai') btn btn-sm btn-success
+                            @endif
+                        ">
+                            {{ $antrian->status }}
+                        </span>
+                    </td>
                     @can('admin')
                     <td>
-                    <a href="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Buka</a>
+                        @if ($antrian->status == 'Sedang dilayani' || $antrian->status == 'Selesai')
+                            <a href="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Buka</a>
+                        @else
+                            <a href="/tambahRekamMedis/{{ $antrian->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Buka</a>
+                        @endif
                     </td>
                     @endcan
                 </tr>
-            @endif
         @empty
-              <tr>
-                  <td colspan="6" class="text-center">Data tidak ditemukan</td>
-              </tr>
+            @cannot('admin')
+                <tr>
+                    <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                </tr>
+            @endcannot
         @endforelse
       </tbody>
   </table>
 </div>
 
-@cannot('admin')
-<div class="table-responsive mt-4">
-    <h2>Sedang Dilayani</h2>
-  <table class="table table-striped table-bordered" id="tabel-pasien">
-      <thead>
-          <tr>
-              <th>No</th>
-              <th>Nomor Rekam Medis</th>
-              <th>Nama Pasien</th>
-              <th>Alamat</th>
-              <th>Nomor Hp</th>
-              @can('admin')
-              <th>Action</th>
-              @endcan
-          </tr>
-      </thead>
-      <tbody>
-        @forelse ($dataAntrian as $antrian)
-            @if ($antrian->status == 'Sedang dilayani')
-                <tr @can('admin') data-url="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" style="cursor: pointer;"@endcan>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $antrian->nomor_rekam_medis }}</td> 
-                    <td>{{ $antrian->patients->nama }}</td> 
-                    <td>{{ $antrian->patients->alamat }}</td> 
-                    <td>{{ $antrian->patients->nomor_hp }}</td> 
-                    @can('admin')
-                    <td>
-                    <a href="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Buka</a>
-                    </td>
-                    @endcan
-                </tr>
-            @endif
-        @empty
-              <tr>
-                  <td colspan="6" class="text-center">Data tidak ditemukan</td>
-              </tr>
-        @endforelse
-      </tbody>
-  </table>
-</div>
-
-<div class="table-responsive mt-4">
-    <h2>Selesai</h2>
-  <table class="table table-striped table-bordered" id="tabel-pasien">
-      <thead>
-          <tr>
-              <th>No</th>
-              <th>Nomor Rekam Medis</th>
-              <th>Nama Pasien</th>
-              <th>Alamat</th>
-              <th>Nomor Hp</th>
-              @can('admin')
-              <th>Action</th>
-              @endcan
-          </tr>
-      </thead>
-      <tbody>
-        @forelse ($dataAntrian as $antrian)
-            @if ($antrian->status == 'Selesai')
-                <tr @can('admin') data-url="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" style="cursor: pointer;"@endcan>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $antrian->nomor_rekam_medis }}</td> 
-                    <td>{{ $antrian->patients->nama }}</td> 
-                    <td>{{ $antrian->patients->alamat }}</td> 
-                    <td>{{ $antrian->patients->nomor_hp }}</td> 
-                    @can('admin')
-                    <td>
-                    <a href="/rekamMedisPasien/{{ $antrian->nomor_rekam_medis }}" class="btn btn-sm btn-primary">Buka</a>
-                    </td>
-                    @endcan
-                </tr>
-            @endif
-        @empty
-              <tr>
-                  <td colspan="6" class="text-center">Data tidak ditemukan</td>
-              </tr>
-        @endforelse
-      </tbody>
-  </table>
-</div>
-@endcannot
 
 {{-- script agar tabel dapat di click --}}
 <script>
@@ -251,30 +194,56 @@
     channel.bind('PasienBaruDitambahkan', function(data) {
         console.log('Data pasien baru diterima:', data);
 
-        // Cari tbody dari tabel pasien
-        const tableBody = document.querySelector('#tabel-pasien tbody');
+        // Pastikan data pasien tersedia
+        if (!data.pasien) {
+            console.error('Data pasien tidak ditemukan dalam event.');
+            return;
+        }
 
-        // Tambahkan baris baru ke tabel
-        const row = `
-            <tr>
-                <td>${tableBody.children.length + 1}</td>
-                <td>${data.pasien.nomor_rekam_medis}</td>
-                <td>${data.pasien.nama}</td>
-                <td>${data.pasien.alamat}</td>
-                <td>${data.pasien.nomor_hp}</td>
-                <td>
-                    <a href="/rekamMedisPasien/${data.pasien.nomor_rekam_medis}" class="btn btn-sm btn-primary">Buka</a>
-                </td>
-            </tr>
+        // Ambil elemen tbody dari tabel pasien
+        const tableBody = document.querySelector('#tabel-antrian tbody');
+        if (!tableBody) {
+            console.error('Tabel antrian tidak ditemukan di halaman.');
+            return;
+        }
+
+        // Buat elemen <tr>
+        const row = document.createElement('tr');
+        row.setAttribute('data-url', `/tambahRekamMedis/${data.pasien.nomor_rekam_medis}`);
+        row.style.cursor = 'pointer';
+
+        // Tambahkan event listener untuk menangani klik
+        row.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            if (url) {
+                window.location.href = url;
+            }
+        });
+
+        // Isi konten row
+        row.innerHTML = `
+            <td>${tableBody.children.length + 1}</td>
+            <td>${data.pasien.nomor_rekam_medis}</td>
+            <td>${data.pasien.nama}</td>
+            <td>${data.pasien.alamat}</td>
+            <td>${data.pasien.nomor_hp}</td>
+            <td>
+                <span class="btn btn-sm btn-primary">${data.pasien.status}</span>
+            </td>
+            <td>
+                <a href="/tambahRekamMedis/${data.pasien.nomor_rekam_medis}" class="btn btn-sm btn-primary">Buka</a>
+            </td>
         `;
-        tableBody.innerHTML += row;
+
+        // Tambahkan baris ke tabel
+        tableBody.appendChild(row);
     });
 
     channel.bind('HapusPasien', function(data) {
         console.log('Data pasien dihapus:', data);
 
         // Cari tabel pasien
-        const tableBody = document.querySelector('#tabel-pasien tbody');
+        const tableBody = document.querySelector('#tabel-antrian tbody');
 
         // Cari baris yang akan dihapus berdasarkan nomor rekam medis
         const rows = tableBody.getElementsByTagName('tr');

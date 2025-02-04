@@ -57,6 +57,9 @@ Route::put('/editPasien/{patients:nomor_rekam_medis}', [AdminDataPasienControlle
 Route::get('/viewAntrian', [AntrianController::class, 'index'])
     ->middleware('auth:akun_user')
     ->name('viewAntrian');
+Route::get('/antrian', [AntrianController::class, 'show'])
+    ->middleware('auth:akun_user')
+    ->name('antrian');
 Route::get('/api/patients/search', [AntrianController::class, 'search'])->name('api.patients.search');
 Route::post('/antrian/store', [AntrianController::class, 'store'])->name('antrian.store');
 
@@ -132,4 +135,6 @@ Route::get('/transaksi/cetakBayar/{id_transaksi}', [TransaksiController::class, 
 // Route::get('/cetak-struk', [TransaksiController::class, 'cetakStruk']);
 
 //laporan
-Route::get('/viewLaporan', [LaporanController::class, 'index'])->middleware('auth:akun_user')->name('index');
+// Route::get('/viewLaporan', [LaporanController::class, 'index'])->middleware('auth:akun_user')->name('index');
+Route::get('/laporanHarian/{tanggal}', [LaporanController::class, 'laporanHarian'])->middleware('auth:akun_user')->name('laporan.harian');
+Route::get('/viewLaporan', [LaporanController::class, 'laporanBulanan'])->name('laporan.bulanan');

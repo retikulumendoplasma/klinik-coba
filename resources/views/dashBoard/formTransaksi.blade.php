@@ -37,7 +37,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Obat</th>
+                                    <th>Satuan</th>
                                     <th>Jumlah</th>
+                                    <th>Cara Minum</th>
+                                    <th>Cara Pemberian</th>
                                     <th>Harga Satuan</th>
                                     <th>Total Harga</th>
                                 </tr>
@@ -46,21 +49,25 @@
                                 @php $grandTotal = 0; @endphp
                                 @foreach ($dataResep as $resepObat)
                                     @php
-                                        $totalHarga = $resepObat->medicines->harga_jual * $resepObat->jumlah;
+                                        $hargaSatuan = $resepObat->medicines->harga_jual * ($resepObat->satuan === 'papan' ? 10 : 1);
+                                        $totalHarga = $hargaSatuan * $resepObat->jumlah;
                                         $grandTotal += $totalHarga;
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $resepObat->medicines->nama_obat }}</td>
+                                        <td>{{ $resepObat->satuan }}</td>
                                         <td>{{ $resepObat->jumlah }}</td>
-                                        <td>Rp{{ number_format($resepObat->medicines->harga_jual, 0, ',', '.') }}</td>
+                                        <td>{{ $resepObat->cara_minum }}</td>
+                                        <td>{{ $resepObat->cara_pakai }}</td>
+                                        <td>Rp{{ number_format($hargaSatuan, 0, ',', '.') }}</td>
                                         <td>Rp{{ number_format($totalHarga, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4" class="text-right">Grand Total</th>
+                                    <th colspan="7" class="text-right">Grand Total</th>
                                     <th>Rp{{ number_format($grandTotal, 0, ',', '.') }}</th>
                                 </tr>
                             </tfoot>

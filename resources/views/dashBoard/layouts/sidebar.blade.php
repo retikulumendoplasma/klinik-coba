@@ -59,6 +59,9 @@
                     Data Obat
                 </a>
             </li>
+
+            @endcan
+
             <li class="nav-item" style="margin-bottom: 10px;">
                 <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/resep" style="padding: 15px 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-prescription" viewBox="0 0 16 16" style="margin-right: 10px; color: grey;">
@@ -68,6 +71,9 @@
                     Resep Obat
                 </a>
             </li>
+
+            @can('admin')
+
             <li class="nav-item" style="margin-bottom: 10px;">
                 <a class="nav-link {{ Request::is('viewTindakan') ? 'active' : '' }}" href="/viewTindakan" style="padding: 15px 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16" style="margin-right: 10px; color: grey;">
@@ -91,7 +97,6 @@
                 </a>
             </li>
             
-            @can('admin')
             <li class="nav-item" style="margin-bottom: 10px;">
                 <a class="nav-link {{ Request::is('viewLaporan') ? 'active' : '' }}" href="/viewLaporan" style="padding: 15px 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16" style="margin-right: 10px; color: grey;">
@@ -101,7 +106,6 @@
                     Laporan
                 </a>
             </li>
-            @endcan
 
         </ul>
 

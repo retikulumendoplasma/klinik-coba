@@ -2106,9 +2106,17 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   forceTLS: (/* unsupported import.meta.env.VITE_PUSHER_SCHEME */ undefined.VITE_PUSHER_SCHEME || 'https') === 'https',
   enabledTransports: ['ws', 'wss'] // Hanya gunakan WebSocket
 });
-window.Echo.channel("pasien-baru").listen("PasienBaruDitambahkan", function (event) {
-  console.log(event);
+window.Echo.channel('pasien-baru').listen('.PasienBaruDitambahkan', function (event) {
+  console.log('Pasien baru ditambahkan:', event.pasien);
+
+  // Update table or UI here
+  var tableBody = document.querySelector('#tabel-pasien tbody');
+  var row = "\n            <tr>\n                <td>".concat(event.pasien.nomor_rekam_medis, "</td>\n                <td>").concat(event.pasien.nama, "</td>\n                <td>").concat(event.pasien.jenis_kelamin, "</td>\n                <td>").concat(event.pasien.alamat, "</td>\n                <td class=\"text-center\">\n                    <a href=\"/viewdataPasien/").concat(event.pasien.nomor_rekam_medis, "\" class=\"badge bg-info\">Lihat</a>\n                </td>\n            </tr>\n        ");
+  tableBody.innerHTML += row;
 });
+// window.Echo.channel("pasien-baru").listen("PasienBaruDitambahkan",(event) =>{
+//     console.log(event);
+// });
 
 /***/ }),
 
